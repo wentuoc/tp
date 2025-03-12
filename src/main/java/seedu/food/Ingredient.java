@@ -5,7 +5,7 @@ import seedu.exceptions.InvalidPriceException;
 public class Ingredient extends Product {
     public Ingredient(String ingredientName, double ingredientPrice) throws InvalidPriceException {
         setName(ingredientName);
-        setPrice(ingredientPrice); //exception check price cannot <= 0
+        setPrice(ingredientPrice);
     }
 
     @Override
