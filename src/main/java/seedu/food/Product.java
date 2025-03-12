@@ -1,7 +1,7 @@
 package seedu.food;
 
-import seedu.exceptions.InvalidIngredientPriceException;
 import seedu.exceptions.InvalidPriceException;
+
 
 public abstract class Product {
     protected String name;
