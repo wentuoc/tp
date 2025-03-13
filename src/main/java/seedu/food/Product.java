@@ -27,4 +27,9 @@ public abstract class Product {
         }
         this.price = price;
     }
+
+    public String toString() {
+        String price = String.format("%.2f", getPrice());
+        return getName() + " ($" + price +")";
+    }
 }
