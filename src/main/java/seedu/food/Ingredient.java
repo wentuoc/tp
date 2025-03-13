@@ -8,13 +8,11 @@ public class Ingredient extends Product {
         setPrice(ingredientPrice);
     }
 
-    @Override
     public void setPrice(double price) throws InvalidPriceException {
         super.setPrice(price);
     }
 
-    @Override
     public String toString(){
-        return getName() + " ($" + getPrice() +")";
+        return super.toString();
     }
 }
