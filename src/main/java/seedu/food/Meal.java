@@ -15,14 +15,12 @@ public class Meal extends Product {
         setPrice(tempMealPrice);
     }
 
-    @Override
     public void setPrice(double mealPrice) throws InvalidPriceException {
         super.setPrice(mealPrice);
     }
 
-    @Override
     public String toString() {
-        return getName() + " ($" + getPrice() + ")";
+        return super.toString();
     }
 
     public void addIngredient(String ingredientName, String ingredientPrice)
@@ -39,7 +37,7 @@ public class Meal extends Product {
         String mealName = getName();
         for (Ingredient ingredient : ingredientList) {
             String currentIngredientName = ingredient.getName();
-            if (ingredientName.equals(currentIngredientName)) {
+            if (ingredientName.equalsIgnoreCase(currentIngredientName)) {
                 throw new DuplicateIngredientException(ingredientName, mealName);
             }
         }
@@ -81,10 +79,11 @@ public class Meal extends Product {
     }
 
     public void findIngredient(String ingredientName) {
+        String lcIngredientName = ingredientName.toLowerCase();
         ArrayList<Ingredient> matchingIngredList = new ArrayList<>();
         for (Ingredient ingredient : ingredientList) {
-            String currentIngName = ingredient.getName();
-            if (currentIngName.contains(ingredientName)) {
+            String currentIngName = ingredient.getName().toLowerCase();
+            if (currentIngName.contains(lcIngredientName)) {
                 matchingIngredList.add(ingredient);
             }
         }
