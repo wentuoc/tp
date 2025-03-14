@@ -19,7 +19,7 @@ public class UserInterface {
     }
 
     public void printGoodbye() {
-        System.out.println("Bye. Hope to see you again soon!");
+        System.out.print("Bye. Hope to see you again soon!");
     }
 
     public void printUnknowCommand() {
