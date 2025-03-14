@@ -1,4 +1,4 @@
-package exmealplan.ui;
+package seedu.ui;
 
 import java.util.Scanner;
 

@@ -1,11 +1,11 @@
-package exmealplan.main;
+package seedu.duke;
 
-import exmealplan.command.Command;
-import exmealplan.logic.MealManager;
-import exmealplan.ui.UserInterface;
-import exmealplan.parser.Parser;
+import seedu.command.Command;
+import seedu.logic.MealManager;
+import seedu.ui.UserInterface;
+import seedu.parser.Parser;
 
-public class Main {
+public class Duke {
     /**
      * Main entry-point for the java.duke.Duke application.
      */

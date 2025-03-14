@@ -1,6 +1,6 @@
-package exmealplan.food;
+package seedu.food;
 
-import exmealplan.exceptions.InvalidPriceException;
+import seedu.exceptions.InvalidPriceException;
 
 
 public abstract class Product {

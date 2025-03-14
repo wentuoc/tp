@@ -1,6 +1,6 @@
-package exmealplan.logic;
+package seedu.logic;
 
-import exmealplan.food.Meal;
+import seedu.food.Meal;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package exmealplan.exceptions;
+package seedu.exceptions;
 
 public class DuplicateIngredientException extends EZMealPlanException {
     String ingredientName;

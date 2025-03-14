@@ -1,8 +1,8 @@
-package exmealplan.parser;
+package seedu.parser;
 
-import exmealplan.command.ByeCommand;
-import exmealplan.command.Command;
-import exmealplan.command.UnknownCommand;
+import seedu.command.ByeCommand;
+import seedu.command.Command;
+import seedu.command.UnknownCommand;
 
 public class Parser {
     public static Command parse(String userInput) {

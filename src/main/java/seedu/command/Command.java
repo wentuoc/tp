@@ -1,7 +1,7 @@
-package exmealplan.command;
+package seedu.command;
 
-import exmealplan.logic.MealManager;
-import exmealplan.ui.UserInterface;
+import seedu.logic.MealManager;
+import seedu.ui.UserInterface;
 
 public abstract class Command {
 
