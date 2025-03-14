@@ -1,6 +1,6 @@
-package seedu.food;
+package exmealplan.food;
 
-import seedu.exceptions.EZMealPlanException;
+import exmealplan.exceptions.EZMealPlanException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

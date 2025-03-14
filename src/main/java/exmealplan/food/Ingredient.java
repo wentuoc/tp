@@ -1,6 +1,6 @@
-package seedu.food;
+package exmealplan.food;
 
-import seedu.exceptions.InvalidPriceException;
+import exmealplan.exceptions.InvalidPriceException;
 
 public class Ingredient extends Product {
     public Ingredient(String ingredientName, double ingredientPrice) throws InvalidPriceException {

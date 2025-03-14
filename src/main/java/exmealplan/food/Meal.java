@@ -1,8 +1,8 @@
-package seedu.food;
+package exmealplan.food;
 
-import seedu.exceptions.DuplicateIngredientException;
-import seedu.exceptions.IngredientPriceFormatException;
-import seedu.exceptions.InvalidPriceException;
+import exmealplan.exceptions.DuplicateIngredientException;
+import exmealplan.exceptions.IngredientPriceFormatException;
+import exmealplan.exceptions.InvalidPriceException;
 
 import java.util.ArrayList;
 

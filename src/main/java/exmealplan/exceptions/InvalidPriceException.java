@@ -1,4 +1,4 @@
-package seedu.exceptions;
+package exmealplan.exceptions;
 
 public class InvalidPriceException extends EZMealPlanException {
     String productName;
