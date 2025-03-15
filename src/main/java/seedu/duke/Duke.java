@@ -1,21 +1,30 @@
 package seedu.duke;
 
-import java.util.Scanner;
+import seedu.command.Command;
+import seedu.logic.MealManager;
+import seedu.ui.UserInterface;
+import seedu.parser.Parser;
 
 public class Duke {
     /**
      * Main entry-point for the java.duke.Duke application.
      */
     public static void main(String[] args) {
-        String logo = " ____        _        \n"
-                + "|  _ \\ _   _| | _____ \n"
-                + "| | | | | | | |/ / _ \\\n"
-                + "| |_| | |_| |   <  __/\n"
-                + "|____/ \\__,_|_|\\_\\___|\n";
-        System.out.println("Hello from\n" + logo);
-        System.out.println("What is your name?");
+        UserInterface ui = new UserInterface();
+        MealManager mealManager = new MealManager();
+        ui.printGreetingMessage();
+        String userInput;
+        while (true) {
 
-        Scanner in = new Scanner(System.in);
-        System.out.println("Hello " + in.nextLine());
+            userInput = ui.readInput();
+            // extracts out the command from the user input
+            Command command = Parser.parse(userInput);
+            // Executes the command parsed out
+            command.execute(mealManager, ui);
+
+            if (command.isExit()) {
+                break;
+            }
+        }
     }
 }
