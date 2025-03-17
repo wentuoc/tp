@@ -11,6 +11,6 @@ public class DuplicateIngredientException extends EZMealPlanException {
 
     @Override
     public String getMessage() {
-        return "Ingredient " + this.ingredientName + " already exists in the meal " + this.mealName + ".";
+        return "Ingredient: " + this.ingredientName + " already exists in the meal: " + this.mealName + ".";
     }
 }
