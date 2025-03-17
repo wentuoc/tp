@@ -51,7 +51,7 @@ public class UserInterface {
     }
 
     public void printIngredientList(ArrayList<Ingredient> ingredientList) {
-        System.out.println("Here are the ingredients for " + this + ": ");
+        System.out.println("Here are the ingredients for " + this + ":");
         int count = 0;
         for (Ingredient ingredient : ingredientList) {
             count++;
@@ -60,7 +60,7 @@ public class UserInterface {
     }
 
     public void printMealList(List<Meal> mealList, String mealListName) {
-        System.out.println("Here are the meals in " + mealListName + ": ");
+        System.out.println("Here are the meals in " + mealListName + ":");
         int count = 0;
         for (Meal meal : mealList) {
             count++;
