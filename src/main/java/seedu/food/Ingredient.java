@@ -12,7 +12,18 @@ public class Ingredient extends Product {
         super.setPrice(price);
     }
 
-    public String toString(){
+    public String toString() {
         return super.toString();
+    }
+
+    @Override
+    public boolean equals(Object otherIngredient) {
+        if (otherIngredient instanceof Ingredient) {
+            String otherName = ((Ingredient) otherIngredient).getName();
+            String thisName = this.getName();
+            return thisName.equalsIgnoreCase(otherName);
+        } else {
+            return false;
+        }
     }
 }
