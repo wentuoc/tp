@@ -1,3 +1,44 @@
 Hello! This is EzMealPlan
 Let me help you in planning your meals
+How may I help you?
+Invalid command: excusemeee
+me no understand what you talking
+How may I help you?
+"/mname" keyword cannot be missing from the "create" command.
+
+How may I help you?
+"/ing" keyword cannot be missing from the "create" command.
+
+How may I help you?
+"/mname" keyword cannot be missing from the "create" command.
+
+How may I help you?
+"/ing" keyword must appear after "/mname" keyword in the "create" command.
+
+How may I help you?
+The meal name cannot be missing from the "create" command.
+It must be present after the "/mname" keyword and before "/ing" keyword.
+
+How may I help you?
+The ingredient(s) cannot be missing from the "create" command.
+It must be present after the "/ing" keyword.
+
+How may I help you?
+The meal name cannot be missing from the "create" command.
+It must be present after the "/mname" keyword and before "/ing" keyword.
+
+How may I help you?
+Ingredient: cheesecake already exists in the meal: cheesecake.
+How may I help you?
+You have successfully added a meal: cheesecake ($9.00) into main meal list.
+Here are the meals in main meal list:
+    1. cheesecake ($9.00)
+Currently, you have 1 meals in main meal list.
+How may I help you?
+You have successfully added a meal: cheesecake ($10.00) into main meal list.
+Here are the meals in main meal list:
+    1. cheesecake ($9.00)
+    2. cheesecake ($10.00)
+Currently, you have 2 meals in main meal list.
+How may I help you?
 Bye. Hope to see you again soon!

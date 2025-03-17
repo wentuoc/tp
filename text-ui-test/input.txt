@@ -1,1 +1,12 @@
+excusemeee
+create
+create /mname
+create /ing
+create /ing /mname
+create /mname /ing cheesecake(9)
+create /mname cheesecake /ing
+create /mname /ing cheesecake(-9)
+create /mname cheesecake /ing cheesecake(9), cheesecake(9)
+create /mname cheesecake /ing cheesecake(9)
+create /mname cheesecake /ing cheesecake(9), blueberry(1)
 bye
