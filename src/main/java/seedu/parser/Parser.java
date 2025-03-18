@@ -3,6 +3,7 @@ package seedu.parser;
 import seedu.command.ByeCommand;
 import seedu.command.Command;
 import seedu.command.CreateCommand;
+import seedu.command.ListCommand;
 import seedu.command.UnknownCommand;
 
 public class Parser {
@@ -14,6 +15,8 @@ public class Parser {
             return new ByeCommand();
         } else if (userInput.contains(create)) {
             return new CreateCommand(userInput);
+        } else if (userInput.equals("list")) {
+            return new ListCommand();
         }
         return new UnknownCommand(userInput);
     }

@@ -60,6 +60,11 @@ public class UserInterface {
     }
 
     public void printMealList(List<Meal> mealList, String mealListName) {
+        if (mealList.isEmpty()) {
+            System.out.println("No meals found in " + mealListName + ".");
+            return;
+        }
+
         System.out.println("Here are the meals in " + mealListName + ":");
         int count = 0;
         for (Meal meal : mealList) {
