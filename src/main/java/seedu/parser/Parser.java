@@ -4,6 +4,7 @@ import seedu.command.ByeCommand;
 import seedu.command.Command;
 import seedu.command.CreateCommand;
 import seedu.command.ListCommand;
+import seedu.command.MealCommand;
 import seedu.command.UnknownCommand;
 
 public class Parser {
@@ -17,6 +18,8 @@ public class Parser {
             return new CreateCommand(userInput);
         } else if (userInput.equals("list")) {
             return new ListCommand();
+        } else if (userInput.equals("meal")) {
+            return new MealCommand();
         }
         return new UnknownCommand(userInput);
     }
