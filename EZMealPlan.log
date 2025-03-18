@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2025-03-18T04:12:53.432388200Z</date>
+  <millis>1742271173432</millis>
+  <nanos>388200</nanos>
+  <sequence>0</sequence>
+  <logger>global</logger>
+  <level>FINE</level>
+  <class>seedu.checkers.CreateChecker</class>
+  <method>check</method>
+  <thread>1</thread>
+  <message>Checking 'create /mname chicken salad /ing chicken (3.50), lettuce (1.00), tomato (0.75)' for errors.</message>
+</record>
+<record>
+  <date>2025-03-18T04:12:53.439906300Z</date>
+  <millis>1742271173439</millis>
+  <nanos>906300</nanos>
+  <sequence>1</sequence>
+  <logger>global</logger>
+  <level>FINE</level>
+  <class>seedu.command.CreateCommand</class>
+  <method>createNewMeal</method>
+  <thread>1</thread>
+  <message>The user is now creating a new meal: chicken salad.</message>
+</record>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2025-03-18T04:39:14.346548400Z</date>
+  <millis>1742272754346</millis>
+  <nanos>548400</nanos>
+  <sequence>0</sequence>
+  <logger>global</logger>
+  <level>FINE</level>
+  <class>seedu.checkers.CreateChecker</class>
+  <method>check</method>
+  <thread>1</thread>
+  <message>Checking 'create /mname chicken salad /ing chicken (3.50), lettuce (1.00), tomato (0.75)' for errors.</message>
+</record>
+<record>
+  <date>2025-03-18T04:39:14.352550600Z</date>
+  <millis>1742272754352</millis>
+  <nanos>550600</nanos>
+  <sequence>1</sequence>
+  <logger>global</logger>
+  <level>FINE</level>
+  <class>seedu.command.CreateCommand</class>
+  <method>createNewMeal</method>
+  <thread>1</thread>
+  <message>The user is now creating a new meal: chicken salad.</message>
+</record>
+</log>
