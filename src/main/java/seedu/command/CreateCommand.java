@@ -4,7 +4,6 @@ import seedu.checkers.CreateChecker;
 import seedu.exceptions.DuplicateIngredientException;
 import seedu.exceptions.EZMealPlanException;
 import seedu.exceptions.IngredientPriceFormatException;
-import seedu.exceptions.InvalidPriceException;
 import seedu.food.Ingredient;
 import seedu.food.Meal;
 import seedu.food.Product;
@@ -26,7 +25,7 @@ public class CreateCommand extends Command {
 
     @Override
     public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
-        boolean isValidUserInput = checkValidUserInput(ui);
+        boolean isValidUserInput = checkValidUserInput();
         if (!isValidUserInput) {
             logger.severe("Huge issue detected! The user input format remains invalid despite " +
                     "passing all the checks for input formatting error.");
@@ -86,7 +85,7 @@ public class CreateCommand extends Command {
         return new String[]{ingredientName, ingredientPrice};
     }
 
-    private boolean checkValidUserInput(UserInterface ui) throws EZMealPlanException {
+    private boolean checkValidUserInput() throws EZMealPlanException {
         CreateChecker checker = new CreateChecker(validUserInput);
         checker.check();
         return checker.isPassed();
@@ -102,7 +101,7 @@ public class CreateCommand extends Command {
     }
 
     public void addIngredient(String ingredientName, String ingredientPrice, Meal meal)
-            throws InvalidPriceException, IngredientPriceFormatException, DuplicateIngredientException {
+            throws EZMealPlanException {
         double ingredientPriceDouble = checkValidIngPrice(ingredientName, ingredientPrice);
         Ingredient newIngredient = new Ingredient(ingredientName, ingredientPriceDouble);
         checkDuplicateIngredients(newIngredient, meal);
@@ -110,7 +109,7 @@ public class CreateCommand extends Command {
         ingredientList.add(newIngredient);
     }
 
-    private void checkDuplicateIngredients(Ingredient newIngredient, Meal meal) throws DuplicateIngredientException {
+    private void checkDuplicateIngredients(Ingredient newIngredient, Meal meal) throws EZMealPlanException {
         String mealName = meal.getName();
         ArrayList<Ingredient> ingredientList = meal.getIngredientList();
         for (Ingredient ingredient : ingredientList) {

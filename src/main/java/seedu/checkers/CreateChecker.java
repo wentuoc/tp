@@ -20,7 +20,7 @@ public class CreateChecker extends Checker {
     String create = "create";
 
     public CreateChecker(String userInputText) {
-        this.userInput = userInputText;
+        this.userInput = userInputText.trim();
     }
 
     @Override
@@ -78,7 +78,7 @@ public class CreateChecker extends Checker {
         if (mealName.isEmpty()) {
             String message = "Triggers MissingMealNameException()!";
             logger.warning(message);
-            throw new MissingMealNameException();
+            throw new MissingMealNameException(create);
         }
     }
 
@@ -88,7 +88,7 @@ public class CreateChecker extends Checker {
         if (ingredients.isEmpty()) {
             String message = "Triggers MissingIngredientException()!";
             logger.warning(message);
-            throw new MissingIngredientException();
+            throw new MissingIngredientException(create);
         }
     }
 
