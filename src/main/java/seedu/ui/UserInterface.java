@@ -14,6 +14,10 @@ public class UserInterface {
         scanner = new Scanner(System.in);
     }
 
+    public static void printMessage(String s) {
+        System.out.println(s);
+    }
+
     public String readInput() {
         String userCmd = "";
         if (scanner.hasNextLine()) {
@@ -60,6 +64,11 @@ public class UserInterface {
     }
 
     public void printMealList(List<Meal> mealList, String mealListName) {
+        if (mealList.isEmpty()) {
+            System.out.println("No meals found in " + mealListName + ".");
+            return;
+        }
+
         System.out.println("Here are the meals in " + mealListName + ":");
         int count = 0;
         for (Meal meal : mealList) {

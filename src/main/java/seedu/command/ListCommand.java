@@ -1,0 +1,19 @@
+package seedu.command;
+
+import seedu.exceptions.EZMealPlanException;
+import seedu.food.Meal;
+import seedu.logic.MealManager;
+import seedu.ui.UserInterface;
+
+import java.util.List;
+import java.util.logging.Logger;
+
+public class ListCommand extends Command {
+    private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    @Override
+    public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
+        List<Meal> mainMealList = mealManager.getMainMealList();
+        ui.printMealList(mainMealList, "main list");
+        logger.info("Executing 'list' command");
+    }
+}
