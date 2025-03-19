@@ -5,9 +5,11 @@ import seedu.exceptions.MissingMealIndexException;
 
 
 public class SelectChecker extends FilterSelectChecker {
-    public SelectChecker(String userInputText, String filterOrSelect) {
+    public SelectChecker(String userInputText, String filterMethod) {
         this.userInput = userInputText.trim();
-        this.filterOrSelect = filterOrSelect.trim();
+        this.lowerCaseInput = userInput.toLowerCase();
+        this.filterOrSelect = "select";
+        this.filterMethod = filterMethod;
     }
 
     @Override
@@ -24,20 +26,18 @@ public class SelectChecker extends FilterSelectChecker {
     }
 
     private String getIndexString() {
-        String selectInputIndex;
-        int afterSelectIndex = userInput.indexOf(filterOrSelect) + filterOrSelect.length();
-        if (userInput.contains(ing)) {
-            int ingIndex = userInput.indexOf(ing);
-            selectInputIndex = userInput.substring(afterSelectIndex, ingIndex);
-        } else if (userInput.contains(mcost)) {
-            int mcostIndex = userInput.indexOf(mcost);
-            selectInputIndex = userInput.substring(afterSelectIndex, mcostIndex);
-        } else if (userInput.contains(mname)) {
-            int mnameIndex = userInput.indexOf(mname);
-            selectInputIndex = userInput.substring(afterSelectIndex, mnameIndex);
-        } else {
-            selectInputIndex = userInput.substring(afterSelectIndex);
+        String keyword = "";
+        int afterSelectIndex = lowerCaseInput.indexOf(filterOrSelect) + filterOrSelect.length();
+        keyword = switch (filterMethod) {
+        case byIng -> ing;
+        case byMcost -> mcost;
+        case byMname -> mname;
+        default -> keyword;
+        };
+        if (keyword.isEmpty()) {
+            return userInput.substring(afterSelectIndex);
         }
-        return selectInputIndex;
+        int keywordIndex = lowerCaseInput.indexOf(keyword);
+        return userInput.substring(afterSelectIndex, keywordIndex);
     }
 }

@@ -6,13 +6,10 @@ import seedu.ui.UserInterface;
 
 public abstract class Command {
     protected String validUserInput;
+    protected String lowerCaseInput;
 
     public boolean isExit() {
         return false;
-    }
-
-    public void setValidUserInput(String validUserInput) {
-        this.validUserInput = validUserInput;
     }
 
     public abstract void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException;
