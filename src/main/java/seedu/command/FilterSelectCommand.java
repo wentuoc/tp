@@ -37,7 +37,8 @@ public abstract class FilterSelectCommand extends Command {
         return checker;
     }
 
-    protected List<Meal> getFilteredMealList(String filterOrSelect, MealManager mealManager) throws EZMealPlanException {
+    protected List<Meal> getFilteredMealList(MealManager mealManager)
+            throws EZMealPlanException {
         boolean isContainIng = this.validUserInput.contains(ing);
         boolean isContainMname = this.validUserInput.contains(mname);
         boolean isContainMcost = this.validUserInput.contains(mcost);

@@ -24,7 +24,7 @@ public class FilterCommand extends FilterSelectCommand {
                     "passing all the checks for input formatting error.");
         }
         assert isValidUserInput;
-        List<Meal> filteredMealList = getFilteredMealList(filterOrSelect, mealManager);
+        List<Meal> filteredMealList = getFilteredMealList(mealManager);
         printFilteredMealList(filteredMealList, ui);
     }
 

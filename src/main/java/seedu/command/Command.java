@@ -15,9 +15,5 @@ public abstract class Command {
         this.validUserInput = validUserInput;
     }
 
-    public String getValidUserInput() {
-        return validUserInput;
-    }
-
     public abstract void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException;
 }

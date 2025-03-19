@@ -4,7 +4,6 @@ import seedu.exceptions.DuplicateMealException;
 import seedu.exceptions.EZMealPlanException;
 import seedu.food.Ingredient;
 import seedu.food.Meal;
-import seedu.food.Product;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -26,7 +25,7 @@ public class MealManager {
     public void addMeal(Meal newMeal, List<Meal> mealList) throws EZMealPlanException {
         checkDuplicateMeal(newMeal, mealList);
         mealList.add(newMeal);
-        mealList.sort(Comparator.comparing(Product::getName));
+        mealList.sort(Comparator.comparing(meal -> meal.getName().toLowerCase()));
     }
 
     // Checks whether the newMeal already exists in the given meal list
@@ -64,8 +63,9 @@ public class MealManager {
 
     private static boolean checkMname(String[] mealNameArray, Meal meal) {
         boolean isMealNameContains = true;
-        String getMealName = meal.getName();
+        String getMealName = meal.getName().toLowerCase();
         for (String mealName : mealNameArray) {
+            mealName = mealName.toLowerCase();
             if (!getMealName.contains(mealName)) {
                 isMealNameContains = false;
                 break;
@@ -102,6 +102,7 @@ public class MealManager {
         int overallCount = 0;
         int zero = 0;
         for (String ingName : ingArray) {
+            ingName = ingName.toLowerCase();
             int eachCount = getEachCount(ingName, ingredientsNameList);
             if (eachCount > zero) {
                 overallCount++;
@@ -113,6 +114,7 @@ public class MealManager {
     private static int getEachCount(String ingName, ArrayList<String> ingredientsNameList) {
         int eachCount = 0;
         for (String ingredientName : ingredientsNameList) {
+            ingredientName = ingredientName.toLowerCase();
             if (ingredientName.contains(ingName)) {
                 eachCount++;
             }

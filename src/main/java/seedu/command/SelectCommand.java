@@ -25,7 +25,7 @@ public class SelectCommand extends FilterSelectCommand {
                     "passing all the checks for input formatting error.");
         }
         assert isValidUserInput;
-        List<Meal> filteredMealList = getFilteredMealList(filterOrSelect, mealManager);
+        List<Meal> filteredMealList = getFilteredMealList(mealManager);
         if (filteredMealList.isEmpty()) {
             System.out.println("The filtered meal list is empty.");
             return;
@@ -34,7 +34,7 @@ public class SelectCommand extends FilterSelectCommand {
         int inputIndex = checkValidParse(indexSubstring);
         Meal selectedMeal = checkValidInputIndex(inputIndex, filteredMealList);
         List<Meal> userMealList = mealManager.getUserMealList();
-        mealManager.add(selectedMeal, userMealList);
+        mealManager.addMeal(selectedMeal, userMealList);
         String mealListName = "user meal list";
         ui.printAddMealMessage(selectedMeal, userMealList, mealListName);
     }
