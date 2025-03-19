@@ -2,7 +2,6 @@ package seedu.ezmealplan;
 
 import seedu.command.Command;
 import seedu.exceptions.EZMealPlanException;
-import seedu.exceptions.InvalidPriceException;
 import seedu.food.Meal;
 import seedu.logic.MealManager;
 import seedu.storage.Storage;
