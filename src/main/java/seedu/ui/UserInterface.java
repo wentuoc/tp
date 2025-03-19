@@ -14,6 +14,10 @@ public class UserInterface {
         scanner = new Scanner(System.in);
     }
 
+    public static void printMessage(String s) {
+        System.out.println(s);
+    }
+
     public String readInput() {
         String userCmd = "";
         if (scanner.hasNextLine()) {

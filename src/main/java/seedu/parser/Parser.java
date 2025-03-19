@@ -19,17 +19,18 @@ public class Parser {
 
     public static Command parse(String userInput) {
         userInput = userInput.toLowerCase().trim();
-        if (userInput.equalsIgnoreCase(bye)) {
+
+        if (userInput.startsWith(bye)) {
             return new ByeCommand();
-        } else if (userInput.contains(create)) {
+        } else if (userInput.startsWith(create)) {
             return new CreateCommand(userInput);
-        } else if (userInput.contains(filter)) {
+        } else if (userInput.startsWith(filter)) {
             return new FilterCommand(userInput);
-        } else if (userInput.contains(select)) {
+        } else if (userInput.startsWith(select)) {
             return new SelectCommand(userInput);
-        } else if (userInput.equalsIgnoreCase(list)) {
+        } else if (userInput.startsWith(list)) {
             return new ListCommand();
-        } else if (userInput.equalsIgnoreCase(meal)) {
+        } else if (userInput.startsWith(meal)) {
             return new MealCommand();
         }
         return new UnknownCommand(userInput);
