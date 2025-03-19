@@ -68,7 +68,7 @@ public class CreateCheckerTest {
         Meal meal = mealList.get(zeroIndex);
         String expectedMealString = "chicken rice ($5.50)";
         assertEquals(expectedMealString, meal.toString());
-        ArrayList<Ingredient> ingredientList = meal.getIngredientList();
+        ArrayList<Ingredient> ingredientList = (ArrayList<Ingredient>) meal.getIngredientList();
         String[] expectedIngredientList = {"chicken breast ($2.50)", "cucumber ($1.00)", "egg ($0.50)", "rice ($1.50)"};
         for (int i = 0; i < expectedIngredientList.length; i++) {
             assertEquals(expectedIngredientList[i], ingredientList.get(i).toString());
