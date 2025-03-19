@@ -29,8 +29,7 @@ public class Meal extends Product {
 
     @Override
     public boolean equals(Object otherMeal) {
-        if (otherMeal instanceof Meal) {
-            Meal other = (Meal) otherMeal;
+        if (otherMeal instanceof Meal other) {
             return this.getName().equalsIgnoreCase(other.getName()) &&
                     this.ingredientList.equals(other.getIngredientList());
         }

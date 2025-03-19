@@ -88,7 +88,7 @@ public class MealManager {
 
     private static boolean checkIngPerMeal(String[] ingArray, Meal meal) {
         boolean isMealContainsIng = true;
-        ArrayList<Ingredient> ingredientList = meal.getIngredientList();
+        ArrayList<Ingredient> ingredientList = (ArrayList<Ingredient>) meal.getIngredientList();
         ArrayList<String> ingredientsNameList = new ArrayList<>();
         ingredientList.forEach(ingredient -> ingredientsNameList.add(ingredient.getName()));
         int overallCount = getOverallCount(ingArray, ingredientsNameList);

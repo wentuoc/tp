@@ -1,10 +1,10 @@
 package seedu.checkers;
 
 import seedu.exceptions.EZMealPlanException;
-import seedu.exceptions.InvalidFilterMethodException;
 import seedu.exceptions.InvalidIngIndexException;
 import seedu.exceptions.InvalidMcostIndexException;
 import seedu.exceptions.InvalidMnameIndexException;
+import seedu.exceptions.InvalidFilterMethodException;
 import seedu.exceptions.MissingIngredientException;
 import seedu.exceptions.MissingMealCostException;
 import seedu.exceptions.MissingMealNameException;
