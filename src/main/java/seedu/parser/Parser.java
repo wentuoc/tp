@@ -5,6 +5,8 @@ import seedu.command.Command;
 import seedu.command.CreateCommand;
 import seedu.command.FilterCommand;
 import seedu.command.SelectCommand;
+import seedu.command.ListCommand;
+import seedu.command.MealCommand;
 import seedu.command.UnknownCommand;
 
 public class Parser {
@@ -12,6 +14,8 @@ public class Parser {
     static String create = "create";
     static String filter = "filter";
     static String select = "select";
+    static String meal = "meal";
+    static String list = "list";
 
     public static Command parse(String userInput) {
         userInput = userInput.toLowerCase().trim();
@@ -23,6 +27,10 @@ public class Parser {
             return new FilterCommand(userInput);
         } else if (userInput.contains(select)) {
             return new SelectCommand(userInput);
+        } else if (userInput.equalsIgnoreCase(list)) {
+            return new ListCommand();
+        } else if (userInput.equalsIgnoreCase(meal)) {
+            return new MealCommand();
         }
         return new UnknownCommand(userInput);
     }
