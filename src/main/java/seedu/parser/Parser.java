@@ -12,9 +12,9 @@ public class Parser {
         String bye = "bye";
         String create = "create";
         userInput = userInput.toLowerCase().trim();
-        if (userInput.contains(bye)) {
+        if (userInput.startsWith(bye)) {
             return new ByeCommand();
-        } else if (userInput.contains(create)) {
+        } else if (userInput.startsWith(create)) {
             return new CreateCommand(userInput);
         } else if (userInput.equals("list")) {
             return new ListCommand();

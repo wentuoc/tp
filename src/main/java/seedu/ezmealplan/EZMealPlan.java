@@ -2,11 +2,14 @@ package seedu.ezmealplan;
 
 import seedu.command.Command;
 import seedu.exceptions.EZMealPlanException;
+import seedu.food.Meal;
 import seedu.logic.MealManager;
+import seedu.storage.Storage;
 import seedu.ui.UserInterface;
 import seedu.parser.Parser;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -26,6 +29,26 @@ public class EZMealPlan {
         MealManager mealManager = new MealManager();
         ui.printGreetingMessage();
         String userInput;
+
+        try {
+            // Create and load the user-selected meal list (data.txt)
+            Storage.createFile();
+            List<Meal> userMeals = Storage.loadMeals();
+            for (Meal meal : userMeals) {
+                mealManager.addMeal(meal, mealManager.getUserMealList());
+            }
+
+            // Create and load the main meal list (mainlist.txt)1
+            Storage.createMainListFile(); // Similar to createFile(), but for MAIN_LIST_PATH.
+            List<Meal> mainMeals = Storage.loadMainList();
+            for (Meal meal : mainMeals) {
+                mealManager.addMeal(meal, mealManager.getMainMealList());
+            }
+        } catch (IOException | EZMealPlanException e) {
+            System.err.println("Could not load tasks: " + e.getMessage());
+        }
+
+
         while (true) {
             ui.prompt();
             userInput = ui.readInput();

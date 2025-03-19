@@ -10,7 +10,9 @@ import seedu.food.Meal;
 import seedu.food.Product;
 import seedu.logic.MealManager;
 import seedu.ui.UserInterface;
+import seedu.storage.Storage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -34,7 +36,12 @@ public class CreateCommand extends Command {
         assert isValidUserInput;
         Meal newMeal = createNewMeal();
         List<Meal> mainMealList = mealManager.getMainMealList();
-        mealManager.add(newMeal, mainMealList);
+        mealManager.addMeal(newMeal, mainMealList);
+        try {
+            Storage.writeMainList(newMeal.toDataString());
+        } catch (IOException e) {
+            UserInterface.printMessage("Error writing to file: " + e.getMessage());
+        }
         String mealListName = "main meal list";
         ui.printAddMealMessage(newMeal, mainMealList, mealListName);
     }
@@ -70,7 +77,7 @@ public class CreateCommand extends Command {
             String ingredientPrice = ingredientNamePrice[priceIndex];
             addIngredient(ingredientName, ingredientPrice, newMeal);
         }
-        ArrayList<Ingredient> mealIngredients = newMeal.getIngredientList();
+        ArrayList<Ingredient> mealIngredients = (ArrayList<Ingredient>) newMeal.getIngredientList();
         mealIngredients.sort(Comparator.comparing(Product::getName));
     }
 
@@ -93,7 +100,7 @@ public class CreateCommand extends Command {
     }
 
     public double computeMealPrice(Meal meal) {
-        ArrayList<Ingredient> ingredientList = meal.getIngredientList();
+        ArrayList<Ingredient> ingredientList = (ArrayList<Ingredient>) meal.getIngredientList();
         double totalPrice = 0;
         for (Ingredient ingredient : ingredientList) {
             totalPrice += ingredient.getPrice();
@@ -106,13 +113,13 @@ public class CreateCommand extends Command {
         double ingredientPriceDouble = checkValidIngPrice(ingredientName, ingredientPrice);
         Ingredient newIngredient = new Ingredient(ingredientName, ingredientPriceDouble);
         checkDuplicateIngredients(newIngredient, meal);
-        ArrayList<Ingredient> ingredientList = meal.getIngredientList();
+        ArrayList<Ingredient> ingredientList = (ArrayList<Ingredient>) meal.getIngredientList();
         ingredientList.add(newIngredient);
     }
 
     private void checkDuplicateIngredients(Ingredient newIngredient, Meal meal) throws DuplicateIngredientException {
         String mealName = meal.getName();
-        ArrayList<Ingredient> ingredientList = meal.getIngredientList();
+        ArrayList<Ingredient> ingredientList = (ArrayList<Ingredient>) meal.getIngredientList();
         for (Ingredient ingredient : ingredientList) {
             if (newIngredient.equals(ingredient)) {
                 String ingredientName = newIngredient.getName();
