@@ -32,20 +32,20 @@ public class EZMealPlan {
 
         try {
             // Create and load the user-selected meal list (data.txt)
-            Storage.createFile();
+            Storage.createUserListFile();
             List<Meal> userMeals = Storage.loadMeals();
             for (Meal meal : userMeals) {
-                mealManager.addMeal(meal, mealManager.getUserMealList());
+                mealManager.addMeal(meal, mealManager.getUserList());
             }
 
-            // Create and load the main meal list (mainlist.txt)1
+            // Create and load the main meal list (mainlist.txt)
             Storage.createMainListFile(); // Similar to createFile(), but for MAIN_LIST_PATH.
             List<Meal> mainMeals = Storage.loadMainList();
             for (Meal meal : mainMeals) {
-                mealManager.addMeal(meal, mealManager.getMainMealList());
+                mealManager.addMeal(meal, mealManager.getMainList());
             }
-        } catch (IOException | EZMealPlanException e) {
-            System.err.println("Could not load tasks: " + e.getMessage());
+        } catch (IOException | EZMealPlanException exception) {
+            System.err.println("Could not load tasks: " + exception.getMessage());
         }
 
 
