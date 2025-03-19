@@ -10,6 +10,6 @@ public class MissingIngredientException extends EZMealPlanException {
     @Override
     public String getMessage() {
         return "The ingredient (s) cannot be missing from the " + command + " command.\n" +
-                "It must be present after the '/ing' keyword.";
+                "It must be present after the '/ing' keyword.\n";
     }
 }

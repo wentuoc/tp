@@ -9,6 +9,6 @@ public class MissingMealCostException extends EZMealPlanException {
 
     public String getMessage() {
         return "The meal cost cannot be missing from the '" + filterOrSelect + "' command.\n" +
-                "It must be present after the '/mcost' keyword";
+                "It must be present after the '/mcost' keyword.\n";
     }
 }

@@ -11,6 +11,6 @@ public class DuplicateMealException extends EZMealPlanException {
 
     @Override
     public String getMessage() {
-        return "This meal: " + mealName + " already exists in the " + listName + ".";
+        return "This meal: " + mealName + " already exists in the " + listName + ".\n";
     }
 }

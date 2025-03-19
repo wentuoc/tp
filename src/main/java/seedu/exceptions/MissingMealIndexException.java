@@ -10,6 +10,5 @@ public class MissingMealIndexException extends EZMealPlanException {
 
     @Override
     public String getMessage() {
-        return "The input index cannot be missing from the '" + command + "' command.";
-    }
+        return "The input index cannot be missing from the '" + command + "' command.\n";}
 }

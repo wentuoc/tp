@@ -9,6 +9,6 @@ public class InvalidMnameIndexException extends EZMealPlanException {
 
     @Override
     public String getMessage() {
-        return "The /mname keyword must appear after the '" + filterOrSelect + "' keyword command.";
+        return "The /mname keyword must appear after the '" + filterOrSelect + "' keyword command.\n";
     }
 }

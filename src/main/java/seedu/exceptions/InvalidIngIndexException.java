@@ -9,6 +9,6 @@ public class InvalidIngIndexException extends EZMealPlanException {
 
     @Override
     public String getMessage() {
-        return "The /ing keyword must appear after the '" + filterOrSelect + "' keyword command.";
+        return "The /ing keyword must appear after the '" + filterOrSelect + "' keyword command.\n";
     }
 }

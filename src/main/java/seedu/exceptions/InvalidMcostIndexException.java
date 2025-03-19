@@ -9,6 +9,6 @@ public class InvalidMcostIndexException extends EZMealPlanException {
 
     @Override
     public String getMessage() {
-        return "The /mcost keyword must appear after the '" + filterOrSelect + "' keyword command.";
+        return "The /mcost keyword must appear after the '" + filterOrSelect + "' keyword command.\n";
     }
 }
