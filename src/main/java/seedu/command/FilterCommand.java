@@ -13,6 +13,7 @@ public class FilterCommand extends FilterSelectCommand {
 
     public FilterCommand(String userInput) {
         this.validUserInput = userInput.trim();
+        this.lowerCaseInput = validUserInput.toLowerCase();
         this.filterOrSelect = "filter";
     }
 

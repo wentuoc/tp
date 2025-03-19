@@ -4,6 +4,7 @@ import seedu.exceptions.EZMealPlanException;
 import seedu.exceptions.InvalidSelectIndexException;
 import seedu.food.Meal;
 import seedu.logic.MealManager;
+import seedu.meallist.MealList;
 import seedu.ui.UserInterface;
 
 import java.util.List;
@@ -14,6 +15,7 @@ public class SelectCommand extends FilterSelectCommand {
 
     public SelectCommand(String userInput) {
         this.validUserInput = userInput.trim();
+        this.lowerCaseInput = validUserInput.toLowerCase();
         this.filterOrSelect = "select";
     }
 
@@ -33,31 +35,20 @@ public class SelectCommand extends FilterSelectCommand {
         String indexSubstring = getIndexSubstring();
         int inputIndex = checkValidParse(indexSubstring);
         Meal selectedMeal = checkValidInputIndex(inputIndex, filteredMealList);
-        List<Meal> userMealList = mealManager.getUserMealList();
+        MealList userMealList = mealManager.getUserList();
         mealManager.addMeal(selectedMeal, userMealList);
-        String mealListName = "user meal list";
-        ui.printAddMealMessage(selectedMeal, userMealList, mealListName);
+        ui.printAddMealMessage(selectedMeal, userMealList);
     }
 
     private String getIndexSubstring() {
-        int afterSelectIndex = this.validUserInput.indexOf(filterOrSelect) + filterOrSelect.length();
-        boolean isContainsIng = this.validUserInput.contains(ing);
-        boolean isContainsMcost = this.validUserInput.contains(mcost);
-        boolean isContainsMname = this.validUserInput.contains(mname);
-        String indexSubstring;
-        if (isContainsIng) {
-            int ingIndex = this.validUserInput.indexOf(ing);
-            indexSubstring = this.validUserInput.substring(afterSelectIndex, ingIndex).trim();
-        } else if (isContainsMcost) {
-            int mcostIndex = this.validUserInput.indexOf(mcost);
-            indexSubstring = this.validUserInput.substring(afterSelectIndex, mcostIndex).trim();
-        } else if (isContainsMname) {
-            int mnameIndex = this.validUserInput.indexOf(mname);
-            indexSubstring = this.validUserInput.substring(afterSelectIndex, mnameIndex).trim();
-        } else {
-            indexSubstring = this.validUserInput.substring(afterSelectIndex).trim();
+        int afterSelectIndex = this.lowerCaseInput.indexOf(filterOrSelect) + filterOrSelect.length();
+        int inputMethodIndex;
+        String inputMethod = getString(mcost, ing, mname);
+        if (inputMethod.isEmpty()) {
+            return this.validUserInput.substring(afterSelectIndex).trim();
         }
-        return indexSubstring;
+        inputMethodIndex = this.lowerCaseInput.indexOf(inputMethod);
+        return this.validUserInput.substring(afterSelectIndex, inputMethodIndex).trim();
     }
 
     private Meal checkValidInputIndex(int inputIndex, List<Meal> mealList) throws EZMealPlanException {

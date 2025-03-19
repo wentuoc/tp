@@ -8,13 +8,13 @@ import seedu.food.Ingredient;
 import seedu.food.Meal;
 import seedu.food.Product;
 import seedu.logic.MealManager;
+import seedu.meallist.MealList;
 import seedu.ui.UserInterface;
 import seedu.storage.Storage;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.logging.Logger;
 
 
@@ -22,7 +22,8 @@ public class CreateCommand extends Command {
     private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     public CreateCommand(String userInputText) {
-        setValidUserInput(userInputText);
+        this.validUserInput = userInputText.trim();
+        lowerCaseInput = userInputText.toLowerCase();
     }
 
     @Override
@@ -34,22 +35,21 @@ public class CreateCommand extends Command {
         }
         assert isValidUserInput;
         Meal newMeal = createNewMeal();
-        List<Meal> mainMealList = mealManager.getMainMealList();
+        MealList mainMealList = mealManager.getMainList();
         mealManager.addMeal(newMeal, mainMealList);
         try {
             Storage.writeMainList(newMeal.toDataString());
-        } catch (IOException e) {
-            UserInterface.printMessage("Error writing to file: " + e.getMessage());
+        } catch (IOException ioException) {
+            UserInterface.printMessage("Error writing to file: " + ioException.getMessage());
         }
-        String mealListName = "main meal list";
-        ui.printAddMealMessage(newMeal, mainMealList, mealListName);
+        ui.printAddMealMessage(newMeal, mainMealList);
     }
 
     private Meal createNewMeal() throws EZMealPlanException {
         String mname = "/mname";
         String ing = "/ing";
-        int afterMnameIndex = validUserInput.indexOf(mname) + mname.length();
-        int ingIndex = validUserInput.indexOf(ing);
+        int afterMnameIndex = lowerCaseInput.indexOf(mname) + mname.length();
+        int ingIndex = lowerCaseInput.indexOf(ing);
         String mealName = validUserInput.substring(afterMnameIndex, ingIndex).trim();
         logger.fine("The user is now creating a new meal: " + mealName + ".");
         Meal newMeal = new Meal(mealName);
@@ -60,7 +60,8 @@ public class CreateCommand extends Command {
     }
 
     private String[] extractIngredients(String ing) {
-        int afterIngIndex = validUserInput.indexOf(ing) + ing.length();
+        ing = ing.toLowerCase();
+        int afterIngIndex = lowerCaseInput.indexOf(ing) + ing.length();
         String ingredients = validUserInput.substring(afterIngIndex).trim();
         String splitRegex = "\\s*,\\s*";
         return ingredients.split(splitRegex);
