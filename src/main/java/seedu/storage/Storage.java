@@ -3,6 +3,7 @@ package seedu.storage;
 import seedu.exceptions.InvalidPriceException;
 import seedu.food.Ingredient;
 import seedu.food.Meal;
+import seedu.ui.UserInterface;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -151,7 +152,7 @@ public class Storage {
     public static void clearUserList() {
         try (FileWriter fileWriter = new FileWriter(DEFAULT_FILE_PATH)) {
         } catch (IOException ioException) {
-            ioException.printStackTrace();
+            UserInterface.printMessage(ioException.getMessage());
         }
     }
 
