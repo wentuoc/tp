@@ -17,6 +17,7 @@ public class Parser {
     static String select = "select";
     static String meal = "meal";
     static String list = "list";
+    static String help = "help";
 
 
     public static Command parse(String userInput) {
@@ -34,7 +35,7 @@ public class Parser {
             return new ListCommand();
         } else if (lowerCaseUserInput.startsWith(meal)) {
             return new MealCommand();
-        } else if (lowerCaseUserInput.startsWith("help")) {
+        } else if (lowerCaseUserInput.startsWith(help)) {
             return new HelpCommand(userInput);
         }else {
             return new UnknownCommand(userInput);
