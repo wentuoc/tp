@@ -50,4 +50,15 @@ public abstract class MealList {
     public int size() {
         return mealList.size();
     }
+
+    /**
+     * Returns the index of a specified meal object in the list.
+     */
+    public int getIndex(Meal meal) {
+        return mealList.indexOf(meal);
+    }
+
+    public boolean contains(Meal meal) {
+        return mealList.contains(meal);
+    }
 }
