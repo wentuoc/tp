@@ -29,8 +29,7 @@ public class Meal extends Product {
 
     @Override
     public boolean equals(Object otherMeal) {
-        if (otherMeal instanceof Meal) {
-            Meal other = (Meal) otherMeal;
+        if (otherMeal instanceof Meal other) {
             return this.getName().equalsIgnoreCase(other.getName()) &&
                     this.ingredientList.equals(other.getIngredientList());
         }
@@ -69,9 +68,12 @@ public class Meal extends Product {
     public static Meal fromData(String data) throws InvalidPriceException {
         String[] parts = data.split("\\|");
         // Create a Meal with the first part as the name (and a temporary price)
-        Meal meal = new Meal(parts[0]);
+        int mealNameIndex = 0;
+        String mealName = parts[mealNameIndex];
+        Meal meal = new Meal(mealName);
         // Set the correct price
-        meal.setPrice(Double.parseDouble(parts[1]));
+        int firstIngredientIndex = 1;
+        meal.setPrice(Double.parseDouble(parts[firstIngredientIndex]));
         // Assuming the remaining parts represent ingredients, parse each one.
         for (int i = 2; i < parts.length; i++) {
             Ingredient ingredient = Ingredient.fromData(parts[i]);
