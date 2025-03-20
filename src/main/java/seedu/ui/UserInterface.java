@@ -98,6 +98,10 @@ public class UserInterface {
         System.out.println("How may I help you?");
     }
 
+    public void printClearedList() {
+        printMessage("All meals cleared from your meal list!");
+    }
+
     public void printByeCommandHelp() {
         System.out.println("Entering the bye command will gracefully exits the software");
         System.out.println("Sample input: bye");

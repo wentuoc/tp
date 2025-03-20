@@ -1,7 +1,8 @@
 package seedu.parser;
 
-import seedu.command.Command;
 import seedu.command.ByeCommand;
+import seedu.command.ClearCommand;
+import seedu.command.Command;
 import seedu.command.CreateCommand;
 import seedu.command.FilterCommand;
 import seedu.command.SelectCommand;
@@ -20,6 +21,7 @@ public class Parser {
     static String select = "select";
     static String meal = "meal";
     static String list = "list";
+    static String clear = "clear";
     static String help = "help";
     static String remove = "remove";
     static String view = "view";
@@ -40,6 +42,8 @@ public class Parser {
             return new ListCommand();
         } else if (lowerCaseUserInput.startsWith(meal)) {
             return new MealCommand();
+        } else if (lowerCaseUserInput.startsWith(clear)) {
+            return new ClearCommand();
         } else if (lowerCaseUserInput.startsWith(help)) {
             return new HelpCommand(userInput);
         } else if (lowerCaseUserInput.startsWith(remove)) {
