@@ -87,4 +87,8 @@ public class UserInterface {
     public void prompt() {
         System.out.println("How may I help you?");
     }
+
+    public void printClearedList() {
+        printMessage("All meals cleared from your meal list!");
+    }
 }

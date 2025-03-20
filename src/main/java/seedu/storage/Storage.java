@@ -128,5 +128,11 @@ public class Storage {
         }
     }
 
+    public static void clearUserList() {
+        try (FileWriter fileWriter = new FileWriter(DEFAULT_FILE_PATH)) {
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+    }
 
 }
