@@ -3,11 +3,14 @@ package seedu.parser;
 import seedu.command.ByeCommand;
 import seedu.command.Command;
 import seedu.command.CreateCommand;
+import seedu.command.HelpCommand;
 import seedu.command.ListCommand;
 import seedu.command.MealCommand;
 import seedu.command.UnknownCommand;
+import seedu.ui.UserInterface;
 
 public class Parser {
+    static UserInterface ui = new UserInterface();
     public static Command parse(String userInput) {
         String bye = "bye";
         String create = "create";
@@ -20,7 +23,10 @@ public class Parser {
             return new ListCommand();
         } else if (userInput.equals("meal")) {
             return new MealCommand();
+        } else if (userInput.startsWith("help")) {
+            return new HelpCommand(userInput);
+        }else {
+            return new UnknownCommand(userInput);
         }
-        return new UnknownCommand(userInput);
     }
 }
