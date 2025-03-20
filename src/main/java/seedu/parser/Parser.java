@@ -9,7 +9,6 @@ import seedu.command.HelpCommand;
 import seedu.command.ListCommand;
 import seedu.command.MealCommand;
 import seedu.command.UnknownCommand;
-import seedu.ui.UserInterface;
 
 public class Parser {
     static String bye = "bye";
