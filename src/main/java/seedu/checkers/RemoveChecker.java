@@ -23,15 +23,17 @@ public class RemoveChecker extends Checker {
     private void parseIndex(String input) throws EZMealPlanException {
         try {
             Integer.parseInt(input);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException numberFormatException) {
             throw new RemoveFormatException(userInput);
         }
     }
 
     private String extractIndex(String input) throws EZMealPlanException {
+        int indexOfIndex = 1;
+
         try {
-            return input.split("\\s+")[1];
-        } catch (ArrayIndexOutOfBoundsException e) {
+            return input.split("\\s+")[indexOfIndex];
+        } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
             throw new RemoveFormatException(userInput);
         }
     }

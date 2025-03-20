@@ -20,6 +20,7 @@ public class RemoveCommand extends Command {
     @Override
     public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
         MealList userMealList = mealManager.getUserList();
+        int indexOfIndex = 1;
 
         boolean isValidUserInput = checkValidUserInput();
         if (!isValidUserInput) {
@@ -27,7 +28,7 @@ public class RemoveCommand extends Command {
                     "passing all the checks for input formatting error.");
         }
         assert isValidUserInput;
-        int index = Integer.parseInt(validUserInput.split("\\s+")[1]);
+        int index = Integer.parseInt(validUserInput.split("\\s+")[indexOfIndex]);
         Meal removedMeal = mealManager.removeMeal(index, userMealList);
         ui.printRemovedMessage(removedMeal, userMealList.size());
         logger.fine("Command finished executing: Removed \"" + removedMeal.getName() + "\" meal");
