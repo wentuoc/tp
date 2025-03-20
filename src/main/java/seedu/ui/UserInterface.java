@@ -126,14 +126,14 @@ public class UserInterface {
     }
 
     public void printRemoveCommandHelp() {
-        System.out.println("Entering the remove command will remove a meal in the meal list");
+        System.out.println("Entering the remove command will remove a meal in the user's meal list");
         System.out.println("Sample input: remove 1 ");
         System.out.println("Sample output:");
         System.out.println("               OK.  Chicken Rice ($3.00) have been removed from the meal list.");
     }
 
     public void printSelectCommandHelp() {
-        System.out.println("Entering the select command will remove a meal in the meal list");
+        System.out.println("Entering the select command will add the selected meal in the meal list");
         System.out.println("Sample input: select 1 ");
         System.out.println("Sample output:");
         System.out.println("               OK.  Chicken Rice ($3.00) have been added to the meal list.");
