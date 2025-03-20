@@ -117,9 +117,8 @@ public class MealManager {
         return eachCount;
     }
 
-    public Meal removeMeal(int index) {
-        Meal removedMeal = userMealList.get(index);
-        userMealList.remove(index);
-        return removedMeal;
+    public Meal removeMeal(int index, MealList mealListInput) throws EZMealPlanException {
+        chosenMealList = mealListInput instanceof MainList ? getMainList() : getUserList();
+        return chosenMealList.removeMeal(index);
     }
 }

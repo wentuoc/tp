@@ -32,4 +32,25 @@ public abstract class MealList {
         }
     }
 
+    /**
+     * Retrieves the meal at a specified index.
+     */
+    public Meal getMeal(int index) throws EZMealPlanException {
+        try {
+            return mealList.get(index);
+        } catch (IndexOutOfBoundsException e) {
+            throw new EZMealPlanException(); //TODO add the relevant exception
+        }
+    }
+
+    /**
+     * Removes the meal at a specified index and returns it.
+     */
+    public Meal removeMeal(int index) throws EZMealPlanException {
+        try {
+            return mealList.remove(index);
+        } catch (IndexOutOfBoundsException e) {
+            throw new EZMealPlanException(); //TODO add the relevant exception
+        }
+    }
 }
