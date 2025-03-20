@@ -2,6 +2,7 @@ package seedu.meallist;
 
 import seedu.exceptions.DuplicateMealException;
 import seedu.exceptions.EZMealPlanException;
+import seedu.exceptions.RemoveIndexOutOfRangeException;
 import seedu.food.Meal;
 
 import java.util.ArrayList;
@@ -32,4 +33,21 @@ public abstract class MealList {
         }
     }
 
+    /**
+     * Removes the meal at a specified index and returns it.
+     */
+    public Meal removeMeal(int index) throws EZMealPlanException {
+        try {
+            return mealList.remove(index - 1);
+        } catch (IndexOutOfBoundsException e) {
+            throw new RemoveIndexOutOfRangeException(index, mealList.size());
+        }
+    }
+
+    /**
+     * Returns the size of the meal list.
+     */
+    public int size() {
+        return mealList.size();
+    }
 }
