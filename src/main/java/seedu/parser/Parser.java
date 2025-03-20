@@ -10,6 +10,7 @@ import seedu.command.RemoveCommand;
 import seedu.command.ListCommand;
 import seedu.command.MealCommand;
 import seedu.command.UnknownCommand;
+import seedu.command.ViewCommand;
 
 public class Parser {
     static String bye = "bye";
@@ -20,6 +21,7 @@ public class Parser {
     static String list = "list";
     static String help = "help";
     static String remove = "remove";
+    static String view = "view";
 
     public static Command parse(String userInput) {
         String lowerCaseUserInput = userInput.toLowerCase().trim();
@@ -40,7 +42,9 @@ public class Parser {
             return new HelpCommand(userInput);
         } else if (lowerCaseUserInput.startsWith(remove)) {
             return new RemoveCommand(userInput);
-        }else {
+        } else if (lowerCaseUserInput.startsWith(view)) {
+            return new ViewCommand(userInput);
+        } else {
             return new UnknownCommand(userInput);
         }
     }

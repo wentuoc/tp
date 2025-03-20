@@ -59,8 +59,9 @@ public class UserInterface {
         System.out.println(totalMealsMessage);
     }
 
-    public void printIngredientList(ArrayList<Ingredient> ingredientList) {
-        System.out.println("Here are the ingredients for " + this + ":");
+    public void printIngredientList(Meal meal) {
+        List<Ingredient> ingredientList = meal.getIngredientList();
+        System.out.println("Here are the ingredients for " + meal + ":");
         int count = 0;
         for (Ingredient ingredient : ingredientList) {
             count++;
