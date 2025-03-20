@@ -47,20 +47,24 @@ public class Storage {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 // Assumes you have implemented a method to parse a Meal from a String.
-                Meal meal;
-                try {
-                    meal = Meal.fromData(line);
-                } catch (InvalidPriceException invalidPriceException) {
-                    throw new RuntimeException(invalidPriceException);
-                }
-                meals.add(meal);
+                addMealAfterParse(line, meals);
             }
             scanner.close();
         }
         return meals;
     }
 
-    public static List<Meal> loadMainList() throws IOException, InvalidPriceException {
+    private static void addMealAfterParse(String line, List<Meal> meals) {
+        //Throw error message if detected an ingredient with invalid price and skips to the next meal.
+        try {
+            Meal meal = Meal.fromData(line);
+            meals.add(meal);
+        } catch (InvalidPriceException invalidPriceException) {
+            System.err.println(invalidPriceException.getMessage());
+        }
+    }
+
+    public static List<Meal> loadMainList() throws IOException {
         List<Meal> meals = new ArrayList<>();
         File file = mainListFile;
         if (file.exists()) {
@@ -76,17 +80,30 @@ public class Storage {
                 if (parts.length < minLengthToHaveIng) {
                     continue; // Skip lines that don't have ingredients.
                 }
-                // The first part is the meal name.
-                int mealNameIndex = 0;
-                String mealName = parts[mealNameIndex];
-                Meal meal = addIngredientsToMeal(mealName, parts);
-                // Optionally, compute the meal's total price as the sum of ingredient prices.
-                setMealPrice(meal);
-                meals.add(meal);
+                checkValidMeal(parts, meals);
             }
             scanner.close();
         }
         return meals;
+    }
+
+    private static void checkValidMeal(String[] parts, List<Meal> meals) {
+        //Throw error message if detected an ingredient with invalid price and skips to the next meal.
+        try {
+            checkMealsBeforeAdd(parts, meals);
+        } catch (InvalidPriceException invalidPriceException) {
+            System.err.println(invalidPriceException.getMessage());
+        }
+    }
+
+    private static void checkMealsBeforeAdd(String[] parts, List<Meal> meals) throws InvalidPriceException {
+        // The first part is the meal name.
+        int mealNameIndex = 0;
+        String mealName = parts[mealNameIndex];
+        Meal meal = addIngredientsToMeal(mealName, parts);
+        // Optionally, compute the meal's total price as the sum of ingredient prices.
+        setMealPrice(meal);
+        meals.add(meal);
     }
 
     private static void setMealPrice(Meal meal) throws InvalidPriceException {
@@ -116,8 +133,11 @@ public class Storage {
             // If no valid price is found, you could either skip or use a default value.
             throw new IllegalArgumentException("Invalid ingredient format: " + ingredientStr);
         }
-        String ingredientName = ingredientStr.substring(0, openBracketIndex).trim();
-        String priceStr = ingredientStr.substring(openBracketIndex + 1, closeBracketIndex).trim();
+        int startIndex = 0;
+        int indexAdjustment = 1;
+        int afterOpenBracketIndex = openBracketIndex + indexAdjustment;
+        String ingredientName = ingredientStr.substring(startIndex, openBracketIndex).trim();
+        String priceStr = ingredientStr.substring(afterOpenBracketIndex, closeBracketIndex).trim();
         double ingredientPrice = Double.parseDouble(priceStr);
         return new Ingredient(ingredientName, ingredientPrice);
     }

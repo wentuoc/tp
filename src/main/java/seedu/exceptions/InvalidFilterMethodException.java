@@ -10,7 +10,7 @@ public class InvalidFilterMethodException extends EZMealPlanException {
                 
                 The filter keyword is compulsory for the 'filter' command.
                 
-                For the 'select' command, if you intend to select a meal from the filtered meal list, 
+                For the 'select' command, if you intend to select a meal from the filtered meal list,
                 then the filter keyword is mandatory.
                 Otherwise, it is optional.
                 """;
