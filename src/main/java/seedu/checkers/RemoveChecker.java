@@ -3,6 +3,7 @@ package seedu.checkers;
 import seedu.exceptions.EZMealPlanException;
 import seedu.exceptions.RemoveFormatException;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class RemoveChecker extends Checker {
@@ -14,6 +15,7 @@ public class RemoveChecker extends Checker {
 
     @Override
     public void check() throws EZMealPlanException {
+        logger.fine("Checking '" + userInput + "' for errors.");
         String indexString = extractIndex(userInput);
         parseIndex(indexString);
         setPassed(true);

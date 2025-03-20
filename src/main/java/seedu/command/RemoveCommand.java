@@ -14,6 +14,7 @@ public class RemoveCommand extends Command {
 
     public RemoveCommand(String userInputText) {
         this.validUserInput = userInputText.trim();
+        logger.fine("Received \"Remove\" command, user input: " + userInputText);
     }
 
     @Override
@@ -29,6 +30,7 @@ public class RemoveCommand extends Command {
         int index = Integer.parseInt(validUserInput.split("\\s+")[1]);
         Meal removedMeal = mealManager.removeMeal(index, userMealList);
         ui.printRemovedMessage(removedMeal, userMealList.size());
+        logger.fine("Command finished executing: Removed \"" + removedMeal.getName() + "\" meal");
     }
 
     private boolean checkValidUserInput() throws EZMealPlanException {
