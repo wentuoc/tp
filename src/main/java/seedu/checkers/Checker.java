@@ -4,6 +4,7 @@ import seedu.exceptions.EZMealPlanException;
 
 public abstract class Checker {
     protected String userInput;
+    protected String lowerCaseInput;
     protected boolean isPassed = false;
     public abstract void check() throws EZMealPlanException;
 

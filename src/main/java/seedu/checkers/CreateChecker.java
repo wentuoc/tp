@@ -20,7 +20,8 @@ public class CreateChecker extends Checker {
     String create = "create";
 
     public CreateChecker(String userInputText) {
-        this.userInput = userInputText;
+        this.userInput = userInputText.trim();
+        this.lowerCaseInput = userInputText.toLowerCase();
     }
 
     @Override
@@ -36,9 +37,9 @@ public class CreateChecker extends Checker {
     }
 
     private void checkMnameIngIndexes() throws EZMealPlanException {
-        int mnameIndex = userInput.indexOf(mname);
-        int createIndex = userInput.indexOf(create);
-        int ingIndex = userInput.indexOf(ing);
+        int mnameIndex = lowerCaseInput.indexOf(mname);
+        int createIndex = lowerCaseInput.indexOf(create);
+        int ingIndex = lowerCaseInput.indexOf(ing);
         boolean isValidCreateIndex = createIndex < mnameIndex && createIndex < ingIndex;
         if (!isValidCreateIndex) {
             String message = "Triggers InvalidCreateIndexException()!";
@@ -54,7 +55,7 @@ public class CreateChecker extends Checker {
     }
 
     private void checkIngExists() throws MissingIngKeywordException {
-        boolean isIngPresent = this.userInput.contains(ing);
+        boolean isIngPresent = lowerCaseInput.contains(ing);
         if (!isIngPresent) {
             String message = "Triggers MissingIngKeywordException()!";
             logger.warning(message);
@@ -63,7 +64,7 @@ public class CreateChecker extends Checker {
     }
 
     private void checkMnameExists() throws MissingMnameKeywordException {
-        boolean isMnamePresent = this.userInput.contains(mname);
+        boolean isMnamePresent = lowerCaseInput.contains(mname);
         if (!isMnamePresent) {
             String message = "Triggers MissingMnameKeywordException()!";
             logger.warning(message);
@@ -72,28 +73,28 @@ public class CreateChecker extends Checker {
     }
 
     private void checkMealNameExists() throws MissingMealNameException {
-        int afterMnameIndex = userInput.indexOf(mname) + mname.length();
-        int ingIndex = userInput.indexOf(ing);
+        int afterMnameIndex = lowerCaseInput.indexOf(mname) + mname.length();
+        int ingIndex = lowerCaseInput.indexOf(ing);
         String mealName = userInput.substring(afterMnameIndex, ingIndex).trim();
         if (mealName.isEmpty()) {
             String message = "Triggers MissingMealNameException()!";
             logger.warning(message);
-            throw new MissingMealNameException();
+            throw new MissingMealNameException(create);
         }
     }
 
     private void checkIngredientExists() throws MissingIngredientException {
-        int afterIngIndex = userInput.indexOf(ing) + ing.length();
+        int afterIngIndex = lowerCaseInput.indexOf(ing) + ing.length();
         String ingredients = userInput.substring(afterIngIndex).trim();
         if (ingredients.isEmpty()) {
             String message = "Triggers MissingIngredientException()!";
             logger.warning(message);
-            throw new MissingIngredientException();
+            throw new MissingIngredientException(create);
         }
     }
 
     private void checkIngredientFormat() throws InvalidIngredientFormatException {
-        int afterIngIndex = userInput.indexOf(ing) + ing.length();
+        int afterIngIndex = lowerCaseInput.indexOf(ing) + ing.length();
         String ingredients = userInput.substring(afterIngIndex).trim();
         String splitRegex = "\\s*,\\s*";
         String[] ingredientArray = ingredients.split(splitRegex);
