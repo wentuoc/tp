@@ -84,6 +84,11 @@ public class UserInterface {
         System.out.println();
     }
 
+    public void printRemovedMessage(Meal meal, int size) {
+        System.out.println(meal + " has been removed from your meal list!");
+        System.out.printf("You have %d meals in your meal list.\n", size);
+    }
+
     public void prompt() {
         System.out.println("How may I help you?");
     }
