@@ -97,4 +97,106 @@ public class UserInterface {
     public void prompt() {
         System.out.println("How may I help you?");
     }
+
+    public void printByeCommandHelp() {
+        System.out.println("Entering the bye command will gracefully exits the software");
+        System.out.println("Sample input: bye");
+        System.out.println("Sample output: Bye. Hope to see you again soon!");
+    }
+
+    public void printGeneralHelp() {
+        System.out.println("you have not entered any command line options");
+    }
+
+    public void printMealCommandHelp() {
+        System.out.println("Entering the meal command will list out all the meals you " +
+                "have selected from the main list.");
+        System.out.println("Sample input: meal");
+        System.out.println("Sample output:");
+        System.out.println("               1. Chicken Rice");
+        System.out.println("               2. Fish Ball Noodles");
+    }
+
+    public void printListCommandHelp() {
+        System.out.println("Entering the list command will list out all the meals from the main list.");
+        System.out.println("Sample input: list");
+        System.out.println("Sample output:");
+        System.out.println("               1. Chicken Rice");
+        System.out.println("               2. Fish Ball Noodles");
+    }
+
+    public void printCreateCommandHelp() {
+        System.out.println("Entering the create command will create a new meal");
+        System.out.println("Sample input: create /mname Hokkien Mee /ing yellow noodle (1), thick " +
+                "bee hoon (1), prawn (1.2), egg (0.5), pork lard (0.2), squid (1.5), lime (0.1)");
+        System.out.println("Sample output:");
+        System.out.println("               1. Chicken Rice ($3.00)");
+        System.out.println("               2. Fish Ball Noodles ($3.00)");
+        System.out.println("               3. Hokkien Mee ($5.50)");
+    }
+
+    public void printRemoveCommandHelp() {
+        System.out.println("Entering the remove command will remove a meal in the user's meal list");
+        System.out.println("Sample input: remove 1 ");
+        System.out.println("Sample output:");
+        System.out.println("               OK.  Chicken Rice ($3.00) have been removed from the meal list.");
+    }
+
+    public void printSelectCommandHelp() {
+        System.out.println("Entering the select command will add the selected meal in the meal list");
+        System.out.println("Sample input: select 1 ");
+        System.out.println("Sample output:");
+        System.out.println("               OK.  Chicken Rice ($3.00) have been added to the meal list.");
+    }
+
+    public void printFilterCommandHelp() {
+        System.out.println("Entering the filter command will filter a meal in the main list");
+        System.out.println("There are three filter option by cost, by ingredient or by meal name");
+        System.out.println("Sample input: filter /mcost 5.50");
+        System.out.println("Sample output:");
+        System.out.println("               1. Chicken Rice ($5.50)");
+        System.out.println("Sample input: filter /ing  Fish Ball");
+        System.out.println("Sample output:");
+        System.out.println("               1. Chicken Rice ($5.50)");
+        System.out.println("Sample input: filter /manme Hokkien Mee");
+        System.out.println("Sample output:");
+        System.out.println("               1. Hokkien Mee ($5.50)");
+    }
+
+    public void printDeleteCommandHelp() {
+        System.out.println("Entering the delete command will delete a meal in the main list");
+        System.out.println("Sample input: delete 1 ");
+        System.out.println("Sample output:");
+        System.out.println("               OK.  Chicken Rice ($3.00) have been deleted from the main list.");
+    }
+
+    public void printViewCommandHelp() {
+        System.out.println("Entering the view command will view a view all the ingredients of the selected meal");
+        System.out.println("Sample input: view 1 ");
+        System.out.println("Sample output:");
+        System.out.println("               1. yellow noodle");
+        System.out.println("               2. bee hoon");
+        System.out.println("               3. prawn");
+        System.out.println("               4. egg");
+        System.out.println("               5. pork lard");
+        System.out.println("               6. squid");
+        System.out.println("               7. lime");
+    }
+
+    public void printClearCommandHelp() {
+        System.out.println("Entering the clear command will clear all the meals in the meal list");
+        System.out.println("Sample input: clear");
+        System.out.println("Sample output:");
+        System.out.println("               The meal list has been cleared.");
+    }
+
+    public void printHelpCommandHelp() {
+        System.out.println("Entering the help command followed by the command that requires help " +
+                "will give brief explanation of the command");
+        System.out.println("Sample input: help bye");
+        System.out.println("Sample output:");
+        System.out.println("                Entering the bye command will gracefully exits the software");
+        System.out.println("                    Sample input: bye");
+        System.out.println("                    Sample output: Bye. Hope to see you again soon!");
+    }
 }

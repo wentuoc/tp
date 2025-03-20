@@ -4,6 +4,7 @@ import seedu.command.Command;
 import seedu.exceptions.EZMealPlanException;
 import seedu.food.Meal;
 import seedu.logic.MealManager;
+import seedu.meallist.MealList;
 import seedu.storage.Storage;
 import seedu.ui.UserInterface;
 import seedu.parser.Parser;
@@ -27,28 +28,10 @@ public class EZMealPlan {
         setupLogger(fileName);
         UserInterface ui = new UserInterface();
         MealManager mealManager = new MealManager();
+        constructLists(mealManager);
+
         ui.printGreetingMessage();
         String userInput;
-
-        try {
-            // Create and load the user-selected meal list (data.txt)
-            Storage.createUserListFile();
-            List<Meal> userMeals = Storage.loadMeals();
-            for (Meal meal : userMeals) {
-                mealManager.addMeal(meal, mealManager.getUserList());
-            }
-
-            // Create and load the main meal list (mainlist.txt)
-            Storage.createMainListFile(); // Similar to createFile(), but for MAIN_LIST_PATH.
-            List<Meal> mainMeals = Storage.loadMainList();
-            for (Meal meal : mainMeals) {
-                mealManager.addMeal(meal, mealManager.getMainList());
-            }
-        } catch (IOException | EZMealPlanException exception) {
-            System.err.println("Could not load tasks: " + exception.getMessage());
-        }
-
-
         while (true) {
             ui.prompt();
             userInput = ui.readInput();
@@ -61,7 +44,46 @@ public class EZMealPlan {
         }
     }
 
+    private static void constructLists(MealManager mealManager) {
+        try {
+            constructUserList(mealManager);
+            constructMainList(mealManager);
+        } catch (IOException ioException) {
+            System.err.println("Could not load tasks: " + ioException.getMessage());
+        }
+    }
+
+    private static void constructMainList(MealManager mealManager) throws IOException {
+        // Create and load the main meal list (mainlist.txt)
+        Storage.createMainListFile(); // Similar to createFile(), but for MAIN_LIST_PATH.
+        List<Meal> mainMeals = Storage.loadMainList();
+        MealList mainMealList = mealManager.getMainList();
+        for (Meal meal : mainMeals) {
+            extractMealIntoList(meal, mainMealList, mealManager);
+        }
+    }
+
+    private static void constructUserList(MealManager mealManager) throws IOException {
+        // Create and load the user-selected meal list (data.txt)
+        Storage.createUserListFile();
+        List<Meal> userMeals = Storage.loadMeals();
+        MealList userMealList = mealManager.getUserList();
+        for (Meal meal : userMeals) {
+            extractMealIntoList(meal, userMealList, mealManager);
+        }
+    }
+
+    private static void extractMealIntoList(Meal meal, MealList mealList, MealManager mealManager) {
+        //Throw error message if detected an ingredient with invalid price and skips to the next meal.
+        try {
+            mealManager.addMeal(meal, mealList);
+        } catch (EZMealPlanException ezMealPlanException) {
+            System.err.println(ezMealPlanException.getMessage());
+        }
+    }
+
     private static void executeCommand(Command command, MealManager mealManager, UserInterface ui) {
+        //Throw error message if detected an ingredient with invalid price and skips to the next meal.
         try {
             // Executes the command parsed out
             command.execute(mealManager, ui);
