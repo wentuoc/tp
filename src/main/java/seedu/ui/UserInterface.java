@@ -5,7 +5,6 @@ import seedu.food.Meal;
 import seedu.meallist.MainList;
 import seedu.meallist.MealList;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -59,8 +58,9 @@ public class UserInterface {
         System.out.println(totalMealsMessage);
     }
 
-    public void printIngredientList(ArrayList<Ingredient> ingredientList) {
-        System.out.println("Here are the ingredients for " + this + ":");
+    public void printIngredientList(Meal meal) {
+        List<Ingredient> ingredientList = meal.getIngredientList();
+        System.out.println("Here are the ingredients for " + meal + ":");
         int count = 0;
         for (Ingredient ingredient : ingredientList) {
             count++;
@@ -87,6 +87,11 @@ public class UserInterface {
     public void printRemovedMessage(Meal meal, int size) {
         System.out.println(meal + " has been removed from your meal list!");
         System.out.printf("You have %d meals in your meal list.\n", size);
+    }
+
+    public void printDeletedMessage(Meal meal, int size) {
+        System.out.println(meal + " has been removed from the global meal list!");
+        System.out.printf("There are now %d meals in the global meal list.\n", size);
     }
 
     public void prompt() {

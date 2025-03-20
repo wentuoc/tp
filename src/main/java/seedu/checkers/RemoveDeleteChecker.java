@@ -5,10 +5,10 @@ import seedu.exceptions.RemoveFormatException;
 
 import java.util.logging.Logger;
 
-public class RemoveChecker extends Checker {
+public class RemoveDeleteChecker extends Checker {
     private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    public RemoveChecker(String userInputText) {
+    public RemoveDeleteChecker(String userInputText) {
         this.userInput = userInputText;
     }
 

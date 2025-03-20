@@ -1,7 +1,7 @@
 package seedu.exceptions;
 
-public class RemoveFormatException extends EZMealPlanException{
-    private String command;
+public class RemoveFormatException extends EZMealPlanException {
+    String command;
 
     public RemoveFormatException(String command) {
         this.command = command;
