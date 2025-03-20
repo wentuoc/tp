@@ -3,7 +3,6 @@ package seedu.checkers;
 import seedu.exceptions.EZMealPlanException;
 import seedu.exceptions.RemoveFormatException;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class RemoveChecker extends Checker {
