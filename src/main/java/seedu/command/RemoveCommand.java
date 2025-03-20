@@ -26,9 +26,9 @@ public class RemoveCommand extends Command {
                     "passing all the checks for input formatting error.");
         }
         assert isValidUserInput;
-        int index = Integer.parseInt(validUserInput);
+        int index = Integer.parseInt(validUserInput.split("\\s+")[1]);
         Meal removedMeal = mealManager.removeMeal(index, userMealList);
-        //UI to print acknowledgement message
+        ui.printRemovedMessage(removedMeal, userMealList.size());
     }
 
     private boolean checkValidUserInput() throws EZMealPlanException {
