@@ -1,7 +1,7 @@
 package seedu.checkers;
 
 import seedu.exceptions.EZMealPlanException;
-import seedu.logic.MealManager;
+import seedu.exceptions.RemoveFormatException;
 
 import java.util.logging.Logger;
 
@@ -14,15 +14,24 @@ public class RemoveChecker extends Checker {
 
     @Override
     public void check() throws EZMealPlanException {
-        int index = parseIndex(userInput);
+        String indexString = extractIndex(userInput);
+        parseIndex(indexString);
         setPassed(true);
     }
 
-    private int parseIndex(String userInput) throws EZMealPlanException {
+    private void parseIndex(String input) throws EZMealPlanException {
         try {
-            return Integer.parseInt(userInput);
+            Integer.parseInt(input);
         } catch (NumberFormatException e) {
-            throw new EZMealPlanException(); //TODO: add the relevant exception and logger
+            throw new RemoveFormatException(userInput);
+        }
+    }
+
+    private String extractIndex(String input) throws EZMealPlanException {
+        try {
+            return input.split("\\s+")[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new RemoveFormatException(userInput);
         }
     }
 }
