@@ -3,7 +3,6 @@ package seedu.parser;
 import seedu.command.ByeCommand;
 import seedu.command.ClearCommand;
 import seedu.command.Command;
-import seedu.command.ByeCommand;
 import seedu.command.CreateCommand;
 import seedu.command.FilterCommand;
 import seedu.command.SelectCommand;
