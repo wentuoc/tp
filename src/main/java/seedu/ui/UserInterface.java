@@ -2,6 +2,8 @@ package seedu.ui;
 
 import seedu.food.Ingredient;
 import seedu.food.Meal;
+import seedu.meallist.MainList;
+import seedu.meallist.MealList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +31,7 @@ public class UserInterface {
 
     public void printGreetingMessage() {
         System.out.println("Hello! This is EzMealPlan");
-        System.out.println("Let me help you in planning your meals");
+        System.out.println("Let me help you in planning your meals.");
     }
 
     public void printGoodbye() {
@@ -39,18 +41,21 @@ public class UserInterface {
 
     public void printUnknownCommand(String userInput) {
         System.out.println("Invalid command: " + userInput);
-        System.out.println("me no understand what you talking");
+        System.out.println("me no understand what you talking.\n");
     }
 
     public void printErrorMessage(Exception exception) {
         System.out.println(exception.getMessage());
     }
 
-    public void printAddMealMessage(Meal meal, List<Meal> mealList, String mealListName) {
+    public void printAddMealMessage(Meal meal, MealList mealList) {
+        String mealListName = mealList instanceof MainList ? "main meal list" : "user meal List";
         String successAddMealMessage = "You have successfully added a meal: " + meal + " into " + mealListName + ".";
         System.out.println(successAddMealMessage);
-        printMealList(mealList, mealListName);
-        String totalMealsMessage = "Currently, you have " + mealList.size() + " meals in " + mealListName + ".";
+        List<Meal> meals = mealList.getList();
+        printMealList(meals, mealListName);
+        String totalMealsMessage = "Currently, you have " + meals.size() +
+                " meals in " + mealListName + ".\n";
         System.out.println(totalMealsMessage);
     }
 
@@ -61,20 +66,22 @@ public class UserInterface {
             count++;
             System.out.println("    " + count + ". " + ingredient);
         }
+        System.out.println();
     }
 
-    public void printMealList(List<Meal> mealList, String mealListName) {
-        if (mealList.isEmpty()) {
-            System.out.println("No meals found in " + mealListName + ".");
+    public void printMealList(List<Meal> meals, String mealListName) {
+        if (meals.isEmpty()) {
+            System.out.println("No meals found in " + mealListName + ".\n");
             return;
         }
 
         System.out.println("Here are the meals in " + mealListName + ":");
         int count = 0;
-        for (Meal meal : mealList) {
+        for (Meal meal : meals) {
             count++;
             System.out.println("    " + count + ". " + meal);
         }
+        System.out.println();
     }
 
     public void prompt() {

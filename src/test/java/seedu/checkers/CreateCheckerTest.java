@@ -57,7 +57,7 @@ public class CreateCheckerTest {
                 " rice (1.5), egg (0.5), cucumber (1)";
         Command command = new CreateCommand(validUserInput);
         command.execute(mealManager, ui);
-        List<Meal> mealList = mealManager.getMainMealList();
+        List<Meal> mealList = mealManager.getMainList().getList();
         int expectedMealListSize = 1;
         assertEquals(expectedMealListSize, mealList.size());
         checkExpectedStrings(mealList);
@@ -86,7 +86,7 @@ public class CreateCheckerTest {
                 Command command = new CreateCommand(userInput);
                 command.execute(mealManager, ui);
             } catch (EZMealPlanException ezMealPlanException) {
-                String expectedOutput = "This meal: chicken rice already exists in the main meal list.";
+                String expectedOutput = "This meal: chicken rice already exists in the main meal list.\n";
                 assertEquals(expectedOutput, ezMealPlanException.getMessage());
                 String dupMealMsg = "Duplicate meal caught!";
                 logger.info(dupMealMsg);
@@ -96,11 +96,11 @@ public class CreateCheckerTest {
     }
 
     private void checkExpectedListSize() {
-        int actualSize = mealManager.getMainMealList().size();
+        int actualSize = mealManager.getMainList().getList().size();
         int expectedSize = 3;
         assertEquals(expectedSize, actualSize);
         System.out.println();
-        for (Meal meal : mealManager.getMainMealList()) {
+        for (Meal meal : mealManager.getMainList().getList()) {
             System.out.println(meal.toString());
         }
     }
@@ -130,7 +130,7 @@ public class CreateCheckerTest {
         try {
             command.execute(mealManager, ui);
         } catch (EZMealPlanException ezMealPlanException) {
-            String expectedOutput = "Ingredient: chicken breast already exists in the meal: chicken breast.";
+            String expectedOutput = "Ingredient: chicken breast already exists in the meal: chicken breast.\n";
             assertEquals(expectedOutput, ezMealPlanException.getMessage());
             String dupIngMsg = "Duplicate ingredients caught!";
             logger.info(dupIngMsg);
