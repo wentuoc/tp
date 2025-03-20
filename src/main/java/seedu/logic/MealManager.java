@@ -33,4 +33,10 @@ public class MealManager {
             }
         }
     }
+
+    public Meal removeMeal(int index) {
+        Meal removedMeal = userMealList.get(index);
+        userMealList.remove(index);
+        return removedMeal;
+    }
 }
