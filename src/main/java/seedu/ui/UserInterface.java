@@ -99,7 +99,8 @@ public class UserInterface {
     }
 
     public void printMealCommandHelp() {
-        System.out.println("Entering the meal command will list out all the meals you have selected from the main list.");
+        System.out.println("Entering the meal command will list out all the meals you " +
+                "have selected from the main list.");
         System.out.println("Sample input: meal");
         System.out.println("Sample output:");
         System.out.println("               1. Chicken Rice");
@@ -116,7 +117,8 @@ public class UserInterface {
 
     public void printCreateCommandHelp() {
         System.out.println("Entering the create command will create a new meal");
-        System.out.println("Sample input: create /mname Hokkien Mee /ing yellow noodle (1), thick bee hoon (1), prawn (1.2), egg (0.5), pork lard (0.2), squid (1.5), lime (0.1)");
+        System.out.println("Sample input: create /mname Hokkien Mee /ing yellow noodle (1), thick " +
+                "bee hoon (1), prawn (1.2), egg (0.5), pork lard (0.2), squid (1.5), lime (0.1)");
         System.out.println("Sample output:");
         System.out.println("               1. Chicken Rice ($3.00)");
         System.out.println("               2. Fish Ball Noodles ($3.00)");
@@ -179,7 +181,8 @@ public class UserInterface {
     }
 
     public void printHelpCommandHelp() {
-        System.out.println("Entering the help command followed by the command that requires help will give brief explanation of the command");
+        System.out.println("Entering the help command followed by the command that requires help " +
+                "will give brief explanation of the command");
         System.out.println("Sample input: help bye");
         System.out.println("Sample output:");
         System.out.println("                Entering the bye command will gracefully exits the software");
