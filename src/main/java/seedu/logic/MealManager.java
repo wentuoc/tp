@@ -121,4 +121,18 @@ public class MealManager {
         chosenMeals = mealsInput instanceof MainMeals ? getMainMeals() : getUserMeals();
         return chosenMeals.removeMeal(index);
     }
+
+    public void compareLists() {
+        List<Meal> mainMealList = mainMeals.getList();
+        List<Meal> userMealList = userMeals.getList();
+        for (Meal meal : userMealList) {
+            if (!mainMealList.contains(meal)) {
+                try {
+                    addMeal(meal, mainMeals);
+                } catch (EZMealPlanException ezMealPlanException) {
+                    ezMealPlanException.getMessage();
+                }
+            }
+        }
+    }
 }
