@@ -3,6 +3,7 @@ package seedu.storage;
 import seedu.exceptions.InvalidPriceException;
 import seedu.food.Ingredient;
 import seedu.food.Meal;
+import seedu.presetmeals.PresetMeals;
 import seedu.ui.UserInterface;
 
 import java.io.File;
@@ -69,6 +70,21 @@ public class Storage {
                 checkValidMeal(parts, meals);
             }
             scanner.close();
+        }
+        return meals;
+    }
+
+    public static List<Meal> loadPresetMeals() {
+        PresetMeals presetMeals = new PresetMeals();
+        String[] allInitialisedMeals = presetMeals.getPresetMeals();
+        List<Meal> meals = new ArrayList<>();
+        for (String eachInitialisedMeal : allInitialisedMeals) {
+            String[] parts = eachInitialisedMeal.split("\\s*\\|\\s*");
+            int minLengthToHaveIng = 2;
+            if (parts.length < minLengthToHaveIng) {
+                continue; // Skip initialised meal that don't have ingredients if there is any.
+            }
+            checkValidMeal(parts, meals);
         }
         return meals;
     }
