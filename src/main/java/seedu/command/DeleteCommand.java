@@ -23,6 +23,7 @@ public class DeleteCommand extends RemoveDeleteCommand {
         if (userMeals.contains(removedOrDeletedMeal)) {
             int indexInUserList = userMeals.getIndex(removedOrDeletedMeal);
             userMeals.removeMeal(indexInUserList + 1);
+            ui.printRemovedMessage(removedOrDeletedMeal, userMeals.size());
             logger.fine("Command finished executing: Removed \"" + removedOrDeletedMeal.getName() + "\" meal " +
                     "from user list");
         }
