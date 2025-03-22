@@ -15,32 +15,18 @@ import java.util.Scanner;
 public class Storage {
     static File userListFile;
     static File mainListFile;
-    private static final String USER_LIST_FILE_PATH = "data/userList.txt";
-    private static final String MAIN_LIST_FILE_PATH = "data/mainList.txt";
+    private static final String DEFAULT_FILE_PATH = "data/data.txt";
+    private static final String MAIN_LIST_PATH = "data/mainlist.txt";
 
-    public static File getUserListFile() {
-        return userListFile;
-    }
-
-    public static File getMainListFile() {
-        return mainListFile;
-    }
-
-    public static String getUserListFilePath() {
-        return USER_LIST_FILE_PATH;
-    }
-
-    public static String getMainListFilePath() {
-        return MAIN_LIST_FILE_PATH;
-    }
-
-    public static void createListFiles() throws IOException {
-        userListFile = new File(USER_LIST_FILE_PATH);
-        mainListFile = new File(MAIN_LIST_FILE_PATH);
+    public static void createUserListFile() throws IOException {
+        userListFile = new File(DEFAULT_FILE_PATH);
         createListFile(userListFile);
+    }
+
+    public static void createMainListFile() throws IOException {
+        mainListFile = new File(MAIN_LIST_PATH);
         createListFile(mainListFile);
     }
-
 
     public static void createListFile(File listFile) throws IOException {
         // Ensure the parent directories exist (if there are any)
@@ -54,10 +40,36 @@ public class Storage {
     }
 
     // Reads the file and creates a list of Meal objects
-    public static List<Meal> loadExistingList(File selectedFile) throws IOException {
+    public static List<Meal> loadMeals() throws IOException {
         List<Meal> meals = new ArrayList<>();
-        if (selectedFile.exists()) {
-            Scanner scanner = new Scanner(selectedFile);
+        File file = userListFile;
+        if (file.exists()) {
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                // Assumes you have implemented a method to parse a Meal from a String.
+                addMealAfterParse(line, meals);
+            }
+            scanner.close();
+        }
+        return meals;
+    }
+
+    private static void addMealAfterParse(String line, List<Meal> meals) {
+        //Throw error message if detected an ingredient with invalid price and skips to the next meal.
+        try {
+            Meal meal = Meal.fromData(line);
+            meals.add(meal);
+        } catch (InvalidPriceException invalidPriceException) {
+            System.err.println(invalidPriceException.getMessage());
+        }
+    }
+
+    public static List<Meal> loadMainList() throws IOException {
+        List<Meal> meals = new ArrayList<>();
+        File file = mainListFile;
+        if (file.exists()) {
+            Scanner scanner = new Scanner(file);
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine().trim();
                 if (line.isEmpty()) {
@@ -131,16 +143,17 @@ public class Storage {
         return new Ingredient(ingredientName, ingredientPrice);
     }
 
-    public static void writeToFile(String input, String filePath) throws IOException {
-        try (FileWriter fileWriter = new FileWriter(filePath, true)) {
+    public static void writeMainList(String input) throws IOException {
+        try (FileWriter fileWriter = new FileWriter(MAIN_LIST_PATH, true)) {
             fileWriter.append(input).append(System.lineSeparator());
         }
     }
 
-    public static void clearFile(String filePath) {
-        try (FileWriter fileWriter = new FileWriter(filePath)) {
+    public static void clearUserList() {
+        try (FileWriter fileWriter = new FileWriter(DEFAULT_FILE_PATH)) {
         } catch (IOException ioException) {
             UserInterface.printMessage(ioException.getMessage());
         }
     }
+
 }
