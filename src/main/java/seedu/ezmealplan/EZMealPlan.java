@@ -30,8 +30,8 @@ public class EZMealPlan {
         UserInterface ui = new UserInterface();
         MealManager mealManager = new MealManager();
         checkConstructedLists(mealManager);
-        //Check for valid meals that are present in the user list but not in the main list
-        //and add these meals to the main list.
+        // Check for valid meals that are present in the user list but not in the main list
+        // and add these meals to the main list.
         mealManager.compareLists();
 
         ui.printGreetingMessage();
@@ -66,6 +66,10 @@ public class EZMealPlan {
         List<Meal> mealList = Storage.loadExistingList(selectedFile);
         Meals selectedMeals = selectedFile.equals(Storage.getMainListFile()) ?
                 mealManager.getMainMeals() : mealManager.getUserMeals();
+        // Load pre-set meals if the meal list from the main list file is empty.
+        if (mealList.isEmpty() && selectedFile.equals(Storage.getMainListFile())) {
+            mealList = Storage.loadPresetMeals();
+        }
         for (Meal meal : mealList) {
             extractMealIntoList(meal, selectedMeals, mealManager);
         }
