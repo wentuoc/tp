@@ -75,8 +75,7 @@ public class Storage {
     }
 
     public static List<Meal> loadPresetMeals() {
-        PresetMeals presetMeals = new PresetMeals();
-        String[] allInitialisedMeals = presetMeals.getPresetMeals();
+        String[] allInitialisedMeals = PresetMeals.createPresetMeals();
         List<Meal> meals = new ArrayList<>();
         for (String eachInitialisedMeal : allInitialisedMeals) {
             String[] parts = eachInitialisedMeal.split("\\s*\\|\\s*");

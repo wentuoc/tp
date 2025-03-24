@@ -2,14 +2,19 @@ package seedu.presetmeals;
 
 
 public class PresetMeals {
-    static String[] allPresetMeals;
+    private static String[] allPresetMeals;
 
-    public PresetMeals() {
+    private PresetMeals() {
         addAllPresetMeals();
     }
 
-    public String[] getPresetMeals() {
+    private String[] getPresetMeals() {
         return allPresetMeals;
+    }
+
+    public static String[] createPresetMeals() {
+        PresetMeals presetMeals = new PresetMeals();
+        return presetMeals.getPresetMeals();
     }
 
     private static void addAllPresetMeals() {
