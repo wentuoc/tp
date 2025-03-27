@@ -106,8 +106,7 @@ public class CreateCommand extends Command {
         double ingredientPriceDouble = checkValidIngPrice(ingredientName, ingredientPrice);
         Ingredient newIngredient = new Ingredient(ingredientName, ingredientPriceDouble);
         checkDuplicateIngredients(newIngredient, meal);
-        ArrayList<Ingredient> ingredientList = (ArrayList<Ingredient>) meal.getIngredientList();
-        ingredientList.add(newIngredient);
+        meal.addIngredient(newIngredient);
     }
 
     private void checkDuplicateIngredients(Ingredient newIngredient, Meal meal) throws EZMealPlanException {

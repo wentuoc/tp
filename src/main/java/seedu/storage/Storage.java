@@ -120,7 +120,7 @@ public class Storage {
         // For each remaining part, extract ingredient name and its actual price.
         for (int i = 1; i < parts.length; i++) {
             Ingredient ingredient = getIngredient(parts[i]);
-            meal.getIngredientList().add(ingredient);
+            meal.addIngredient(ingredient);
         }
         return meal;
     }

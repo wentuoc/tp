@@ -23,10 +23,18 @@ public class Meal extends Product {
         return super.toString();
     }
 
+    public void addIngredient(Ingredient ingredient) {
+        ingredientList.add(ingredient);
+    }
+
     public List<Ingredient> getIngredientList() {
         return ingredientList;
     }
 
+    /**
+     * Overrides the equals method based on the following criteria: Two Meal objects are equal if and only if they have
+     * the same name and ingredient list (and hence price).
+     */
     @Override
     public boolean equals(Object otherMeal) {
         if (otherMeal instanceof Meal other) {
