@@ -1,5 +1,7 @@
 package seedu.command;
 
+import seedu.exceptions.DuplicateIngredientException;
+import seedu.exceptions.DuplicateMealException;
 import seedu.exceptions.EZMealPlanException;
 import seedu.exceptions.InvalidIngredientFormatException;
 import seedu.exceptions.InvalidPriceException;
@@ -135,8 +137,10 @@ public class CreateCommandTest {
                 Command command = new CreateCommand(userInput);
                 command.execute(mealManager, ui);
             } catch (EZMealPlanException ezMealPlanException) {
-                String expectedOutput = "This meal: chicken rice already exists in the main meal list.\n";
-                assertEquals(expectedOutput, ezMealPlanException.getMessage());
+                String chickenRice = "chicken rice";
+                String listName = "main meal list";
+                assertEquals(new DuplicateMealException(chickenRice, listName).getMessage()
+                        , ezMealPlanException.getMessage());
                 String dupMealMsg = "Duplicate meal caught!";
                 logger.info(dupMealMsg);
             }
@@ -177,11 +181,11 @@ public class CreateCommandTest {
         try {
             command.execute(mealManager, ui);
         } catch (EZMealPlanException ezMealPlanException) {
-            String expectedOutput = "Ingredient: chicken breast already exists in the meal: chicken breast.\n";
-            assertEquals(expectedOutput, ezMealPlanException.getMessage());
+            String chickenBreast = "chicken breast";
+            assertEquals(new DuplicateIngredientException(chickenBreast, chickenBreast).getMessage()
+                    , ezMealPlanException.getMessage());
             String dupIngMsg = "Duplicate ingredients caught!";
             logger.info(dupIngMsg);
         }
     }
-
 }
