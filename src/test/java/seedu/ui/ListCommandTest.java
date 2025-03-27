@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import seedu.command.MealCommand;
+import seedu.command.ListCommand;
 import seedu.exceptions.EZMealPlanException;
 import seedu.food.Meal;
 import seedu.logic.MealManager;
 import seedu.ui.UserInterface;
 
-public class MealCommandTest {
+public class ListCommandTest {
 
     /**
      * Define a UserInterface class for testing, to capture the params of printMealList.
@@ -24,26 +24,25 @@ public class MealCommandTest {
 
         @Override
         public void printMealList(List<Meal> meals, String mealListName) {
-
             this.capturedMeals = new ArrayList<>(meals);
             this.capturedListName = mealListName;
         }
     }
 
     @Test
-    public void testExecute_mealCommand_printsUserChosenMeals() throws EZMealPlanException {
+    public void testExecute_listCommand_printsMainList() throws EZMealPlanException {
 
         MealManager mealManager = new MealManager();
-        Meal meal1 = new Meal("Meal A");
-        Meal meal2 = new Meal("Meal B");
-        mealManager.getUserMeals().getList().add(meal1);
-        mealManager.getUserMeals().getList().add(meal2);
+        Meal meal1 = new Meal("Main Meal 1");
+        Meal meal2 = new Meal("Main Meal 2");
+        mealManager.getMainMeals().getList().add(meal1);
+        mealManager.getMainMeals().getList().add(meal2);
 
         TestUserInterface testUI = new TestUserInterface();
-        MealCommand mealCommand = new MealCommand();
-        mealCommand.execute(mealManager, testUI);
+        ListCommand listCommand = new ListCommand();
+        listCommand.execute(mealManager, testUI);
 
-        assertEquals("user chosen meals", testUI.capturedListName);
+        assertEquals("main list", testUI.capturedListName);
         List<Meal> expectedMeals = new ArrayList<>();
         expectedMeals.add(meal1);
         expectedMeals.add(meal2);
