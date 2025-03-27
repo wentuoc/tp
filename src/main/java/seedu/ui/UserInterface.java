@@ -2,10 +2,9 @@ package seedu.ui;
 
 import seedu.food.Ingredient;
 import seedu.food.Meal;
-import seedu.meallist.MainList;
-import seedu.meallist.MealList;
+import seedu.meallist.MainMeals;
+import seedu.meallist.Meals;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -48,8 +47,8 @@ public class UserInterface {
         System.out.println(exception.getMessage());
     }
 
-    public void printAddMealMessage(Meal meal, MealList mealList) {
-        String mealListName = mealList instanceof MainList ? "main meal list" : "user meal List";
+    public void printAddMealMessage(Meal meal, Meals mealList) {
+        String mealListName = mealList instanceof MainMeals ? "main meal list" : "user meal List";
         String successAddMealMessage = "You have successfully added a meal: " + meal + " into " + mealListName + ".";
         System.out.println(successAddMealMessage);
         List<Meal> meals = mealList.getList();
@@ -59,8 +58,9 @@ public class UserInterface {
         System.out.println(totalMealsMessage);
     }
 
-    public void printIngredientList(ArrayList<Ingredient> ingredientList) {
-        System.out.println("Here are the ingredients for " + this + ":");
+    public void printIngredientList(Meal meal) {
+        List<Ingredient> ingredientList = meal.getIngredientList();
+        System.out.println("Here are the ingredients for " + meal + ":");
         int count = 0;
         for (Ingredient ingredient : ingredientList) {
             count++;
@@ -89,8 +89,17 @@ public class UserInterface {
         System.out.printf("You have %d meals in your meal list.\n", size);
     }
 
+    public void printDeletedMessage(Meal meal, int size) {
+        System.out.println(meal + " has been removed from the global meal list!");
+        System.out.printf("There are now %d meals in the global meal list.\n", size);
+    }
+
     public void prompt() {
         System.out.println("How may I help you?");
+    }
+
+    public void printClearedList() {
+        printMessage("All meals cleared from your meal list!");
     }
 
     public void printByeCommandHelp() {
