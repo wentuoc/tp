@@ -8,6 +8,10 @@
 
 {Describe the design and implementation of the product. Use UML diagrams and short code snippets where applicable.}
 
+This sequence diagram shows the processes that EZMealPlan system has to undergo while it is being booted up before it is ready for usage.
+
+![img.png](img.png)
+This sequence diagram shows the general flow of how the EZMealPlan system process the respective command inputted by the user. Many relevant details and classes have been omitted for the purpose of simplicity. The implementations for the respective commands will be explained in greater details and illustrated with UML diagrams later.
 
 ## Product scope
 ### Target user profile

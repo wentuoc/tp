@@ -1,0 +1,71 @@
+@startuml
+hide footbox
+skinparam sequenceReferenceBackgroundColor #f7807c
+
+actor User
+participant ": EZMealPlan" as EZMealPlan #Cyan
+participant "ui:UserInterface" as UserInterface #Orange
+participant "Parser" as Parser <<class>> #Yellow
+participant "ezMealPlanException:EZMealPlanException" as EZMealPlanException
+participant "command:SelectCommand" as SelectCommand #Violet
+
+
+activate EZMealPlan #Cyan
+ref over EZMealPlan
+Boot up process
+end ref
+loop #GreenYellow while true
+EZMealPlan -> UserInterface : prompt()
+activate UserInterface #Orange
+UserInterface --> EZMealPlan : prints prompt
+deactivate UserInterface
+EZMealPlan --> User
+User -> EZMealPlan : enters "select 2"
+EZMealPlan -> UserInterface : readInput()
+activate UserInterface #Orange
+UserInterface --> EZMealPlan: userInput = "select 2"
+deactivate UserInterface
+EZMealPlan -> Parser : parse("select 2")
+activate Parser #Yellow
+create SelectCommand
+Parser -> SelectCommand : SelectCommand("select 2")
+activate SelectCommand #Violet
+SelectCommand --> Parser
+deactivate SelectCommand
+Parser --> EZMealPlan : returns command
+deactivate Parser
+EZMealPlan -> EZMealPlan : executeCommand(command, mealManager, ui)
+activate EZMealPlan #SkyBlue
+EZMealPlan -> SelectCommand : execute(mealManager, ui)
+alt#Gold #LightGreen runs normally
+activate SelectCommand #Violet
+SelectCommand --> EZMealPlan
+else #Tomato catch EZMealPlanException
+create EZMealPlanException
+SelectCommand --> EZMealPlanException : throws EZMealPlanException()
+deactivate SelectCommand
+activate EZMealPlanException
+EZMealPlanException --> EZMealPlan : gets caught by
+deactivate EZMealPlanException
+EZMealPlan -> UserInterface : printErrorMessage(ezMealPlanException)
+activate UserInterface #Orange
+UserInterface --> EZMealPlan : prints error message
+destroy EZMealPlanException
+deactivate UserInterface
+end alt
+deactivate SelectCommand
+EZMealPlan --> EZMealPlan
+deactivate EZMealPlan
+EZMealPlan -> SelectCommand : isExit()
+activate SelectCommand #Violet
+SelectCommand --> EZMealPlan : returns true or false
+deactivate SelectCommand
+opt#Gold #LightPink isExit()
+EZMealPlan -> User : break
+end
+destroy SelectCommand
+deactivate EZMealPlan
+end
+
+@enduml
+
