@@ -11,21 +11,54 @@ import seedu.meallist.MainMeals;
 import seedu.meallist.Meals;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.List;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UserInterfaceTest {
+
+    private static final Logger logger = Logger.getLogger(UserInterfaceTest.class.getName());
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
     private final String ls = System.lineSeparator();
     private UserInterface ui;
 
+    public static void main(String[] args) {
+        String fileName = "RemoveDeleteCheckerTest.log";
+        setupLogger(fileName);
+    }
+
+    private static void setupLogger(String fileName) {
+        LogManager.getLogManager().reset();
+        logger.setLevel(Level.ALL);
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setLevel(Level.INFO);
+        logger.addHandler(consoleHandler);
+        createLogFile(fileName);
+    }
+
+    private static void createLogFile(String fileName) {
+        try {
+            FileHandler fileHandler = new FileHandler(fileName, true);
+            fileHandler.setLevel(Level.FINE);
+            logger.addHandler(fileHandler);
+        } catch (IOException ioException) {
+            logger.log(Level.SEVERE, "File logger is not working.", ioException);
+        }
+    }
+
     @BeforeEach
     void setUp() {
         // Redirect System.out to capture printed output for testing.
+        main(null);
         System.setOut(new PrintStream(outContent));
         ui = new UserInterface();
     }
@@ -33,12 +66,14 @@ public class UserInterfaceTest {
     @AfterEach
     void tearDown() {
         // Restore original System.out after each test and reset captured output.
+        main(null);
         System.setOut(originalOut);
         outContent.reset();
     }
 
     @Test
     void shouldDisplayGreetingMessage_whenPrintGreetingMessageIsCalled() {
+        main(null);
         ui.printGreetingMessage();
         String expected = "Hello! This is EzMealPlan" + ls + "Let me help you in planning your meals." + ls;
         assertEquals(expected, outContent.toString(), "Greeting message output does not match.");
@@ -46,6 +81,7 @@ public class UserInterfaceTest {
 
     @Test
     void shouldDisplayGoodbyeMessage_whenPrintGoodbyeIsCalled() {
+        main(null);
         ui.printGoodbye();
         // Note: printGoodbye() uses System.out.print so no extra newline is appended.
         String expected = "Bye. Hope to see you again soon!";
@@ -54,6 +90,7 @@ public class UserInterfaceTest {
 
     @Test
     void shouldDisplayUnknownCommandMessage_whenPrintUnknownCommandIsCalled() {
+        main(null);
         ui.printUnknownCommand("unknown_cmd");
         String expected = "Invalid command: unknown_cmd" + ls + "me no understand what you talking." + ls;
         assertEquals(expected, outContent.toString(), "Unknown command message output does not match.");
@@ -61,6 +98,7 @@ public class UserInterfaceTest {
 
     @Test
     void shouldDisplayErrorMessage_whenPrintErrorMessageIsCalled() {
+        main(null);
         Exception e = new Exception("Test exception message");
         ui.printErrorMessage(e);
         String expected = "Test exception message" + ls;
@@ -69,6 +107,7 @@ public class UserInterfaceTest {
 
     @Test
     void shouldDisplayAddMealMessage_whenPrintAddMealMessageIsCalled() throws EZMealPlanException {
+        main(null);
         Meal mockMeal = new Meal("Chicken Rice");
         Meals mockMealList = new MainMeals();
         mockMealList.addMeal(mockMeal);
@@ -84,6 +123,7 @@ public class UserInterfaceTest {
 
     @Test
     void shouldDisplayIngredientList_whenPrintIngredientListIsCalled() throws InvalidPriceException {
+        main(null);
         Meal meal = new Meal("Test Meal");
         meal.getIngredientList().add(new Ingredient("Chicken Breast", 2.5));
         meal.getIngredientList().add(new Ingredient("Rice", 1.0));
@@ -97,6 +137,7 @@ public class UserInterfaceTest {
 
     @Test
     void shouldDisplayMealList_whenPrintMealListIsCalled() throws InvalidPriceException {
+        main(null);
         List<Meal> meals = List.of(new Meal("Chicken Rice"), new Meal("Fish Ball Noodles"));
         ui.printMealList(meals, "main meal list");
         String expected = "Here are the meals in main meal list:" + ls +
@@ -107,6 +148,7 @@ public class UserInterfaceTest {
 
     @Test
     void shouldDisplayRemovedMessage_whenPrintRemovedMessageIsCalled() throws InvalidPriceException {
+        main(null);
         Meal mockMeal = new Meal("Chicken Rice");
         ui.printRemovedMessage(mockMeal, 2);
         String expected = "Chicken Rice ($1.00) has been removed from your meal list!" + ls +
@@ -116,6 +158,7 @@ public class UserInterfaceTest {
 
     @Test
     void shouldDisplayDeletedMessage_whenPrintDeletedMessageIsCalled() throws InvalidPriceException {
+        main(null);
         Meal mockMeal = new Meal("Chicken Rice");
         ui.printDeletedMessage(mockMeal, 5);
         String expected = "Chicken Rice ($1.00) has been removed from the global meal list!" + ls +
@@ -125,6 +168,7 @@ public class UserInterfaceTest {
 
     @Test
     void shouldDisplayPromptMessage_whenPromptIsCalled() {
+        main(null);
         ui.prompt();
         String expected = "How may I help you?" + ls;
         assertEquals(expected, outContent.toString(), "Prompt output does not match.");
@@ -132,6 +176,7 @@ public class UserInterfaceTest {
 
     @Test
     void shouldDisplayClearedListMessage_whenPrintClearedListIsCalled() {
+        main(null);
         ui.printClearedList();
         String expected = "All meals cleared from your meal list!" + ls;
         assertEquals(expected, outContent.toString(), "Cleared list message output does not match.");
@@ -139,6 +184,7 @@ public class UserInterfaceTest {
 
     @Test
     void shouldDisplayByeCommandHelp_whenPrintByeCommandHelpIsCalled() {
+        main(null);
         ui.printByeCommandHelp();
         String expected = "Entering the bye command will gracefully exits the software" + ls +
                 "Sample input: bye" + ls +
@@ -148,6 +194,7 @@ public class UserInterfaceTest {
 
     @Test
     void shouldDisplayGeneralHelp_whenPrintGeneralHelpIsCalled() {
+        main(null);
         ui.printGeneralHelp();
         String expected = "you have not entered any command line options" + ls;
         assertEquals(expected, outContent.toString(), "General help output does not match.");
@@ -155,6 +202,7 @@ public class UserInterfaceTest {
 
     @Test
     void shouldDisplayMealCommandHelp_whenPrintMealCommandHelpIsCalled() {
+        main(null);
         ui.printMealCommandHelp();
         String expected = "Entering the meal command will list out all the meals you have selected from the" +
                 " main list." + ls +
@@ -167,6 +215,7 @@ public class UserInterfaceTest {
 
     @Test
     void shouldDisplayListCommandHelp_whenPrintListCommandHelpIsCalled() {
+        main(null);
         ui.printListCommandHelp();
         String expected = "Entering the list command will list out all the meals from the main list." + ls +
                 "Sample input: list" + ls +
@@ -178,6 +227,7 @@ public class UserInterfaceTest {
 
     @Test
     void shouldDisplayCreateCommandHelp_whenPrintCreateCommandHelpIsCalled() {
+        main(null);
         ui.printCreateCommandHelp();
         String expected = "Entering the create command will create a new meal" + ls +
                 "Sample input: create /mname Hokkien Mee /ing yellow noodle (1), thick bee hoon (1), prawn (1.2), " +
@@ -191,6 +241,7 @@ public class UserInterfaceTest {
 
     @Test
     void shouldDisplayRemoveCommandHelp_whenPrintRemoveCommandHelpIsCalled() {
+        main(null);
         ui.printRemoveCommandHelp();
         String expected = "Entering the remove command will remove a meal in the user's meal list" + ls +
                 "Sample input: remove 1 " + ls +
@@ -201,6 +252,7 @@ public class UserInterfaceTest {
 
     @Test
     void shouldDisplaySelectCommandHelp_whenPrintSelectCommandHelpIsCalled() {
+        main(null);
         ui.printSelectCommandHelp();
         String expected = "Entering the select command will add the selected meal in the meal list" + ls +
                 "Sample input: select 1 " + ls +
@@ -211,6 +263,7 @@ public class UserInterfaceTest {
 
     @Test
     void shouldDisplayFilterCommandHelp_whenPrintFilterCommandHelpIsCalled() {
+        main(null);
         ui.printFilterCommandHelp();
         String expected = "Entering the filter command will filter a meal in the main list" + ls +
                 "There are three filter option by cost, by ingredient or by meal name" + ls +
@@ -228,6 +281,7 @@ public class UserInterfaceTest {
 
     @Test
     void shouldDisplayDeleteCommandHelp_whenPrintDeleteCommandHelpIsCalled() {
+        main(null);
         ui.printDeleteCommandHelp();
         String expected = "Entering the delete command will delete a meal in the main list" + ls +
                 "Sample input: delete 1 " + ls +
@@ -238,6 +292,7 @@ public class UserInterfaceTest {
 
     @Test
     void shouldDisplayViewCommandHelp_whenPrintViewCommandHelpIsCalled() {
+        main(null);
         ui.printViewCommandHelp();
         String expected = "Entering the view command will view a view all the ingredients of the selected meal" + ls +
                 "Sample input: view 1 " + ls +
@@ -254,6 +309,7 @@ public class UserInterfaceTest {
 
     @Test
     void shouldDisplayClearCommandHelp_whenPrintClearCommandHelpIsCalled() {
+        main(null);
         ui.printClearCommandHelp();
         String expected = "Entering the clear command will clear all the meals in the meal list" + ls +
                 "Sample input: clear" + ls + "Sample output:" + ls +
@@ -263,6 +319,7 @@ public class UserInterfaceTest {
 
     @Test
     void shouldDisplayHelpCommandHelp_whenPrintHelpCommandHelpIsCalled() {
+        main(null);
         ui.printHelpCommandHelp();
         String expected = "Entering the help command followed by the command that requires help will give brief " +
                 "explanation of the command" + ls +
