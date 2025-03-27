@@ -11,7 +11,6 @@ import seedu.command.MealCommand;
 import seedu.exceptions.EZMealPlanException;
 import seedu.food.Meal;
 import seedu.logic.MealManager;
-import seedu.ui.UserInterface;
 
 public class MealCommandTest {
 
