@@ -1,16 +1,16 @@
 package seedu.checkers;
 
-import seedu.command.Command;
-import seedu.command.CreateCommand;
 import seedu.exceptions.EZMealPlanException;
-import seedu.food.Ingredient;
-import seedu.food.Meal;
-import seedu.logic.MealManager;
-import seedu.ui.UserInterface;
+import seedu.exceptions.InvalidCreateIndexException;
+import seedu.exceptions.InvalidIngMnameException;
+import seedu.exceptions.InvalidIngredientFormatException;
+import seedu.exceptions.MissingIngKeywordException;
+import seedu.exceptions.MissingIngredientException;
+import seedu.exceptions.MissingMealNameException;
+import seedu.exceptions.MissingMnameKeywordException;
+
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -20,11 +20,11 @@ import java.util.logging.Logger;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CreateCheckerTest {
     private static final Logger logger = Logger.getLogger(CreateCheckerTest.class.getName());
-    final MealManager mealManager = new MealManager();
-    final UserInterface ui = new UserInterface();
 
     public static void main(String[] args) {
         String fileName = "CreateCheckerTest.log";
@@ -54,87 +54,82 @@ public class CreateCheckerTest {
     public void create_checker_success() throws EZMealPlanException {
         main(null);
         String validUserInput = "create /mname chicken rice /ing chicken breast (2.5)," +
-                " rice (1.5), egg (0.5), cucumber (1)";
-        Command command = new CreateCommand(validUserInput);
-        command.execute(mealManager, ui);
-        List<Meal> mealList = mealManager.getMainMeals().getList();
-        int expectedMealListSize = 1;
-        assertEquals(expectedMealListSize, mealList.size());
-        checkExpectedStrings(mealList);
-    }
-
-    private static void checkExpectedStrings(List<Meal> mealList) {
-        int zeroIndex = 0;
-        Meal meal = mealList.get(zeroIndex);
-        String expectedMealString = "chicken rice ($5.50)";
-        assertEquals(expectedMealString, meal.toString());
-        ArrayList<Ingredient> ingredientList = (ArrayList<Ingredient>) meal.getIngredientList();
-        String[] expectedIngredientList = {"chicken breast ($2.50)", "cucumber ($1.00)", "egg ($0.50)", "rice ($1.50)"};
-        for (int i = 0; i < expectedIngredientList.length; i++) {
-            assertEquals(expectedIngredientList[i], ingredientList.get(i).toString());
-        }
+                                " rice (1.5), egg (0.5), cucumber (1)";
+        CreateChecker checker = new CreateChecker(validUserInput);
+        checker.check();
+        assertTrue(checker.isPassed());
     }
 
     @Test
-    public void duplicate_meal_catch() {
+    public void create_checker_fail() {
         main(null);
-        String[] validUserInputs = formDuplicateMealsList();
-        for (String userInput : validUserInputs) {
+        checkMissingMname();
+        checkMissingIng();
+        checkInvalidCreateIndex();
+        checkInvalidIngMnameIndex();
+        checkMissingMealName();
+        checkMissingIngredient();
+        checkInvalidIngredientFormat();
+    }
+
+    private void checkInvalidIngredientFormat() {
+        String[] invalidIngredientFormat = {"create /mname test /ing ing123", "create /mname test /ing 123"
+                , "create /mname test /ing ing()", "create /mname test /ing (1)"};
+        logger.fine("running checkInvalidIngredientFormat()");
+        checkMatchingException(invalidIngredientFormat, new InvalidIngredientFormatException().getMessage());
+    }
+
+    private void checkMissingIngredient() {
+        String[] missingMealName = {"create /mname test /ing", "create /mname ing(1) /ing"};
+        logger.fine("running checkMissingIngredient()");
+        checkMatchingException(missingMealName, new MissingIngredientException("create").getMessage());
+    }
+
+    private static void checkMissingMealName() {
+        String[] missingMealName = {"create /mname /ing ing(1)", "create /mname /ing ing123"};
+        logger.fine("running checkMissingMealName()");
+        checkMatchingException(missingMealName, new MissingMealNameException("create").getMessage());
+    }
+
+    private static void checkInvalidIngMnameIndex() {
+        String[] invalidIngMname = {"create /ing test /mname ing(1)", "create /ing /mname test create ing(1)"
+                , "create test ing(1) /ing /mname", "create /ing /mname"};
+        logger.fine("running checkInvalidMnameIndex()");
+        checkMatchingException(invalidIngMname, new InvalidIngMnameException().getMessage());
+    }
+
+    private static void checkMissingIng() {
+        String[] missingIng = {"create /mname test ing(1)", "create /mname", "create /mname test "
+                , "create ing(1) /mname"};
+        logger.fine("running checkMissingIng()");
+        checkMatchingException(missingIng, new MissingIngKeywordException().getMessage());
+    }
+
+    private static void checkMissingMname() {
+        String[] missingMname = {"create test /ing ing(1)", "create /ing", "create test /ing", "create /ing ing(1)"};
+        logger.fine("running checkMissingMname()");
+        checkMatchingException(missingMname, new MissingMnameKeywordException().getMessage());
+    }
+
+    private static void checkInvalidCreateIndex() {
+        String[] invalidCreateIndex = {"/mname test create /ing ing(1)", "/mname test /ing create ing(1)"
+                , "/ing test create /mname ing(1)", "/ing test /mname ing(1) create"};
+        logger.fine("running checkInvalidCreateIndex()");
+        checkMatchingException(invalidCreateIndex, new InvalidCreateIndexException().getMessage());
+    }
+
+    private static void checkMatchingException(String[] invalidUserInputs, String expectedOutput) {
+        for (String invalidUserInput : invalidUserInputs) {
+            CreateChecker checker = new CreateChecker(invalidUserInput);
             try {
-                String fineMsg = "Running duplicate_meal_catch().";
-                logger.fine(fineMsg);
-                Command command = new CreateCommand(userInput);
-                command.execute(mealManager, ui);
+                checker.check();
             } catch (EZMealPlanException ezMealPlanException) {
-                String expectedOutput = "This meal: chicken rice already exists in the main meal list.\n";
                 assertEquals(expectedOutput, ezMealPlanException.getMessage());
-                String dupMealMsg = "Duplicate meal caught!";
-                logger.info(dupMealMsg);
+                logger.info("Expected exception caught!");
+            } finally {
+                assertFalse(checker.isPassed());
+                logger.info("User input is expected to be invalid.");
             }
         }
-        checkExpectedListSize();
     }
-
-    private void checkExpectedListSize() {
-        int actualSize = mealManager.getMainMeals().getList().size();
-        int expectedSize = 3;
-        assertEquals(expectedSize, actualSize);
-        System.out.println();
-        for (Meal meal : mealManager.getMainMeals().getList()) {
-            System.out.println(meal.toString());
-        }
-    }
-
-    private static String[] formDuplicateMealsList() {
-        String firstInput = "create /mname chicken rice /ing chicken breast (3.5)," +
-                " rice (1.00), egg (0.6), cucumber (1.5)";
-        String secondInput = "create /mname chicken rice /ing chicken breast (2.5)," +
-                " rice (1.5), egg (0.5), cucumber (1)";
-        String thirdInput = "create /mname chicken rice /ing chicken breast (2)," +
-                " rice (2), egg (0.4), cucumber (1.1)";
-        String fourthInput = "create /mname chicken rice /ing chicken breast (2)," +
-                " rice (2), egg (0.4), cucumber (1.1), tomato (2)";
-        String fifthInput = "create /mname hainanese chicken rice /ing chicken breast (2)," +
-                " rice (2), egg (0.4), cucumber (1.1), tomato (2)";
-        return new String[]{firstInput, secondInput, thirdInput, fourthInput, fifthInput};
-    }
-
-    @Test
-    public void duplicate_ingredient_catch() {
-        main(null);
-        String userInput = "create /mname chicken breast /ing chicken breast (2.5)," +
-                " chicken breast(1.5)";
-        Command command = new CreateCommand(userInput);
-        String fineMsg = "Running duplicate_ingredient_catch().";
-        logger.fine(fineMsg);
-        try {
-            command.execute(mealManager, ui);
-        } catch (EZMealPlanException ezMealPlanException) {
-            String expectedOutput = "Ingredient: chicken breast already exists in the meal: chicken breast.\n";
-            assertEquals(expectedOutput, ezMealPlanException.getMessage());
-            String dupIngMsg = "Duplicate ingredients caught!";
-            logger.info(dupIngMsg);
-        }
-    }
-
 }
