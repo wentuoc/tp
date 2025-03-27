@@ -40,8 +40,7 @@ public class UserInterfaceTest {
     @Test
     void shouldDisplayGreetingMessage_whenPrintGreetingMessageIsCalled() {
         ui.printGreetingMessage();
-        String expected = "Hello! This is EzMealPlan" + ls +
-                "Let me help you in planning your meals." + ls;
+        String expected = "Hello! This is EzMealPlan" + ls + "Let me help you in planning your meals." + ls;
         assertEquals(expected, outContent.toString(), "Greeting message output does not match.");
     }
 
@@ -56,8 +55,7 @@ public class UserInterfaceTest {
     @Test
     void shouldDisplayUnknownCommandMessage_whenPrintUnknownCommandIsCalled() {
         ui.printUnknownCommand("unknown_cmd");
-        String expected = "Invalid command: unknown_cmd" + ls +
-                "me no understand what you talking." + ls;
+        String expected = "Invalid command: unknown_cmd" + ls + "me no understand what you talking." + ls;
         assertEquals(expected, outContent.toString(), "Unknown command message output does not match.");
     }
 
@@ -93,22 +91,17 @@ public class UserInterfaceTest {
         ui.printIngredientList(meal);
         String expected = "Here are the ingredients for " + meal + ":" + ls +
                 "    1. Chicken Breast ($2.50)" + ls +
-                "    2. Rice ($1.00)" + ls +
-                ls;
+                "    2. Rice ($1.00)" + ls + ls;
         assertEquals(expected, outContent.toString(), "Ingredient list output does not match.");
     }
 
     @Test
     void shouldDisplayMealList_whenPrintMealListIsCalled() throws InvalidPriceException {
-        List<Meal> meals = List.of(
-                new Meal("Chicken Rice"),
-                new Meal("Fish Ball Noodles")
-        );
+        List<Meal> meals = List.of(new Meal("Chicken Rice"), new Meal("Fish Ball Noodles"));
         ui.printMealList(meals, "main meal list");
         String expected = "Here are the meals in main meal list:" + ls +
                 "    1. Chicken Rice ($1.00)" + ls +
-                "    2. Fish Ball Noodles ($1.00)" + ls +
-                ls;
+                "    2. Fish Ball Noodles ($1.00)" + ls + ls;
         assertEquals(expected, outContent.toString(), "Meal list output does not match.");
     }
 
@@ -163,7 +156,8 @@ public class UserInterfaceTest {
     @Test
     void shouldDisplayMealCommandHelp_whenPrintMealCommandHelpIsCalled() {
         ui.printMealCommandHelp();
-        String expected = "Entering the meal command will list out all the meals you have selected from the main list." + ls +
+        String expected = "Entering the meal command will list out all the meals you have selected from the" +
+                " main dlist." + ls +
                 "Sample input: meal" + ls +
                 "Sample output:" + ls +
                 "               1. Chicken Rice" + ls +
@@ -186,7 +180,8 @@ public class UserInterfaceTest {
     void shouldDisplayCreateCommandHelp_whenPrintCreateCommandHelpIsCalled() {
         ui.printCreateCommandHelp();
         String expected = "Entering the create command will create a new meal" + ls +
-                "Sample input: create /mname Hokkien Mee /ing yellow noodle (1), thick bee hoon (1), prawn (1.2), egg (0.5), pork lard (0.2), squid (1.5), lime (0.1)" + ls +
+                "Sample input: create /mname Hokkien Mee /ing yellow noodle (1), thick bee hoon (1), prawn (1.2), " +
+                "egg (0.5), pork lard (0.2), squid (1.5), lime (0.1)" + ls +
                 "Sample output:" + ls +
                 "               1. Chicken Rice ($3.00)" + ls +
                 "               2. Fish Ball Noodles ($3.00)" + ls +
@@ -261,8 +256,7 @@ public class UserInterfaceTest {
     void shouldDisplayClearCommandHelp_whenPrintClearCommandHelpIsCalled() {
         ui.printClearCommandHelp();
         String expected = "Entering the clear command will clear all the meals in the meal list" + ls +
-                "Sample input: clear" + ls +
-                "Sample output:" + ls +
+                "Sample input: clear" + ls + "Sample output:" + ls +
                 "               The meal list has been cleared." + ls;
         assertEquals(expected, outContent.toString(), "Clear command help output does not match.");
     }
@@ -270,12 +264,11 @@ public class UserInterfaceTest {
     @Test
     void shouldDisplayHelpCommandHelp_whenPrintHelpCommandHelpIsCalled() {
         ui.printHelpCommandHelp();
-        String expected = "Entering the help command followed by the command that requires help will give brief explanation of the command" + ls +
+        String expected = "Entering the help command followed by the command that requires help will give brief " +
+                "explanation of the command" + ls +
                 "Sample input: help bye" + ls +
                 "Sample output:" + ls +
-                "                Entering the bye command will gracefully exits the software" + ls +
-                "                    Sample input: bye" + ls +
-                "                    Sample output: Bye. Hope to see you again soon!" + ls;
+                "                Entering the bye command will gracefully exits the software" + ls + "                    Sample input: bye" + ls + "                    Sample output: Bye. Hope to see you again soon!" + ls;
         assertEquals(expected, outContent.toString(), "Help command help output does not match.");
     }
 }
