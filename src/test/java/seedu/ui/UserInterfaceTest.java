@@ -157,7 +157,7 @@ public class UserInterfaceTest {
     void shouldDisplayMealCommandHelp_whenPrintMealCommandHelpIsCalled() {
         ui.printMealCommandHelp();
         String expected = "Entering the meal command will list out all the meals you have selected from the" +
-                " main dlist." + ls +
+                " main list." + ls +
                 "Sample input: meal" + ls +
                 "Sample output:" + ls +
                 "               1. Chicken Rice" + ls +
@@ -268,7 +268,9 @@ public class UserInterfaceTest {
                 "explanation of the command" + ls +
                 "Sample input: help bye" + ls +
                 "Sample output:" + ls +
-                "                Entering the bye command will gracefully exits the software" + ls + "                    Sample input: bye" + ls + "                    Sample output: Bye. Hope to see you again soon!" + ls;
+                "                Entering the bye command will gracefully exits the software" + ls +
+                "                    Sample input: bye" + ls +
+                "                    Sample output: Bye. Hope to see you again soon!" + ls;
         assertEquals(expected, outContent.toString(), "Help command help output does not match.");
     }
 }
