@@ -40,7 +40,7 @@ public class UserInterface {
 
     public void printUnknownCommand(String userInput) {
         System.out.println("Invalid command: " + userInput);
-        System.out.println("me no understand what you talking.\n");
+        System.out.println("me no understand what you talking.");
     }
 
     public void printErrorMessage(Exception exception) {
@@ -54,7 +54,7 @@ public class UserInterface {
         List<Meal> meals = mealList.getList();
         printMealList(meals, mealListName);
         String totalMealsMessage = "Currently, you have " + meals.size() +
-                " meals in " + mealListName + ".\n";
+                " meals in " + mealListName + ".";
         System.out.println(totalMealsMessage);
     }
 
@@ -86,12 +86,12 @@ public class UserInterface {
 
     public void printRemovedMessage(Meal meal, int size) {
         System.out.println(meal + " has been removed from your meal list!");
-        System.out.printf("You have %d meals in your meal list.\n", size);
+        System.out.printf("You have %d meals in your meal list.", size);
     }
 
     public void printDeletedMessage(Meal meal, int size) {
         System.out.println(meal + " has been removed from the global meal list!");
-        System.out.printf("There are now %d meals in the global meal list.\n", size);
+        System.out.printf("There are now %d meals in the global meal list.", size);
     }
 
     public void prompt() {

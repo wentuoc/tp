@@ -3,7 +3,6 @@ Let me help you in planning your meals.
 How may I help you?
 Invalid command: excusemeee
 me no understand what you talking.
-
 How may I help you?
 "/mname" keyword cannot be missing from the "create" command.
 
@@ -137,7 +136,6 @@ Here are the meals in main meal list:
     101. Yong Tau Foo ($3.50)
 
 Currently, you have 101 meals in main meal list.
-
 How may I help you?
 You have successfully added a meal: cheesecake ($10.00) into main meal list.
 Here are the meals in main meal list:
@@ -245,6 +243,5 @@ Here are the meals in main meal list:
     102. Yong Tau Foo ($3.50)
 
 Currently, you have 102 meals in main meal list.
-
 How may I help you?
 Bye. Hope to see you again soon!
