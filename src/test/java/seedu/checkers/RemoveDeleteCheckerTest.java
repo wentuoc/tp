@@ -3,6 +3,7 @@ package seedu.checkers;
 import org.junit.jupiter.api.Test;
 
 import seedu.exceptions.EZMealPlanException;
+import seedu.exceptions.RemoveFormatException;
 
 import java.io.IOException;
 import java.util.logging.ConsoleHandler;
@@ -56,8 +57,7 @@ public class RemoveDeleteCheckerTest {
         try {
             checker.check();
         } catch (EZMealPlanException ezMealPlanException) {
-            assertEquals("The index of meal to be removed must appear in your " +
-                    "command: remove t", ezMealPlanException.getMessage());
+            assertEquals(new RemoveFormatException(validUserInput).getMessage(), ezMealPlanException.getMessage());
         }
     }
 
@@ -68,8 +68,7 @@ public class RemoveDeleteCheckerTest {
         try {
             checker.check();
         } catch (EZMealPlanException ezMealPlanException) {
-            assertEquals("The index of meal to be removed must appear in your " +
-                    "command: remove", ezMealPlanException.getMessage());
+            assertEquals(new RemoveFormatException(validUserInput).getMessage(), ezMealPlanException.getMessage());
         }
     }
 

@@ -1,9 +1,7 @@
 package seedu.command;
 
 import seedu.checkers.CreateChecker;
-import seedu.exceptions.DuplicateIngredientException;
 import seedu.exceptions.EZMealPlanException;
-import seedu.exceptions.IngredientPriceFormatException;
 import seedu.food.Ingredient;
 import seedu.food.Meal;
 import seedu.food.Product;
@@ -47,6 +45,8 @@ public class CreateCommand extends Command {
         logger.fine("The user is now creating a new meal: " + mealName + ".");
         Meal newMeal = new Meal(mealName);
         addAllIngredients(ing, newMeal);
+        double mealPrice = newMeal.computeMealPrice();
+        newMeal.setPrice(mealPrice);
         return newMeal;
     }
 
@@ -66,7 +66,7 @@ public class CreateCommand extends Command {
             int priceIndex = 1;
             String ingredientName = ingredientNamePrice[nameIndex];
             String ingredientPrice = ingredientNamePrice[priceIndex];
-            addIngredient(ingredientName, ingredientPrice, newMeal);
+            newMeal.addIngredient(ingredientName, ingredientPrice, logger);
         }
         ArrayList<Ingredient> mealIngredients = (ArrayList<Ingredient>) newMeal.getIngredientList();
         mealIngredients.sort(Comparator.comparing(Product::getName));
@@ -88,39 +88,5 @@ public class CreateCommand extends Command {
         CreateChecker checker = new CreateChecker(validUserInput);
         checker.check();
         return checker.isPassed();
-    }
-
-    public void addIngredient(String ingredientName, String ingredientPrice, Meal meal)
-            throws EZMealPlanException {
-        double ingredientPriceDouble = checkValidIngPrice(ingredientName, ingredientPrice);
-        Ingredient newIngredient = new Ingredient(ingredientName, ingredientPriceDouble);
-        checkDuplicateIngredients(newIngredient, meal);
-        meal.addIngredient(newIngredient);
-    }
-
-    private void checkDuplicateIngredients(Ingredient newIngredient, Meal meal) throws EZMealPlanException {
-        String mealName = meal.getName();
-        ArrayList<Ingredient> ingredientList = (ArrayList<Ingredient>) meal.getIngredientList();
-        for (Ingredient ingredient : ingredientList) {
-            if (newIngredient.equals(ingredient)) {
-                String ingredientName = newIngredient.getName();
-                String message = "Triggers DuplicateIngredientException()!";
-                logger.warning(message);
-                throw new DuplicateIngredientException(ingredientName, mealName);
-            }
-        }
-    }
-
-    private static double checkValidIngPrice(String ingredientName, String ingredientPrice)
-            throws IngredientPriceFormatException {
-        try {
-            double hundred = 100.0;
-            double ingredientPriceDouble = Double.parseDouble(ingredientPrice);
-            return Math.round(ingredientPriceDouble * hundred) / hundred;
-        } catch (NumberFormatException numberFormatException) {
-            String message = "Triggers IngredientPriceFormatException()!";
-            logger.warning(message);
-            throw new IngredientPriceFormatException(ingredientName);
-        }
     }
 }
