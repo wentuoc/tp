@@ -23,6 +23,7 @@ public class ListCommandTest {
 
         @Override
         public void printMealList(List<Meal> meals, String mealListName) {
+
             this.capturedMeals = new ArrayList<>(meals);
             this.capturedListName = mealListName;
         }
