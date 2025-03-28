@@ -9,7 +9,7 @@ public class Meal extends Product {
     private final List<Ingredient> ingredientList = new ArrayList<>();
 
     public Meal(String mealName) throws InvalidPriceException {
-        double tempMealPrice = 1; // buffer value for the meal price
+        double tempMealPrice = 0; // buffer value for the meal price
         setName(mealName);
         setPrice(tempMealPrice);
     }
@@ -23,8 +23,9 @@ public class Meal extends Product {
         return super.toString();
     }
 
-    public void addIngredient(Ingredient ingredient) {
+    public void addIngredient(Ingredient ingredient) throws InvalidPriceException {
         ingredientList.add(ingredient);
+        setPrice(getPrice() + ingredient.getPrice());
     }
 
     public List<Ingredient> getIngredientList() {

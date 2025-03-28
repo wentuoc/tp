@@ -47,8 +47,6 @@ public class CreateCommand extends Command {
         logger.fine("The user is now creating a new meal: " + mealName + ".");
         Meal newMeal = new Meal(mealName);
         addAllIngredients(ing, newMeal);
-        double mealPrice = computeMealPrice(newMeal);
-        newMeal.setPrice(mealPrice);
         return newMeal;
     }
 
@@ -90,15 +88,6 @@ public class CreateCommand extends Command {
         CreateChecker checker = new CreateChecker(validUserInput);
         checker.check();
         return checker.isPassed();
-    }
-
-    public double computeMealPrice(Meal meal) {
-        ArrayList<Ingredient> ingredientList = (ArrayList<Ingredient>) meal.getIngredientList();
-        double totalPrice = 0;
-        for (Ingredient ingredient : ingredientList) {
-            totalPrice += ingredient.getPrice();
-        }
-        return totalPrice;
     }
 
     public void addIngredient(String ingredientName, String ingredientPrice, Meal meal)

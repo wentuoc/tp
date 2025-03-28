@@ -26,7 +26,7 @@ public abstract class Product {
     public void setPrice(double price) throws InvalidPriceException {
         int zeroDollars = 0;
         String name = getName();
-        if (price <= zeroDollars) {
+        if (price < zeroDollars) {
             logger.severe("Trigger InvalidPriceException()!");
             throw new InvalidPriceException(name);
         }

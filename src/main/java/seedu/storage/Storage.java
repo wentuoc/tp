@@ -103,16 +103,7 @@ public class Storage {
         String mealName = parts[mealNameIndex];
         Meal meal = addIngredientsToMeal(mealName, parts);
         // Optionally, compute the meal's total price as the sum of ingredient prices.
-        setMealPrice(meal);
         meals.add(meal);
-    }
-
-    private static void setMealPrice(Meal meal) throws InvalidPriceException {
-        double mealPrice = 0;
-        for (Ingredient ing : meal.getIngredientList()) {
-            mealPrice += ing.getPrice();
-        }
-        meal.setPrice(mealPrice);
     }
 
     private static Meal addIngredientsToMeal(String mealName, String[] parts) throws InvalidPriceException {
