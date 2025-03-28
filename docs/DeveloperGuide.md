@@ -4,7 +4,7 @@
 
 {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
 
-## Design & implementation
+## Design
 
 {Describe the design and implementation of the product. Use UML diagrams and short code snippets where applicable.}
 
@@ -13,16 +13,36 @@ This sequence diagram shows the processes that EZMealPlan system has to undergo 
 ![img.png](img.png)
 This sequence diagram shows the general flow of how the EZMealPlan system process the respective command inputted by the user. Many relevant details and classes have been omitted for the purpose of simplicity. The implementations for the respective commands will be explained in greater details and illustrated with UML diagrams later.
 
-## Product scope
-### Target user profile
+### Food Package
+
+The food package contains the abstract class `Product`, as well as `Ingredient` and `Meal` classes.
+
+![.\diagrams\Food.png](.\diagrams\Food.png)
+
+The `Ingredient` class,
+* Represents an ingredient, which has a `name` and `price`
+* Contains the `setPrice` method, as well as private methods to check that 
+the price provided is non-negative and able to be parsed as a `Double`
+
+The `Meal` class,
+* Represents a meal, which has a `name`, `price`, and `ingredientList` of type `List<Ingredient>`.
+* Contains the `addIngredient` method that adds an `Ingredient` into its `ingredientList`. While doing so, it
+also retrieves and adds the `price` of the `Ingredient` into the meal's `price`.
+* Contains a private method that checks if an `Ingredient` to be added is already duplicated in the `ingredienList`, and
+throws an exception.
+
+## Implementation
+## Appendices
+### Appendix A: Product scope
+#### Target user profile
 
 {Describe the target user profile}
 
-### Value proposition
+#### Value proposition
 
 {Describe the value proposition: what problem does it solve?}
 
-## User Stories
+### Appendix B: User Stories
 
 | Version | As a ...                 | I want to ...                                                                                           | So that I can ...                                                             |
 |---------|--------------------------|---------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
@@ -50,14 +70,14 @@ This sequence diagram shows the general flow of how the EZMealPlan system proces
 
 |v2.0|user|find a to-do item by name|locate a to-do without having to go through the entire list|
 
-## Non-Functional Requirements
+### Appendix C: Non-Functional Requirements
 
 {Give non-functional requirements}
 
-## Glossary
+### Appendix D: Glossary
 
 * *glossary item* - Definition
 
-## Instructions for manual testing
+### Appendix E: Instructions for manual testing
 
 {Give instructions on how to do a manual product testing e.g., how to load sample data to be used for testing}
