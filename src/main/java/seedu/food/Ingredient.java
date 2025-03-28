@@ -16,6 +16,10 @@ public class Ingredient extends Product {
         return super.toString();
     }
 
+    /**
+     * Overrides the equals method based on the following criteria: Two Ingredient objects are equal if and only if
+     * they have the same name (ignoring case).
+     */
     @Override
     public boolean equals(Object otherIngredient) {
         if (otherIngredient instanceof Ingredient) {

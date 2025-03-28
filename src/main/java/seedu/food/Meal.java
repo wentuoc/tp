@@ -9,9 +9,8 @@ public class Meal extends Product {
     private final List<Ingredient> ingredientList = new ArrayList<>();
 
     public Meal(String mealName) throws InvalidPriceException {
-        double tempMealPrice = 0; // buffer value for the meal price
         setName(mealName);
-        setPrice(tempMealPrice);
+        setPrice(0);
     }
 
     public void setPrice(double mealPrice) throws InvalidPriceException {
@@ -34,7 +33,7 @@ public class Meal extends Product {
 
     /**
      * Overrides the equals method based on the following criteria: Two Meal objects are equal if and only if they have
-     * the same name and ingredient names.
+     * the same name (ignoring case) and ingredient names.
      */
     @Override
     public boolean equals(Object otherMeal) {

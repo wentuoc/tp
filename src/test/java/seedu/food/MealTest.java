@@ -4,14 +4,19 @@ import org.junit.jupiter.api.Test;
 import seedu.exceptions.InvalidPriceException;
 
 import java.io.IOException;
-import java.util.logging.*;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class MealTest {
     private static final Logger logger = Logger.getLogger(MealTest.class.getName());
 
-    public static void main(String[] args) {
+    public MealTest() {
         String fileName = "MealTest.log";
         setupLogger(fileName);
     }
@@ -37,16 +42,19 @@ class MealTest {
 
     @Test
     void equals_sameNameSameIngredient_true() throws InvalidPriceException {
+        logger.fine("Running equals_sameNameSameIngredient_true()");
         Ingredient chicken = new Ingredient("Chicken", 1);
         Meal meal1 = new Meal("Chicken Rice");
         meal1.addIngredient(chicken);
         Meal meal2 = new Meal("Chicken Rice");
         meal2.addIngredient(chicken);
         assertEquals(meal1, meal2);
+        logger.info("Equality is true");
     }
 
     @Test
     void equals_sameNameDifferentIngredient_false() throws InvalidPriceException {
+        logger.fine("Running equals_sameNameDifferentIngredient_false()");
         Ingredient steamedChicken = new Ingredient("Steamed Chicken", 1);
         Ingredient roastedChicken = new Ingredient("Roasted Chicken", 1);
         Meal meal1 = new Meal("Chicken Rice");
@@ -54,20 +62,24 @@ class MealTest {
         Meal meal2 = new Meal("Chicken Rice");
         meal2.addIngredient(roastedChicken);
         assertNotEquals(meal1, meal2);
+        logger.info("Equality is false");
     }
 
     @Test
     void equals_differentNameSameIngredient_false() throws InvalidPriceException {
+        logger.fine("Running equals_differentNameSameIngredient_false()");
         Ingredient chicken = new Ingredient("Chicken", 1);
         Meal meal1 = new Meal("Chicken Rice");
         meal1.addIngredient(chicken);
         Meal meal2 = new Meal("Chicken Rice Upsized");
         meal2.addIngredient(chicken);
         assertNotEquals(meal1, meal2);
+        logger.info("Equality is false");
     }
 
     @Test
     void equals_differentNameDifferentIngredient_false() throws InvalidPriceException {
+        logger.fine("Running equals_differentNameDifferentIngredient_false()");
         Ingredient chicken = new Ingredient("Chicken", 1);
         Ingredient duck = new Ingredient("Duck", 1.2);
         Meal meal1 = new Meal("Chicken Rice");
@@ -75,20 +87,24 @@ class MealTest {
         Meal meal2 = new Meal("Duck Rice");
         meal2.addIngredient(duck);
         assertNotEquals(meal1, meal2);
+        logger.info("Equality is false");
     }
 
     @Test
     void equals_differentCapitalisationSameIngredient_true() throws InvalidPriceException {
+        logger.fine("Running equals_differentCapitalisationSameIngredient_true()");
         Ingredient chicken = new Ingredient("Chicken", 1);
         Meal meal1 = new Meal("Chicken Rice");
         meal1.addIngredient(chicken);
         Meal meal2 = new Meal("chicken rice");
         meal2.addIngredient(chicken);
         assertEquals(meal1, meal2);
+        logger.info("Equality is true");
     }
 
     @Test
     void addIngredient_ingredients_correctIngredientListAndPrice() throws InvalidPriceException {
+        logger.fine("Running addIngredient_ingredients_correctIngredientListAndPrice()");
         Ingredient chicken = new Ingredient("Chicken", 1);
         Ingredient rice = new Ingredient("Rice", 0.5);
         Ingredient cucumber = new Ingredient("Cucumber", 0.3);
@@ -98,5 +114,6 @@ class MealTest {
         meal1.addIngredient(cucumber);
         assertEquals(1.8, meal1.getPrice());
         assertEquals("[Chicken ($1.00), Rice ($0.50), Cucumber ($0.30)]", meal1.getIngredientList().toString());
+        logger.info("Ingredient list and price is correct");
     }
 }
