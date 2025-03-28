@@ -29,6 +29,7 @@ It must be present after the '/mname' keyword and before '/ing' keyword.
 
 How may I help you?
 Ingredient: cheesecake already exists in the meal: cheesecake.
+To avoid confusion between the ingredients in the same meal, please use a different ingredient name.
 
 How may I help you?
 You have successfully added a meal: cheesecake ($9.00) into main meal list.
