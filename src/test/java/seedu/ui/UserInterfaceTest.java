@@ -116,9 +116,9 @@ public class UserInterfaceTest {
         mockMealList.addMeal(mockMeal);
 
         ui.printAddMealMessage(mockMeal, mockMealList);
-        String expected = "You have successfully added a meal: Chicken Rice ($1.00) into main meal list." + ls +
+        String expected = "You have successfully added a meal: Chicken Rice ($0.00) into main meal list." + ls +
                 "Here are the meals in main meal list:" + ls +
-                "    1. Chicken Rice ($1.00)" + ls +
+                "    1. Chicken Rice ($0.00)" + ls +
                 ls +
                 "Currently, you have 1 meals in main meal list." + ls;
         assertEquals(expected, outContent.toString(), "Add meal message output does not match.");
@@ -144,8 +144,8 @@ public class UserInterfaceTest {
         List<Meal> meals = List.of(new Meal("Chicken Rice"), new Meal("Fish Ball Noodles"));
         ui.printMealList(meals, "main meal list");
         String expected = "Here are the meals in main meal list:" + ls +
-                "    1. Chicken Rice ($1.00)" + ls +
-                "    2. Fish Ball Noodles ($1.00)" + ls + ls;
+                "    1. Chicken Rice ($0.00)" + ls +
+                "    2. Fish Ball Noodles ($0.00)" + ls + ls;
         assertEquals(expected, outContent.toString(), "Meal list output does not match.");
     }
 
@@ -154,7 +154,7 @@ public class UserInterfaceTest {
         main(null);
         Meal mockMeal = new Meal("Chicken Rice");
         ui.printRemovedMessage(mockMeal, 2);
-        String expected = "Chicken Rice ($1.00) has been removed from your meal list!" + ls +
+        String expected = "Chicken Rice ($0.00) has been removed from your meal list!" + ls +
                 "You have 2 meals in your meal list.";
         assertEquals(expected, outContent.toString(), "Removed message output does not match.");
     }
@@ -164,7 +164,7 @@ public class UserInterfaceTest {
         main(null);
         Meal mockMeal = new Meal("Chicken Rice");
         ui.printDeletedMessage(mockMeal, 5);
-        String expected = "Chicken Rice ($1.00) has been removed from the global meal list!" + ls +
+        String expected = "Chicken Rice ($0.00) has been removed from the global meal list!" + ls +
                 "There are now 5 meals in the global meal list.";
         assertEquals(expected, outContent.toString(), "Deleted message output does not match.");
     }
