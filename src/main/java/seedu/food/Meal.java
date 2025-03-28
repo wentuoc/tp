@@ -1,9 +1,13 @@
 package seedu.food;
 
+import seedu.exceptions.DuplicateIngredientException;
+import seedu.exceptions.EZMealPlanException;
+import seedu.exceptions.IngredientPriceFormatException;
 import seedu.exceptions.InvalidPriceException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class Meal extends Product {
     private final List<Ingredient> ingredientList = new ArrayList<>();
@@ -31,9 +35,53 @@ public class Meal extends Product {
     public boolean equals(Object otherMeal) {
         if (otherMeal instanceof Meal other) {
             return this.getName().equalsIgnoreCase(other.getName()) &&
-                    this.ingredientList.equals(other.getIngredientList());
+                   this.ingredientList.equals(other.getIngredientList());
         }
         return false;
+    }
+
+    public double computeMealPrice() {
+        List<Ingredient> ingredientList = getIngredientList();
+        double totalPrice = 0;
+        for (Ingredient ingredient : ingredientList) {
+            totalPrice += ingredient.getPrice();
+        }
+        return totalPrice;
+    }
+
+    public void addIngredient(String ingredientName, String ingredientPrice, Logger logger)
+            throws EZMealPlanException {
+        double ingredientPriceDouble = checkValidIngPrice(ingredientName, ingredientPrice, logger);
+        Ingredient newIngredient = new Ingredient(ingredientName, ingredientPriceDouble);
+        checkDuplicateIngredients(newIngredient, logger);
+        List<Ingredient> ingredientList = getIngredientList();
+        ingredientList.add(newIngredient);
+    }
+
+    private void checkDuplicateIngredients(Ingredient newIngredient, Logger logger) throws EZMealPlanException {
+        String mealName = getName();
+        List<Ingredient> ingredientList = getIngredientList();
+        for (Ingredient ingredient : ingredientList) {
+            if (newIngredient.equals(ingredient)) {
+                String ingredientName = newIngredient.getName();
+                String message = "Triggers DuplicateIngredientException()!";
+                logger.warning(message);
+                throw new DuplicateIngredientException(ingredientName, mealName);
+            }
+        }
+    }
+
+    private static double checkValidIngPrice(String ingredientName, String ingredientPrice, Logger logger)
+            throws IngredientPriceFormatException {
+        try {
+            double hundred = 100.0;
+            double ingredientPriceDouble = Double.parseDouble(ingredientPrice);
+            return Math.round(ingredientPriceDouble * hundred) / hundred;
+        } catch (NumberFormatException numberFormatException) {
+            String message = "Triggers IngredientPriceFormatException()!";
+            logger.warning(message);
+            throw new IngredientPriceFormatException(ingredientName);
+        }
     }
 
     // If searching for an ingredient is a behavior of a single meal,
