@@ -12,7 +12,6 @@ import seedu.ui.UserInterface;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -61,10 +60,10 @@ public class CreateCommandTest {
                                 " rice (1.5), egg (0.5), cucumber (1)";
         Command command = new CreateCommand(validUserInput);
         command.execute(mealManager, ui);
-        List<Meal> mealList = mealManager.getMainMeals().getList();
+        int mealListSize = mealManager.getMainMeals().size();
         int expectedMealListSize = 1;
-        assertEquals(expectedMealListSize, mealList.size());
-        checkExpectedStrings(mealList);
+        assertEquals(expectedMealListSize, mealListSize);
+        checkExpectedStrings();
         logger.info("create_success() test passed");
     }
 
@@ -111,9 +110,9 @@ public class CreateCommandTest {
         }
     }
 
-    private static void checkExpectedStrings(List<Meal> mealList) {
+    private void checkExpectedStrings() {
         int zeroIndex = 0;
-        Meal meal = mealList.get(zeroIndex);
+        Meal meal = mealManager.getMainMeals().getList().get(zeroIndex);
         String expectedMealString = "chicken rice ($5.50)";
         assertEquals(expectedMealString, meal.toString());
         String mealStringMsg = "Matching meal string.";

@@ -51,7 +51,7 @@ public class CreateCheckerTest {
     }
 
     @Test
-    public void create_checker_success() throws EZMealPlanException {
+    public void createChecker_success() throws EZMealPlanException {
         main(null);
         String validUserInput = "create /mname chicken rice /ing chicken breast (2.5)," +
                                 " rice (1.5), egg (0.5), cucumber (1)";
@@ -61,7 +61,7 @@ public class CreateCheckerTest {
     }
 
     @Test
-    public void create_checker_fail() {
+    public void createChecker_fail() {
         main(null);
         checkMissingMname();
         checkMissingIng();
