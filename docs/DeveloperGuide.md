@@ -263,15 +263,10 @@ EZMealPlan provides a **simple, command-line interface** for **selecting and man
 
 1. Ensure you have Java 17 installed.
 
-2. Compile using:
+2. Run using:
 ```
-javac EZMealPlan.java
+java -jar ezmealplan.jar
 ```
-3. Run using:
-```
-java EZMealPlan
-```
-
 ### Testing Scenarios
 
 - **`Load data`**: Ensure main_meal_list.txt and user_meal_list.txt are present.
