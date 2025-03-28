@@ -18,7 +18,7 @@ public class ListCommandTest {
     /**
      * Define a UserInterface class for testing, to capture the params of printMealList.
      */
-    public class TestUserInterface extends UserInterface {
+    public static class TestUserInterface extends UserInterface {
         List<Meal> capturedMeals;
         String capturedListName;
 

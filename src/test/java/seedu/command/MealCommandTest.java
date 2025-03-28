@@ -1,4 +1,4 @@
-package seedu.ui;
+package seedu.command;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
@@ -7,17 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import seedu.command.MealCommand;
 import seedu.exceptions.EZMealPlanException;
 import seedu.food.Meal;
 import seedu.logic.MealManager;
+import seedu.ui.UserInterface;
 
 public class MealCommandTest {
 
     /**
      * Define a UserInterface class for testing, to capture the params of printMealList.
      */
-    public class TestUserInterface extends UserInterface {
+    public static class TestUserInterface extends UserInterface {
         List<Meal> capturedMeals;
         String capturedListName;
 
