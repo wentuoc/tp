@@ -4,7 +4,7 @@
 
 {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
 
-## Design & implementation
+## Design
 
 EZMealPlan follows a modular and object-oriented design centered around a command-based architecture.
 
@@ -32,6 +32,24 @@ This sequence diagram shows the processes that EZMealPlan system has to undergo 
 
 ![img.png](img.png)
 This sequence diagram shows the general flow of how the EZMealPlan system process the respective command inputted by the user. Many relevant details and classes have been omitted for the purpose of simplicity. The implementations for the respective commands will be explained in greater details and illustrated with UML diagrams later.
+
+### Food Package
+
+The food package contains the abstract class `Product`, as well as `Ingredient` and `Meal` classes.
+
+![.\diagrams\Food.png](.\diagrams\Food.png)
+
+The `Ingredient` class,
+* Represents an ingredient, which has a `name` and `price`
+* Contains the `setPrice` method, as well as private methods to check that 
+the price provided is non-negative and able to be parsed as a `Double`
+
+The `Meal` class,
+* Represents a meal, which has a `name`, `price`, and `ingredientList` of type `List<Ingredient>`.
+* Contains the `addIngredient` method that adds an `Ingredient` into its `ingredientList`. While doing so, it
+also retrieves and adds the `price` of the `Ingredient` into the meal's `price`.
+* Contains a private method that checks if an `Ingredient` to be added is already duplicated in the `ingredienList`, and
+throws an exception.
 
 ### Enhancements in the Command Module
 
@@ -183,9 +201,16 @@ public void testExecute_listCommand_printsMainList() throws EZMealPlanException 
     assertIterableEquals(expectedMeals, testUI.capturedMeals);
 }
 ```
+## Implementation
 
-## Product scope
-### Target user profile
+
+## Appendices
+
+
+### Appendix A: Product scope
+
+
+#### Target user profile
 
 - **Health-conscious** users who **track food intake** and **prefer meal transparency**.
 
@@ -197,7 +222,7 @@ public void testExecute_listCommand_printsMainList() throws EZMealPlanException 
 
 - Users who want a **lightweight, offline meal planning CLI** app.
 
-### Value proposition
+#### Value proposition
 
 EZMealPlan provides a **simple, command-line interface** for **selecting and managing meals**, **filtering by cost or ingredients**, and **building personalized meal plans**. It solves the problem of:
 
@@ -205,7 +230,7 @@ EZMealPlan provides a **simple, command-line interface** for **selecting and man
 - **Remembering** preferred meals or dietary patterns
 3- **Planning meals** within budget constraints
 
-## User Stories
+### Appendix B: User Stories
 
 | Version | As a ...                 | I want to ...                                                                                           | So that I can ...                                                             |
 |---------|--------------------------|---------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
@@ -233,7 +258,7 @@ EZMealPlan provides a **simple, command-line interface** for **selecting and man
 
 |v2.0|user|find a to-do item by name|locate a to-do without having to go through the entire list|
 
-## Non-Functional Requirements
+### Appendix C: Non-Functional Requirements
 
 - Runs on any **Java 17-compatible environment**.
 
@@ -241,7 +266,7 @@ EZMealPlan provides a **simple, command-line interface** for **selecting and man
 
 - Supports **fast startup** (<1 second).
 
-## Glossary
+### Appendix D: Glossary
 
 - **Meal** – A recipe with a name, total cost, and associated ingredients.
 
@@ -257,7 +282,7 @@ EZMealPlan provides a **simple, command-line interface** for **selecting and man
 
 - **View** – Shows ingredients and costs of a selected meal.
 
-## Instructions for manual testing
+### Appendix E: Instructions for manual testing
 
 ### Setup
 
