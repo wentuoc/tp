@@ -1,6 +1,7 @@
 package seedu.food;
 
 import org.junit.jupiter.api.Test;
+import seedu.exceptions.DuplicateIngredientException;
 import seedu.exceptions.InvalidPriceException;
 
 import java.io.IOException;
@@ -41,7 +42,7 @@ class MealTest {
     }
 
     @Test
-    void equals_sameNameSameIngredient_true() throws InvalidPriceException {
+    void equals_sameNameSameIngredient_true() throws InvalidPriceException, DuplicateIngredientException {
         logger.fine("Running equals_sameNameSameIngredient_true()");
         Ingredient chicken = new Ingredient("Chicken", 1);
         Meal meal1 = new Meal("Chicken Rice");
@@ -53,7 +54,7 @@ class MealTest {
     }
 
     @Test
-    void equals_sameNameDifferentIngredient_false() throws InvalidPriceException {
+    void equals_sameNameDifferentIngredient_false() throws InvalidPriceException, DuplicateIngredientException {
         logger.fine("Running equals_sameNameDifferentIngredient_false()");
         Ingredient steamedChicken = new Ingredient("Steamed Chicken", 1);
         Ingredient roastedChicken = new Ingredient("Roasted Chicken", 1);
@@ -66,7 +67,7 @@ class MealTest {
     }
 
     @Test
-    void equals_differentNameSameIngredient_false() throws InvalidPriceException {
+    void equals_differentNameSameIngredient_false() throws InvalidPriceException, DuplicateIngredientException {
         logger.fine("Running equals_differentNameSameIngredient_false()");
         Ingredient chicken = new Ingredient("Chicken", 1);
         Meal meal1 = new Meal("Chicken Rice");
@@ -78,7 +79,7 @@ class MealTest {
     }
 
     @Test
-    void equals_differentNameDifferentIngredient_false() throws InvalidPriceException {
+    void equals_differentNameDifferentIngredient_false() throws InvalidPriceException, DuplicateIngredientException {
         logger.fine("Running equals_differentNameDifferentIngredient_false()");
         Ingredient chicken = new Ingredient("Chicken", 1);
         Ingredient duck = new Ingredient("Duck", 1.2);
@@ -91,7 +92,8 @@ class MealTest {
     }
 
     @Test
-    void equals_differentCapitalisationSameIngredient_true() throws InvalidPriceException {
+    void equals_differentCapitalisationSameIngredient_true()
+            throws InvalidPriceException, DuplicateIngredientException {
         logger.fine("Running equals_differentCapitalisationSameIngredient_true()");
         Ingredient chicken = new Ingredient("Chicken", 1);
         Meal meal1 = new Meal("Chicken Rice");
@@ -103,7 +105,8 @@ class MealTest {
     }
 
     @Test
-    void addIngredient_ingredients_correctIngredientListAndPrice() throws InvalidPriceException {
+    void addIngredient_ingredients_correctIngredientListAndPrice()
+            throws InvalidPriceException, DuplicateIngredientException {
         logger.fine("Running addIngredient_ingredients_correctIngredientListAndPrice()");
         Ingredient chicken = new Ingredient("Chicken", 1);
         Ingredient rice = new Ingredient("Rice", 0.5);

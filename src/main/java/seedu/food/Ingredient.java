@@ -1,11 +1,22 @@
 package seedu.food;
 
+import seedu.exceptions.IngredientPriceFormatException;
 import seedu.exceptions.InvalidPriceException;
 
+import java.util.logging.Logger;
+
 public class Ingredient extends Product {
+    private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
     public Ingredient(String ingredientName, double ingredientPrice) throws InvalidPriceException {
         setName(ingredientName);
         setPrice(ingredientPrice);
+    }
+
+    public Ingredient(String ingredientName, String ingredientPriceString)
+            throws InvalidPriceException, IngredientPriceFormatException {
+        setName(ingredientName);
+        setPrice(checkValidIngPrice(ingredientPriceString));
     }
 
     public void setPrice(double price) throws InvalidPriceException {
@@ -28,6 +39,18 @@ public class Ingredient extends Product {
             return thisName.equalsIgnoreCase(otherName);
         } else {
             return false;
+        }
+    }
+
+    private double checkValidIngPrice(String ingredientPrice) throws IngredientPriceFormatException {
+        try {
+            double hundred = 100.0;
+            double ingredientPriceDouble = Double.parseDouble(ingredientPrice);
+            return Math.round(ingredientPriceDouble * hundred) / hundred;
+        } catch (NumberFormatException numberFormatException) {
+            String message = "Triggers IngredientPriceFormatException()!";
+            logger.warning(message);
+            throw new IngredientPriceFormatException(getName());
         }
     }
 

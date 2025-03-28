@@ -1,5 +1,6 @@
 package seedu.storage;
 
+import seedu.exceptions.DuplicateIngredientException;
 import seedu.exceptions.InvalidPriceException;
 import seedu.food.Ingredient;
 import seedu.food.Meal;
@@ -92,12 +93,13 @@ public class Storage {
         //Throw error message if detected an ingredient with invalid price and skips to the next meal.
         try {
             checkMealsBeforeAdd(parts, meals);
-        } catch (InvalidPriceException invalidPriceException) {
-            System.err.println(invalidPriceException.getMessage());
+        } catch (InvalidPriceException | DuplicateIngredientException exception) {
+            System.err.println(exception.getMessage());
         }
     }
 
-    private static void checkMealsBeforeAdd(String[] parts, List<Meal> meals) throws InvalidPriceException {
+    private static void checkMealsBeforeAdd(String[] parts, List<Meal> meals)
+            throws InvalidPriceException, DuplicateIngredientException {
         // The first part is the meal name.
         int mealNameIndex = 0;
         String mealName = parts[mealNameIndex];
@@ -106,7 +108,8 @@ public class Storage {
         meals.add(meal);
     }
 
-    private static Meal addIngredientsToMeal(String mealName, String[] parts) throws InvalidPriceException {
+    private static Meal addIngredientsToMeal(String mealName, String[] parts)
+            throws InvalidPriceException, DuplicateIngredientException {
         Meal meal = new Meal(mealName);
         // For each remaining part, extract ingredient name and its actual price.
         for (int i = 1; i < parts.length; i++) {
