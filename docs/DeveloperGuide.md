@@ -37,7 +37,7 @@ This sequence diagram shows the general flow of how the EZMealPlan system proces
 
 The food package contains the abstract class `Product`, as well as `Ingredient` and `Meal` classes.
 
-![.\diagrams\Food.png](.\diagrams\Food.png)
+![Food.png](diagrams/Food.png)
 
 The `Ingredient` class,
 * Represents an ingredient, which has a `name` and `price`
