@@ -34,7 +34,7 @@ public class Meal extends Product {
 
     /**
      * Overrides the equals method based on the following criteria: Two Meal objects are equal if and only if they have
-     * the same name and ingredient list (and hence price).
+     * the same name and ingredient names.
      */
     @Override
     public boolean equals(Object otherMeal) {

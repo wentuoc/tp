@@ -78,12 +78,25 @@ class MealTest {
     }
 
     @Test
-    void equals_DifferentCapitalisationSameIngredient_true() throws InvalidPriceException {
+    void equals_differentCapitalisationSameIngredient_true() throws InvalidPriceException {
         Ingredient chicken = new Ingredient("Chicken", 1);
         Meal meal1 = new Meal("Chicken Rice");
         meal1.addIngredient(chicken);
         Meal meal2 = new Meal("chicken rice");
         meal2.addIngredient(chicken);
         assertEquals(meal1, meal2);
+    }
+
+    @Test
+    void addIngredient_ingredients_correctIngredientListAndPrice() throws InvalidPriceException {
+        Ingredient chicken = new Ingredient("Chicken", 1);
+        Ingredient rice = new Ingredient("Rice", 0.5);
+        Ingredient cucumber = new Ingredient("Cucumber", 0.3);
+        Meal meal1 = new Meal("Chicken Rice");
+        meal1.addIngredient(chicken);
+        meal1.addIngredient(rice);
+        meal1.addIngredient(cucumber);
+        assertEquals(1.8, meal1.getPrice());
+        assertEquals("[Chicken ($1.00), Rice ($0.50), Cucumber ($0.30)]", meal1.getIngredientList().toString());
     }
 }
