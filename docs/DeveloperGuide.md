@@ -202,8 +202,14 @@ public void testExecute_listCommand_printsMainList() throws EZMealPlanException 
 }
 ```
 ## Implementation
+
+
 ## Appendices
+
+
 ### Appendix A: Product scope
+
+
 #### Target user profile
 
 - **Health-conscious** users who **track food intake** and **prefer meal transparency**.
