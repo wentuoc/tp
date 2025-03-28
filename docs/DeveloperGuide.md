@@ -58,7 +58,7 @@ public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlan
 
 ##### 1.3 Sequence Diagram
 
-![img_2.png](img_2.png)
+![MealCommand.png](MealCommand.png)
 
 ##### 1.4 Unit Testing
 
@@ -131,7 +131,7 @@ public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlan
 
 ##### 2.3 Sequence Diagram
 
-![img_1.png](img_1.png)
+![ListCommand.png](ListCommand.png)
 
 ##### 2.4 Unit Testing
 
