@@ -23,10 +23,15 @@ public abstract class Product {
         return price;
     }
 
+    /**
+     * Sets the price of a product, which must be greater than or equals to 0.
+     *
+     * @throws InvalidPriceException If specified price is less than 0.
+     */
     public void setPrice(double price) throws InvalidPriceException {
         int zeroDollars = 0;
         String name = getName();
-        if (price <= zeroDollars) {
+        if (price < zeroDollars) {
             logger.severe("Trigger InvalidPriceException()!");
             throw new InvalidPriceException(name);
         }

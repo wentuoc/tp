@@ -1,5 +1,6 @@
 package seedu.storage;
 
+import seedu.exceptions.DuplicateIngredientException;
 import seedu.exceptions.InvalidPriceException;
 import seedu.food.Ingredient;
 import seedu.food.Meal;
@@ -92,35 +93,28 @@ public class Storage {
         //Throw error message if detected an ingredient with invalid price and skips to the next meal.
         try {
             checkMealsBeforeAdd(parts, meals);
-        } catch (InvalidPriceException invalidPriceException) {
-            System.err.println(invalidPriceException.getMessage());
+        } catch (InvalidPriceException | DuplicateIngredientException exception) {
+            System.err.println(exception.getMessage());
         }
     }
 
-    private static void checkMealsBeforeAdd(String[] parts, List<Meal> meals) throws InvalidPriceException {
+    private static void checkMealsBeforeAdd(String[] parts, List<Meal> meals)
+            throws InvalidPriceException, DuplicateIngredientException {
         // The first part is the meal name.
         int mealNameIndex = 0;
         String mealName = parts[mealNameIndex];
         Meal meal = addIngredientsToMeal(mealName, parts);
         // Optionally, compute the meal's total price as the sum of ingredient prices.
-        setMealPrice(meal);
         meals.add(meal);
     }
 
-    private static void setMealPrice(Meal meal) throws InvalidPriceException {
-        double mealPrice = 0;
-        for (Ingredient ing : meal.getIngredientList()) {
-            mealPrice += ing.getPrice();
-        }
-        meal.setPrice(mealPrice);
-    }
-
-    private static Meal addIngredientsToMeal(String mealName, String[] parts) throws InvalidPriceException {
+    private static Meal addIngredientsToMeal(String mealName, String[] parts)
+            throws InvalidPriceException, DuplicateIngredientException {
         Meal meal = new Meal(mealName);
         // For each remaining part, extract ingredient name and its actual price.
         for (int i = 1; i < parts.length; i++) {
             Ingredient ingredient = getIngredient(parts[i]);
-            meal.getIngredientList().add(ingredient);
+            meal.addIngredient(ingredient);
         }
         return meal;
     }

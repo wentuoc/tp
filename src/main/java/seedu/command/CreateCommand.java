@@ -45,8 +45,6 @@ public class CreateCommand extends Command {
         logger.fine("The user is now creating a new meal: " + mealName + ".");
         Meal newMeal = new Meal(mealName);
         addAllIngredients(ing, newMeal);
-        double mealPrice = newMeal.computeMealPrice();
-        newMeal.setPrice(mealPrice);
         return newMeal;
     }
 
@@ -60,13 +58,14 @@ public class CreateCommand extends Command {
 
     private void addAllIngredients(String ing, Meal newMeal) throws EZMealPlanException {
         String[] ingredientArray = extractIngredients(ing);
-        for (String ingredient : ingredientArray) {
-            String[] ingredientNamePrice = getNamePrice(ingredient);
+        for (String ingredientString : ingredientArray) {
+            String[] ingredientNamePrice = getNamePrice(ingredientString);
             int nameIndex = 0;
             int priceIndex = 1;
             String ingredientName = ingredientNamePrice[nameIndex];
             String ingredientPrice = ingredientNamePrice[priceIndex];
-            newMeal.addIngredient(ingredientName, ingredientPrice, logger);
+            Ingredient newIngredient = new Ingredient(ingredientName, ingredientPrice);
+            newMeal.addIngredient(newIngredient);
         }
         ArrayList<Ingredient> mealIngredients = (ArrayList<Ingredient>) newMeal.getIngredientList();
         mealIngredients.sort(Comparator.comparing(Product::getName));
