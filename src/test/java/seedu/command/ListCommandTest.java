@@ -18,12 +18,13 @@ public class ListCommandTest {
     /**
      * Define a UserInterface class for testing, to capture the params of printMealList.
      */
-    public static class TestUserInterface extends UserInterface {
+    public class TestUserInterface extends UserInterface {
         List<Meal> capturedMeals;
         String capturedListName;
 
         @Override
         public void printMealList(List<Meal> meals, String mealListName) {
+
             this.capturedMeals = new ArrayList<>(meals);
             this.capturedListName = mealListName;
         }

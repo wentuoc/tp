@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+
 import seedu.exceptions.EZMealPlanException;
 import seedu.food.Meal;
 import seedu.logic.MealManager;
@@ -17,7 +18,7 @@ public class MealCommandTest {
     /**
      * Define a UserInterface class for testing, to capture the params of printMealList.
      */
-    public static class TestUserInterface extends UserInterface {
+    public class TestUserInterface extends UserInterface {
         List<Meal> capturedMeals;
         String capturedListName;
 
