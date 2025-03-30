@@ -31,8 +31,8 @@ EZMealPlan follows a modular and object-oriented design centered around a comman
 ![BootingUpEZMealPlan.png](diagrams/BootingUpEZMealPlan.png)
 This sequence diagram shows the processes that EZMealPlan system has to undergo while it is being booted up before it is ready for usage.
 
-![ConstructingMeals.png](diagrams/ConstructingMeals.png)
-This sequence diagram shows the procedures of extracting meals from the "selectedFile" input, which can be either the mainList.txt file or UserList.txt.
+![ConstructingMainMeals.png](diagrams/ConstructingMainMeals.png)
+This sequence diagram shows the procedures of extracting meals from the "mainMealFile" (mainList.txt). The procedures of extracting meals from the "userMealFile" (userList.txt) can be depicted simply by replacing "mainMealFile" with "userMealFile", storage.getMainListFile() with storage.getUserListFile(), mealManager.getMainMeals() with mealManager.getUserMeals() and lastly, "mainMeals" of MainMeals class with "userMeals" of UserMeals class.
 
 ![RunCommandSequenceDiagram.png](diagrams/RunCommandSequenceDiagram.png)
 This sequence diagram shows the general flow of how the EZMealPlan system process the respective command inputted by the user. Many relevant details and classes have been omitted for the purpose of simplicity. The implementations for the respective commands will be explained in greater details and illustrated with UML diagrams later.
