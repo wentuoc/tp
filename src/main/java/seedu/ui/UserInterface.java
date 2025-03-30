@@ -44,7 +44,7 @@ public class UserInterface {
     }
 
     public void printErrorMessage(Exception exception) {
-        System.out.println(exception.getMessage());
+        System.err.println(exception.getMessage());
     }
 
     public void printAddMealMessage(Meal meal, Meals mealList) {

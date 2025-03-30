@@ -29,11 +29,11 @@ public class EZMealPlan {
         setupLogger(fileName);
         UserInterface ui = new UserInterface();
         MealManager mealManager = new MealManager();
-        checkConstructedLists(mealManager);
+        checkConstructedLists(mealManager, ui);
         // Check for valid meals that are present in the user list but not in the main list
         // and add these meals to the main list.
         mealManager.compareLists();
-
+        logger.fine("running EZMealPlan");
         ui.printGreetingMessage();
         String userInput;
         while (true) {
@@ -46,23 +46,25 @@ public class EZMealPlan {
                 break;
             }
         }
+        logger.fine("exiting EZMealPlan");
     }
 
-    private static void checkConstructedLists(MealManager mealManager) {
+    private static void checkConstructedLists(MealManager mealManager, UserInterface ui) {
+        // Create and load both main meal list (mainList.txt) and user meal list (userList.txt)
         try {
             Storage.createListFiles();
             File mainMealFile = Storage.getMainListFile();
             File userMealFile = Storage.getUserListFile();
-            constructList(mealManager, mainMealFile);
-            constructList(mealManager, userMealFile);
-
+            constructList(mealManager, mainMealFile, ui);
+            constructList(mealManager, userMealFile, ui);
         } catch (IOException ioException) {
             System.err.println("Could not load tasks: " + ioException.getMessage());
         }
     }
 
-    private static void constructList(MealManager mealManager, File selectedFile) throws IOException {
-        // Create and load both main meal list (mainList.txt) and user meal list (userList.txt)
+    private static void constructList(MealManager mealManager, File selectedFile, UserInterface ui) throws IOException {
+        // Retrieve saved meals from the respective file and append them into the respective Meals class
+        // If the file (mainList.txt) is empty, preset meals are appended into the MainMeals class instead.
         List<Meal> mealList = Storage.loadExistingList(selectedFile);
         Meals selectedMeals = selectedFile.equals(Storage.getMainListFile()) ?
                 mealManager.getMainMeals() : mealManager.getUserMeals();
@@ -71,26 +73,27 @@ public class EZMealPlan {
             mealList = Storage.loadPresetMeals();
         }
         for (Meal meal : mealList) {
-            extractMealIntoList(meal, selectedMeals, mealManager);
+            extractMealIntoList(meal, selectedMeals, mealManager, ui);
         }
     }
 
-    private static void extractMealIntoList(Meal meal, Meals meals, MealManager mealManager) {
+    private static void extractMealIntoList(Meal meal, Meals meals, MealManager mealManager, UserInterface ui) {
         //Throw error message if detected an ingredient with invalid price and skips to the next meal.
         try {
             mealManager.addMeal(meal, meals);
         } catch (EZMealPlanException ezMealPlanException) {
-            System.err.println(ezMealPlanException.getMessage());
+            ui.printErrorMessage(ezMealPlanException);
+            logger.info("EZMealPlanException triggered");
         }
     }
 
     private static void executeCommand(Command command, MealManager mealManager, UserInterface ui) {
-        //Throw error message if detected an ingredient with invalid price and skips to the next meal.
         try {
             // Executes the command parsed out
             command.execute(mealManager, ui);
         } catch (EZMealPlanException ezMealPlanException) {
             ui.printErrorMessage(ezMealPlanException);
+            logger.info("EZMealPlanException triggered");
         }
     }
 
