@@ -28,9 +28,13 @@ EZMealPlan follows a modular and object-oriented design centered around a comman
 
 - All user inputs are case-sensitive and normalised to lowercase.
 
+![BootingUpEZMealPlan.png](diagrams/BootingUpEZMealPlan.png)
 This sequence diagram shows the processes that EZMealPlan system has to undergo while it is being booted up before it is ready for usage.
 
-![img.png](img.png)
+![ConstructingMeals.png](diagrams/ConstructingMeals.png)
+This sequence diagram shows the procedures of extracting meals from the "selectedFile" input, which can be either the mainList.txt file or UserList.txt.
+
+![RunCommandSequenceDiagram.png](diagrams/RunCommandSequenceDiagram.png)
 This sequence diagram shows the general flow of how the EZMealPlan system process the respective command inputted by the user. Many relevant details and classes have been omitted for the purpose of simplicity. The implementations for the respective commands will be explained in greater details and illustrated with UML diagrams later.
 
 ### Food Package
@@ -96,7 +100,7 @@ public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlan
 
 ##### 1.3 Sequence Diagram
 
-![MealCommand.png](MealCommand.png)
+![.\diagrams\MealCommand.png](.\diagrams\MealCommand.png)
 
 ##### 1.4 Unit Testing
 
@@ -169,7 +173,7 @@ public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlan
 
 ##### 2.3 Sequence Diagram
 
-![ListCommand.png](ListCommand.png)
+![.\diagrams\ListCommand.png](.\diagrams\ListCommand.png)
 
 ##### 2.4 Unit Testing
 
