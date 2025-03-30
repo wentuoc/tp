@@ -64,10 +64,11 @@ public class EZMealPlan {
     private static void constructList(MealManager mealManager, File selectedFile) throws IOException {
         // Create and load both main meal list (mainList.txt) and user meal list (userList.txt)
         List<Meal> mealList = Storage.loadExistingList(selectedFile);
-        Meals selectedMeals = selectedFile.equals(Storage.getMainListFile()) ?
+        File mainListFile = Storage.getMainListFile();
+        Meals selectedMeals = selectedFile.equals(mainListFile) ?
                 mealManager.getMainMeals() : mealManager.getUserMeals();
         // Load pre-set meals if the meal list from the main list file is empty.
-        if (mealList.isEmpty() && selectedFile.equals(Storage.getMainListFile())) {
+        if (mealList.isEmpty() && selectedFile.equals(mainListFile)) {
             mealList = Storage.loadPresetMeals();
         }
         for (Meal meal : mealList) {
