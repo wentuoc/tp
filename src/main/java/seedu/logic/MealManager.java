@@ -28,7 +28,6 @@ public class MealManager {
     // Adds a new meal to the specified list after checking for duplicates
     public void addMeal(Meal newMeal, Meals mealsInput) throws EZMealPlanException {
         chosenMeals = mealsInput instanceof MainMeals ? getMainMeals() : getUserMeals();
-        chosenMeals.checkDuplicateMeal(newMeal);
         chosenMeals.addMeal(newMeal);
     }
 
