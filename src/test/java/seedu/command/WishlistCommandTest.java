@@ -19,10 +19,10 @@ import seedu.food.Meal;
 import seedu.logic.MealManager;
 import seedu.ui.UserInterface;
 
-public class MealCommandTest {
-    private static final Logger logger = Logger.getLogger(MealCommandTest.class.getName());
+public class WishlistCommandTest {
+    private static final Logger logger = Logger.getLogger(WishlistCommandTest.class.getName());
 
-    public MealCommandTest() {
+    public WishlistCommandTest() {
         String fileName = "MealCommandTest.log";
         setupLogger(fileName);
     }
@@ -71,8 +71,8 @@ public class MealCommandTest {
         mealManager.getWishList().getList().add(meal2);
 
         TestUserInterface testUI = new TestUserInterface();
-        MealCommand mealCommand = new MealCommand();
-        mealCommand.execute(mealManager, testUI);
+        WishlistCommand wishlistCommand = new WishlistCommand();
+        wishlistCommand.execute(mealManager, testUI);
 
         assertEquals("user chosen meals", testUI.capturedListName);
         List<Meal> expectedMeals = new ArrayList<>();

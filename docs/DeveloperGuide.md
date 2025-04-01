@@ -118,8 +118,8 @@ public void testExecute_mealCommand_printsUserChosenMeals() throws EZMealPlanExc
     mealManager.getUserMeals().getList().add(meal2);
 
     TestUserInterface testUI = new TestUserInterface();
-    MealCommand mealCommand = new MealCommand();
-    mealCommand.execute(mealManager, testUI);
+    MealCommand wishlistCommand = new MealCommand();
+    wishlistCommand.execute(mealManager, testUI);
 
     assertEquals("user chosen meals", testUI.capturedListName);
     List<Meal> expectedMeals = new ArrayList<>();
@@ -191,8 +191,8 @@ public void testExecute_listCommand_printsMainList() throws EZMealPlanException 
     mealManager.getMainMeals().getList().add(meal2);
 
     TestUserInterface testUI = new TestUserInterface();
-    ListCommand listCommand = new ListCommand();
-    listCommand.execute(mealManager, testUI);
+    ListCommand recipesCommand = new ListCommand();
+    recipesCommand.execute(mealManager, testUI);
 
     assertEquals("main list", testUI.capturedListName);
     List<Meal> expectedMeals = new ArrayList<>();

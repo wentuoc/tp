@@ -19,10 +19,10 @@ import seedu.food.Meal;
 import seedu.logic.MealManager;
 import seedu.ui.UserInterface;
 
-public class ListCommandTest {
-    private static final Logger logger = Logger.getLogger(ListCommandTest.class.getName());
+public class RecipesCommandTest {
+    private static final Logger logger = Logger.getLogger(RecipesCommandTest.class.getName());
 
-    public ListCommandTest() {
+    public RecipesCommandTest() {
         String fileName = "ListCommandTest.log";
         setupLogger(fileName);
     }
@@ -70,8 +70,8 @@ public class ListCommandTest {
         mealManager.getRecipesList().getList().add(meal2);
 
         TestUserInterface testUI = new TestUserInterface();
-        ListCommand listCommand = new ListCommand();
-        listCommand.execute(mealManager, testUI);
+        RecipesCommand recipesCommand = new RecipesCommand();
+        recipesCommand.execute(mealManager, testUI);
 
         assertEquals("main list", testUI.capturedListName);
         List<Meal> expectedMeals = new ArrayList<>();

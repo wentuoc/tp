@@ -16,15 +16,19 @@ public abstract class MealList {
         return meals;
     }
 
-    // Adds a new meal to the specified list after checking for duplicates
-    public void addMeal(Meal newMeal) throws EZMealPlanException {
+    /**
+     * Adds a new meal to the List after checking for duplicates.
+     *
+     * @throws DuplicateMealException if the same meal already exists in the List.
+     */
+    public void addMeal(Meal newMeal) throws DuplicateMealException {
         checkDuplicateMeal(newMeal);
         meals.add(newMeal);
         meals.sort(Comparator.comparing(meal -> meal.getName().toLowerCase()));
     }
 
     // Checks whether the newMeal already exists in the given meal list
-    public void checkDuplicateMeal(Meal newMeal) throws EZMealPlanException {
+    public void checkDuplicateMeal(Meal newMeal) throws DuplicateMealException {
         String mealListName = this instanceof RecipesList ? "main meal list" : "user meal list";
         for (Meal meal : meals) {
             if (meal.equals(newMeal)) {

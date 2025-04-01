@@ -6,8 +6,8 @@ import seedu.command.Command;
 import seedu.command.CreateCommand;
 import seedu.command.FilterCommand;
 import seedu.command.HelpCommand;
-import seedu.command.ListCommand;
-import seedu.command.MealCommand;
+import seedu.command.RecipesCommand;
+import seedu.command.WishlistCommand;
 import seedu.command.RemoveCommand;
 import seedu.command.DeleteCommand;
 import seedu.command.SelectCommand;
@@ -39,9 +39,9 @@ public class Parser {
         } else if (lowerCaseUserInput.startsWith(select)) {
             return new SelectCommand(userInput);
         } else if (lowerCaseUserInput.startsWith(list)) {
-            return new ListCommand();
+            return new RecipesCommand();
         } else if (lowerCaseUserInput.startsWith(meal)) {
-            return new MealCommand();
+            return new WishlistCommand();
         } else if (lowerCaseUserInput.startsWith(clear)) {
             return new ClearCommand();
         } else if (lowerCaseUserInput.startsWith(help)) {
