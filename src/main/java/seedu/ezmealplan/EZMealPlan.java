@@ -73,7 +73,8 @@ public class EZMealPlan {
         constructList(mealManager, mainMealFile, mainMeals);
     }
 
-    private static void constructList(MealManager mealManager, File selectedFile) throws IOException {
+    private static void constructList(MealManager mealManager, File selectedFile, Meals selectedMeals)
+            throws IOException {
         // Retrieve saved meals from the respective file and append them into the respective Meals class
         // If the file (mainList.txt) is empty, preset meals are appended into the MainMeals class instead.
         List<Meal> mealList = Storage.loadExistingList(selectedFile);
