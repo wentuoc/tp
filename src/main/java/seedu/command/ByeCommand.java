@@ -16,8 +16,8 @@ public class ByeCommand extends Command {
 
     @Override
     public void execute(MealManager mealManager, UserInterface ui) {
-        List<Meal> mainMealList = mealManager.getMainMeals().getList();
-        List<Meal> userMealList = mealManager.getUserMeals().getList();
+        List<Meal> mainMealList = mealManager.getRecipesList().getList();
+        List<Meal> userMealList = mealManager.getWishList().getList();
         clearAndUpdateFile(mainMealList, mealManager);
         clearAndUpdateFile(userMealList, mealManager);
         ui.printGoodbye();
@@ -25,7 +25,7 @@ public class ByeCommand extends Command {
 
 
     private void clearAndUpdateFile(List<Meal> mealList, MealManager mealManager) {
-        List<Meal> mainMealList = mealManager.getMainMeals().getList();
+        List<Meal> mainMealList = mealManager.getRecipesList().getList();
         String filePath = mainMealList.equals(mealList) ? Storage.getMainListFilePath() : Storage.getUserListFilePath();
         Storage.clearFile(filePath);
         writeMealsToFile(mealList, filePath);

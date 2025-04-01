@@ -54,8 +54,8 @@ public class SelectCommandTest {
 
     @Test
     public void selectCommand_success() {
-        mealManager.getMainMeals().getList().clear();
-        mealManager.getUserMeals().getList().clear();
+        mealManager.getRecipesList().getList().clear();
+        mealManager.getWishList().getList().clear();
         logger.fine("running selectCommand_success()");
         String[] validSelectCommands = {"select 2 /mname a", "select 1 /ing b,c", "select 2 /mcost 2"
                 , "select 4 /mname Mname", "select 2 /ing Ing", "select 1 /mcost 5"};
@@ -68,8 +68,8 @@ public class SelectCommandTest {
     @Test
     public void selectCommand_fail() {
         logger.fine("running selectCommand_fail()");
-        mealManager.getMainMeals().getList().clear();
-        mealManager.getUserMeals().getList().clear();
+        mealManager.getRecipesList().getList().clear();
+        mealManager.getWishList().getList().clear();
         addMeals();
         checkInvalidPrice();
         checkSelectDuplicateMeal();
@@ -177,7 +177,7 @@ public class SelectCommandTest {
 
     private void addMeals() {
         List<Meal> mealList = Storage.loadPresetMeals();
-        MealList mainMeal = mealManager.getMainMeals();
+        MealList mainMeal = mealManager.getRecipesList();
         for (Meal meal : mealList) {
             addMeal(meal, mainMeal);
         }

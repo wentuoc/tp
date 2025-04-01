@@ -11,7 +11,7 @@ public class ClearCommand extends Command {
 
     @Override
     public void execute(MealManager mealManager, UserInterface ui) {
-        MealList userMeals = mealManager.getUserMeals();
+        MealList userMeals = mealManager.getWishList();
         List<Meal> userMealList = userMeals.getList();
         userMealList.clear();
         ui.printClearedList();

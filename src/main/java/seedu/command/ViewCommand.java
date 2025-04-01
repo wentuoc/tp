@@ -36,8 +36,8 @@ public class ViewCommand extends Command {
     }
 
     private void viewMeal(String mainOrUser, MealManager mealManager, UserInterface ui) throws EZMealPlanException {
-        MealList mealList = mainOrUser.equals(main) ? mealManager.getMainMeals()
-                : mealManager.getUserMeals();
+        MealList mealList = mainOrUser.equals(main) ? mealManager.getRecipesList()
+                : mealManager.getWishList();
         if (checkEmptyMealList(mainOrUser, mealList)) {
             return;
         }

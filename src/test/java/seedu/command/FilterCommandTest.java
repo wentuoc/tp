@@ -54,7 +54,7 @@ public class FilterCommandTest {
 
     private void addMeals() {
         List<Meal> mealList = Storage.loadPresetMeals();
-        MealList mainMeal = mealManager.getMainMeals();
+        MealList mainMeal = mealManager.getRecipesList();
         for (Meal meal : mealList) {
             addMeal(meal, mainMeal);
         }
@@ -71,7 +71,7 @@ public class FilterCommandTest {
 
     @Test
     public void filterCommand_success() {
-        mealManager.getMainMeals().getList().clear();
+        mealManager.getRecipesList().getList().clear();
         logger.fine("running filterCommand_success()");
         String[] validFilterCommands = {"filter /mname a", "filter /ing b,c", "filter /mcost 2", "filter /mname Mname"
                 , "filter /ing Ing", "filter /mcost 5"};
@@ -84,7 +84,7 @@ public class FilterCommandTest {
     @Test
     public void filterCommand_fail() {
         logger.fine("running filterCommand_fail()");
-        mealManager.getMainMeals().getList().clear();
+        mealManager.getRecipesList().getList().clear();
         addMeals();
         checkMissingFilterKeyword();
         checkInvalidPrice();

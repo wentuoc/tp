@@ -3,31 +3,31 @@ package seedu.logic;
 import seedu.exceptions.EZMealPlanException;
 import seedu.food.Ingredient;
 import seedu.food.Meal;
-import seedu.meallist.MainMeals;
+import seedu.meallist.RecipesList;
 import seedu.meallist.MealList;
-import seedu.meallist.UserMeals;
+import seedu.meallist.WishList;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MealManager {
     MealList chosenMealList;
-    private final MealList userMeals = new UserMeals();
-    private final MealList mainMeals = new MainMeals();
+    private final MealList wishList = new WishList();
+    private final MealList recipesList = new RecipesList();
 
 
-    public MealList getUserMeals() {
-        return userMeals;
+    public MealList getWishList() {
+        return wishList;
     }
 
-    public MealList getMainMeals() {
-        return mainMeals;
+    public MealList getRecipesList() {
+        return recipesList;
     }
 
 
     // Adds a new meal to the specified list after checking for duplicates
     public void addMeal(Meal newMeal, MealList mealListInput) throws EZMealPlanException {
-        chosenMealList = mealListInput instanceof MainMeals ? getMainMeals() : getUserMeals();
+        chosenMealList = mealListInput instanceof RecipesList ? getRecipesList() : getWishList();
         chosenMealList.checkDuplicateMeal(newMeal);
         chosenMealList.addMeal(newMeal);
     }
@@ -35,7 +35,7 @@ public class MealManager {
 
     public List<Meal> filteringByMcost(double mcostDouble) {
         List<Meal> filteredMealList = new ArrayList<>();
-        List<Meal> mainMealList = getMainMeals().getList();
+        List<Meal> mainMealList = getRecipesList().getList();
         for (Meal meal : mainMealList) {
             if (meal.getPrice() == mcostDouble) {
                 filteredMealList.add(meal);
@@ -46,7 +46,7 @@ public class MealManager {
 
     public List<Meal> filteringByMname(String[] mealNameArray) {
         List<Meal> filteredMealList = new ArrayList<>();
-        List<Meal> mainMealList = getMainMeals().getList();
+        List<Meal> mainMealList = getRecipesList().getList();
         for (Meal meal : mainMealList) {
             boolean isMatchingMname = checkMname(mealNameArray, meal);
             if (isMatchingMname) {
@@ -71,7 +71,7 @@ public class MealManager {
 
     public List<Meal> filteringByIng(String[] ingredientsArray) {
         List<Meal> filteredMealList = new ArrayList<>();
-        List<Meal> mainMealList = getMainMeals().getList();
+        List<Meal> mainMealList = getRecipesList().getList();
         for (Meal meal : mainMealList) {
             boolean isMealContainsIng = checkIngPerMeal(ingredientsArray, meal);
             if (isMealContainsIng) {
@@ -118,17 +118,17 @@ public class MealManager {
     }
 
     public Meal removeMeal(int index, MealList mealListInput) throws EZMealPlanException {
-        chosenMealList = mealListInput instanceof MainMeals ? getMainMeals() : getUserMeals();
+        chosenMealList = mealListInput instanceof RecipesList ? getRecipesList() : getWishList();
         return chosenMealList.removeMeal(index);
     }
 
     public void compareLists() {
-        List<Meal> mainMealList = mainMeals.getList();
-        List<Meal> userMealList = userMeals.getList();
+        List<Meal> mainMealList = recipesList.getList();
+        List<Meal> userMealList = wishList.getList();
         for (Meal meal : userMealList) {
             if (!mainMealList.contains(meal)) {
                 try {
-                    addMeal(meal, mainMeals);
+                    addMeal(meal, recipesList);
                 } catch (EZMealPlanException ezMealPlanException) {
                     ezMealPlanException.getMessage();
                 }

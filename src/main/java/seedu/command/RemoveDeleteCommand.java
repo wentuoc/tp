@@ -22,8 +22,8 @@ public abstract class RemoveDeleteCommand extends Command {
 
     @Override
     public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
-        MealList userMeals = mealManager.getUserMeals();
-        MealList mainMeals = mealManager.getMainMeals();
+        MealList userMeals = mealManager.getWishList();
+        MealList mainMeals = mealManager.getRecipesList();
         int indexOfIndex = 1;
 
         boolean isValidUserInput = checkValidUserInput();

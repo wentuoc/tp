@@ -15,7 +15,7 @@ public class MealCommand extends Command {
     public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
         assert mealManager != null : "MealManager cannot be null";
         logger.fine("Executing MealCommand");
-        List<Meal> userMealList = mealManager.getUserMeals().getList();
+        List<Meal> userMealList = mealManager.getWishList().getList();
         ui.printMealList(userMealList, "user chosen meals");
     }
 }

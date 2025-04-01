@@ -25,7 +25,7 @@ public abstract class MealList {
 
     // Checks whether the newMeal already exists in the given meal list
     public void checkDuplicateMeal(Meal newMeal) throws EZMealPlanException {
-        String mealListName = this instanceof MainMeals ? "main meal list" : "user meal list";
+        String mealListName = this instanceof RecipesList ? "main meal list" : "user meal list";
         for (Meal meal : meals) {
             if (meal.equals(newMeal)) {
                 throw new DuplicateMealException(newMeal.getName(), mealListName);

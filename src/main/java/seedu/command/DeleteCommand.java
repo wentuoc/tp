@@ -19,7 +19,7 @@ public class DeleteCommand extends RemoveDeleteCommand {
     @Override
     public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
         super.execute(mealManager, ui);
-        MealList userMeals = mealManager.getUserMeals();
+        MealList userMeals = mealManager.getWishList();
         if (userMeals.contains(removedOrDeletedMeal)) {
             int indexInUserList = userMeals.getIndex(removedOrDeletedMeal);
             userMeals.removeMeal(indexInUserList + 1);

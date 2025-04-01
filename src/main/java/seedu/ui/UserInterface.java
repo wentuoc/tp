@@ -2,7 +2,7 @@ package seedu.ui;
 
 import seedu.food.Ingredient;
 import seedu.food.Meal;
-import seedu.meallist.MainMeals;
+import seedu.meallist.RecipesList;
 import seedu.meallist.MealList;
 
 import java.util.List;
@@ -48,7 +48,7 @@ public class UserInterface {
     }
 
     public void printAddMealMessage(Meal meal, MealList mealList) {
-        String mealListName = mealList instanceof MainMeals ? "main meal list" : "user meal List";
+        String mealListName = mealList instanceof RecipesList ? "main meal list" : "user meal List";
         String successAddMealMessage = "You have successfully added a meal: " + meal + " into " + mealListName + ".";
         System.out.println(successAddMealMessage);
         List<Meal> meals = mealList.getList();

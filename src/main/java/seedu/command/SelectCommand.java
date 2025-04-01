@@ -35,7 +35,7 @@ public class SelectCommand extends FilterSelectCommand {
         String indexSubstring = getIndexSubstring();
         int inputIndex = checkValidParse(indexSubstring);
         Meal selectedMeal = checkValidInputIndex(inputIndex, filteredMealList);
-        MealList userMeals = mealManager.getUserMeals();
+        MealList userMeals = mealManager.getWishList();
         mealManager.addMeal(selectedMeal, userMeals);
         ui.printAddMealMessage(selectedMeal, userMeals);
     }

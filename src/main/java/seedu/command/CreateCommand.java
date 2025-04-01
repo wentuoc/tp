@@ -31,7 +31,7 @@ public class CreateCommand extends Command {
         assert isValidUserInput;
 
         Meal newMeal = createNewMeal();
-        MealList mainMeals = mealManager.getMainMeals();
+        MealList mainMeals = mealManager.getRecipesList();
         mealManager.addMeal(newMeal, mainMeals);
         ui.printAddMealMessage(newMeal, mainMeals);
     }

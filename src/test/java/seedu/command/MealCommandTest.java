@@ -67,8 +67,8 @@ public class MealCommandTest {
         MealManager mealManager = new MealManager();
         Meal meal1 = new Meal("Meal A");
         Meal meal2 = new Meal("Meal B");
-        mealManager.getUserMeals().getList().add(meal1);
-        mealManager.getUserMeals().getList().add(meal2);
+        mealManager.getWishList().getList().add(meal1);
+        mealManager.getWishList().getList().add(meal2);
 
         TestUserInterface testUI = new TestUserInterface();
         MealCommand mealCommand = new MealCommand();

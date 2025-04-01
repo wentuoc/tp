@@ -66,8 +66,8 @@ public class ListCommandTest {
         MealManager mealManager = new MealManager();
         Meal meal1 = new Meal("Main Meal 1");
         Meal meal2 = new Meal("Main Meal 2");
-        mealManager.getMainMeals().getList().add(meal1);
-        mealManager.getMainMeals().getList().add(meal2);
+        mealManager.getRecipesList().getList().add(meal1);
+        mealManager.getRecipesList().getList().add(meal2);
 
         TestUserInterface testUI = new TestUserInterface();
         ListCommand listCommand = new ListCommand();

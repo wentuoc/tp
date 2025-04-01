@@ -67,7 +67,7 @@ public class EZMealPlan {
         // If the file (mainList.txt) is empty, preset meals are appended into the MainMeals class instead.
         List<Meal> mealList = Storage.loadExistingList(selectedFile);
         MealList selectedMealList = selectedFile.equals(Storage.getMainListFile()) ?
-                mealManager.getMainMeals() : mealManager.getUserMeals();
+                mealManager.getRecipesList() : mealManager.getWishList();
         // Load pre-set meals if the meal list from the main list file is empty.
         if (mealList.isEmpty() && selectedFile.equals(Storage.getMainListFile())) {
             mealList = Storage.loadPresetMeals();
