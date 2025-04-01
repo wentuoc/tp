@@ -6,7 +6,7 @@ import seedu.food.Ingredient;
 import seedu.food.Meal;
 import seedu.food.Product;
 import seedu.logic.MealManager;
-import seedu.meallist.Meals;
+import seedu.meallist.MealList;
 import seedu.ui.UserInterface;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class CreateCommand extends Command {
         assert isValidUserInput;
 
         Meal newMeal = createNewMeal();
-        Meals mainMeals = mealManager.getMainMeals();
+        MealList mainMeals = mealManager.getMainMeals();
         mealManager.addMeal(newMeal, mainMeals);
         ui.printAddMealMessage(newMeal, mainMeals);
     }

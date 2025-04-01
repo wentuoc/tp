@@ -4,7 +4,7 @@ import seedu.checkers.RemoveDeleteChecker;
 import seedu.exceptions.EZMealPlanException;
 import seedu.food.Meal;
 import seedu.logic.MealManager;
-import seedu.meallist.Meals;
+import seedu.meallist.MealList;
 import seedu.ui.UserInterface;
 
 import java.util.logging.Logger;
@@ -22,8 +22,8 @@ public abstract class RemoveDeleteCommand extends Command {
 
     @Override
     public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
-        Meals userMeals = mealManager.getUserMeals();
-        Meals mainMeals = mealManager.getMainMeals();
+        MealList userMeals = mealManager.getUserMeals();
+        MealList mainMeals = mealManager.getMainMeals();
         int indexOfIndex = 1;
 
         boolean isValidUserInput = checkValidUserInput();

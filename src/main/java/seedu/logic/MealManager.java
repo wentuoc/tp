@@ -4,32 +4,32 @@ import seedu.exceptions.EZMealPlanException;
 import seedu.food.Ingredient;
 import seedu.food.Meal;
 import seedu.meallist.MainMeals;
-import seedu.meallist.Meals;
+import seedu.meallist.MealList;
 import seedu.meallist.UserMeals;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MealManager {
-    Meals chosenMeals;
-    private final Meals userMeals = new UserMeals();
-    private final Meals mainMeals = new MainMeals();
+    MealList chosenMealList;
+    private final MealList userMeals = new UserMeals();
+    private final MealList mainMeals = new MainMeals();
 
 
-    public Meals getUserMeals() {
+    public MealList getUserMeals() {
         return userMeals;
     }
 
-    public Meals getMainMeals() {
+    public MealList getMainMeals() {
         return mainMeals;
     }
 
 
     // Adds a new meal to the specified list after checking for duplicates
-    public void addMeal(Meal newMeal, Meals mealsInput) throws EZMealPlanException {
-        chosenMeals = mealsInput instanceof MainMeals ? getMainMeals() : getUserMeals();
-        chosenMeals.checkDuplicateMeal(newMeal);
-        chosenMeals.addMeal(newMeal);
+    public void addMeal(Meal newMeal, MealList mealListInput) throws EZMealPlanException {
+        chosenMealList = mealListInput instanceof MainMeals ? getMainMeals() : getUserMeals();
+        chosenMealList.checkDuplicateMeal(newMeal);
+        chosenMealList.addMeal(newMeal);
     }
 
 
@@ -117,9 +117,9 @@ public class MealManager {
         return eachCount;
     }
 
-    public Meal removeMeal(int index, Meals mealsInput) throws EZMealPlanException {
-        chosenMeals = mealsInput instanceof MainMeals ? getMainMeals() : getUserMeals();
-        return chosenMeals.removeMeal(index);
+    public Meal removeMeal(int index, MealList mealListInput) throws EZMealPlanException {
+        chosenMealList = mealListInput instanceof MainMeals ? getMainMeals() : getUserMeals();
+        return chosenMealList.removeMeal(index);
     }
 
     public void compareLists() {

@@ -6,7 +6,7 @@ import seedu.exceptions.InvalidMcostException;
 import seedu.exceptions.InvalidSelectIndexException;
 import seedu.food.Meal;
 import seedu.logic.MealManager;
-import seedu.meallist.Meals;
+import seedu.meallist.MealList;
 import seedu.storage.Storage;
 import seedu.ui.UserInterface;
 
@@ -177,13 +177,13 @@ public class SelectCommandTest {
 
     private void addMeals() {
         List<Meal> mealList = Storage.loadPresetMeals();
-        Meals mainMeal = mealManager.getMainMeals();
+        MealList mainMeal = mealManager.getMainMeals();
         for (Meal meal : mealList) {
             addMeal(meal, mainMeal);
         }
     }
 
-    private void addMeal(Meal meal, Meals mainMeal) {
+    private void addMeal(Meal meal, MealList mainMeal) {
         try {
             mealManager.addMeal(meal, mainMeal);
         } catch (EZMealPlanException ezMealPlanException) {

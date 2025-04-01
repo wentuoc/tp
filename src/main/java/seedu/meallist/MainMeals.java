@@ -1,5 +1,5 @@
 package seedu.meallist;
 
-public class MainMeals extends Meals {
+public class MainMeals extends MealList {
 
 }

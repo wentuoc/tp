@@ -9,7 +9,7 @@ import seedu.exceptions.InvalidPriceException;
 import seedu.food.Ingredient;
 import seedu.food.Meal;
 import seedu.meallist.MainMeals;
-import seedu.meallist.Meals;
+import seedu.meallist.MealList;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -113,7 +113,7 @@ public class UserInterfaceTest {
     void printAddMealMessage_validMeal_success() throws EZMealPlanException {
         logger.fine("running printAddMealMessage_validMeal_success()");
         Meal mockMeal = new Meal("Chicken Rice");
-        Meals mockMealList = new MainMeals();
+        MealList mockMealList = new MainMeals();
         mockMealList.addMeal(mockMeal);
 
         ui.printAddMealMessage(mockMeal, mockMealList);

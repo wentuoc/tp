@@ -4,7 +4,7 @@ import seedu.command.Command;
 import seedu.exceptions.EZMealPlanException;
 import seedu.food.Meal;
 import seedu.logic.MealManager;
-import seedu.meallist.Meals;
+import seedu.meallist.MealList;
 import seedu.storage.Storage;
 import seedu.ui.UserInterface;
 import seedu.parser.Parser;
@@ -66,21 +66,21 @@ public class EZMealPlan {
         // Retrieve saved meals from the respective file and append them into the respective Meals class
         // If the file (mainList.txt) is empty, preset meals are appended into the MainMeals class instead.
         List<Meal> mealList = Storage.loadExistingList(selectedFile);
-        Meals selectedMeals = selectedFile.equals(Storage.getMainListFile()) ?
+        MealList selectedMealList = selectedFile.equals(Storage.getMainListFile()) ?
                 mealManager.getMainMeals() : mealManager.getUserMeals();
         // Load pre-set meals if the meal list from the main list file is empty.
         if (mealList.isEmpty() && selectedFile.equals(Storage.getMainListFile())) {
             mealList = Storage.loadPresetMeals();
         }
         for (Meal meal : mealList) {
-            extractMealIntoList(meal, selectedMeals, mealManager);
+            extractMealIntoList(meal, selectedMealList, mealManager);
         }
     }
 
-    private static void extractMealIntoList(Meal meal, Meals meals, MealManager mealManager) {
+    private static void extractMealIntoList(Meal meal, MealList mealList, MealManager mealManager) {
         //Throw error message if detected an ingredient with invalid price and skips to the next meal.
         try {
-            mealManager.addMeal(meal, meals);
+            mealManager.addMeal(meal, mealList);
         } catch (EZMealPlanException ezMealPlanException) {
             System.err.println(ezMealPlanException.getMessage());
             System.err.println("The current meal will be skipped.\n");

@@ -6,7 +6,7 @@ import seedu.exceptions.InvalidViewKeywordException;
 import seedu.exceptions.ViewIndexOutOfRangeException;
 import seedu.food.Meal;
 import seedu.logic.MealManager;
-import seedu.meallist.Meals;
+import seedu.meallist.MealList;
 import seedu.ui.UserInterface;
 
 
@@ -36,22 +36,22 @@ public class ViewCommand extends Command {
     }
 
     private void viewMeal(String mainOrUser, MealManager mealManager, UserInterface ui) throws EZMealPlanException {
-        Meals meals = mainOrUser.equals(main) ? mealManager.getMainMeals()
+        MealList mealList = mainOrUser.equals(main) ? mealManager.getMainMeals()
                 : mealManager.getUserMeals();
-        if (checkEmptyMealList(mainOrUser, meals)) {
+        if (checkEmptyMealList(mainOrUser, mealList)) {
             return;
         }
         int afterKeywordIndex = lowerCaseInput.indexOf(mainOrUser) + mainOrUser.length();
         String afterKeyword = lowerCaseInput.substring(afterKeywordIndex).trim();
         int mealListIndex = Integer.parseInt(afterKeyword);
-        Meal meal = getMeal(meals, mealListIndex);
+        Meal meal = getMeal(mealList, mealListIndex);
         ui.printIngredientList(meal);
     }
 
-    private boolean checkEmptyMealList(String mainOrUser, Meals meals) {
+    private boolean checkEmptyMealList(String mainOrUser, MealList mealList) {
         String mainMealListName = "main meal list";
         String userMealListName = "user meal list";
-        if (meals.getList().isEmpty()) {
+        if (mealList.getList().isEmpty()) {
             String mealListString = mainOrUser.equals(main) ? mainMealListName : userMealListName;
             System.out.println("The " + mealListString + " is empty.\n");
             return true;
@@ -59,13 +59,13 @@ public class ViewCommand extends Command {
         return false;
     }
 
-    private static Meal getMeal(Meals meals, int mealListIndex) throws EZMealPlanException {
+    private static Meal getMeal(MealList mealList, int mealListIndex) throws EZMealPlanException {
         try {
             int indexOffset = 1;
             int actualIndex = mealListIndex - indexOffset;
-            return meals.getList().get(actualIndex);
+            return mealList.getList().get(actualIndex);
         } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
-            throw new ViewIndexOutOfRangeException(mealListIndex, meals);
+            throw new ViewIndexOutOfRangeException(mealListIndex, mealList);
         }
     }
 
