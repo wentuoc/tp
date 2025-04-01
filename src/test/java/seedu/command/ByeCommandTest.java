@@ -9,10 +9,12 @@ import seedu.ui.UserInterface;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -77,21 +79,102 @@ public class ByeCommandTest {
     public void byeCommandTest_success() {
         logger.fine("running byeCommandTest_success()");
         try {
+            Storage.createListFiles();
             List<Meal> mealsList = Storage.loadPresetMeals();
             List<Meal> expectedRecipesList = getExpectedRecipesList(mealsList);
             List<Meal> expectedWishList = getExpectedWishList(mealsList);
-            ByeCommand byeCommand = new ByeCommand();
-            assertTrue(byeCommand.isExit());
-            byeCommand.execute(mealManager, ui);
-            checkOutputString();
-            Storage.createListFiles();
-            checkRecipesLists(expectedRecipesList);
-            checkWishLists(expectedWishList);
+            List<File> latestFiles = saveLatestLists();
+            firstHalf_byeCommandTest_success();
+            secondHalf_byeCommandTest_success(expectedRecipesList, expectedWishList, latestFiles);
             logger.info("byeCommandTest_success() passed");
         } catch (Exception exception) {
             ui.printErrorMessage(exception);
+            logger.severe("byeCommandTest_success() should not fail");
             fail();
         }
+    }
+
+    private void secondHalf_byeCommandTest_success(List<Meal> expectedRecipesList, List<Meal> expectedWishList,
+                                                   List<File> latestFiles) throws IOException {
+        Storage.createListFiles();
+        checkRecipesLists(expectedRecipesList);
+        checkWishLists(expectedWishList);
+        restoreLatestLists(latestFiles);
+    }
+
+    private void firstHalf_byeCommandTest_success() {
+        ByeCommand byeCommand = new ByeCommand();
+        assertTrue(byeCommand.isExit());
+        byeCommand.execute(mealManager, ui);
+        checkOutputString();
+    }
+
+    private void restoreLatestLists(List<File> latestFiles) throws IOException {
+        int recipesFileIndex = 0;
+        int wishListFileIndex = 1;
+        restoreLatestRecipes(latestFiles.get(recipesFileIndex));
+        restoreLatestWishList(latestFiles.get(wishListFileIndex));
+    }
+
+    private void restoreLatestWishList(File tempWishListFile) throws IOException {
+        File wishListFile = Storage.getUserListFile();
+        Scanner scanner = new Scanner(tempWishListFile);
+        try (FileWriter fileCleaner = new FileWriter(wishListFile);
+             FileWriter fileWriter = new FileWriter(wishListFile, true)) {
+            while (scanner.hasNextLine()) {
+                fileWriter.append(scanner.nextLine()).append(System.lineSeparator());
+            }
+            scanner.close();
+        }
+        tempWishListFile.delete();
+    }
+
+    private void restoreLatestRecipes(File tempRecipesFile) throws IOException {
+        File recipesFile = Storage.getMainListFile();
+        Scanner scanner = new Scanner(tempRecipesFile);
+        try (FileWriter fileCleaner = new FileWriter(recipesFile);
+             FileWriter fileWriter = new FileWriter(recipesFile, true)) {
+            while (scanner.hasNextLine()) {
+                fileWriter.append(scanner.nextLine()).append(System.lineSeparator());
+            }
+            scanner.close();
+        }
+        tempRecipesFile.delete();
+    }
+
+    private List<File> saveLatestLists() throws IOException {
+        List<File> files = new ArrayList<>();
+        files.add(saveLatestRecipes());
+        files.add(saveLatestWishList());
+        return files;
+    }
+
+    private File saveLatestWishList() throws IOException {
+        String tempWishListPath = "data/tempWishList.txt";
+        File tempWishListFile = new File(tempWishListPath);
+        File wishListFile = Storage.getUserListFile();
+        Scanner scanner = new Scanner(wishListFile);
+        try (FileWriter fileWriter = new FileWriter(tempWishListFile, true)) {
+            while (scanner.hasNextLine()) {
+                fileWriter.append(scanner.nextLine()).append(System.lineSeparator());
+            }
+            scanner.close();
+        }
+        return tempWishListFile;
+    }
+
+    private File saveLatestRecipes() throws IOException {
+        String tempRecipesPath = "data/tempRecipes.txt";
+        File tempRecipesFile = new File(tempRecipesPath);
+        File recipesFile = Storage.getMainListFile();
+        Scanner scanner = new Scanner(recipesFile);
+        try (FileWriter fileWriter = new FileWriter(tempRecipesFile, true)) {
+            while (scanner.hasNextLine()) {
+                fileWriter.append(scanner.nextLine()).append(System.lineSeparator());
+            }
+            scanner.close();
+        }
+        return tempRecipesFile;
     }
 
     private void checkOutputString() {
