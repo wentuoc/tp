@@ -33,7 +33,7 @@ public class EZMealPlan {
         // Check for valid meals that are present in the user list but not in the main list
         // and add these meals to the main list.
         mealManager.compareLists();
-
+        logger.fine("running EZMealPlan");
         ui.printGreetingMessage();
         String userInput;
         while (true) {
@@ -46,18 +46,20 @@ public class EZMealPlan {
                 break;
             }
         }
+        logger.fine("exiting EZMealPlan");
     }
 
     private static void checkConstructedLists(MealManager mealManager) {
+        // Create and load both main meal list (mainList.txt) and user meal list (userList.txt)
         try {
             Storage.createListFiles();
             constructMainList(mealManager);
             constructUserList(mealManager);
-
         } catch (IOException ioException) {
             System.err.println("Could not load tasks: " + ioException.getMessage());
         }
     }
+
 
     private static void constructUserList(MealManager mealManager) throws IOException {
         File userMealFile = Storage.getUserListFile();
@@ -71,9 +73,9 @@ public class EZMealPlan {
         constructList(mealManager, mainMealFile, mainMeals);
     }
 
-    private static void constructList(MealManager mealManager, File selectedFile, Meals selectedMeals)
-            throws IOException {
-        // Create and load both main meal list (mainList.txt) and user meal list (userList.txt)
+    private static void constructList(MealManager mealManager, File selectedFile) throws IOException {
+        // Retrieve saved meals from the respective file and append them into the respective Meals class
+        // If the file (mainList.txt) is empty, preset meals are appended into the MainMeals class instead.
         List<Meal> mealList = Storage.loadExistingList(selectedFile);
         // Load pre-set meals if the meal list from the main list file is empty.
         if (mealList.isEmpty() && selectedFile.equals(Storage.getMainListFile())) {
@@ -90,16 +92,18 @@ public class EZMealPlan {
             mealManager.addMeal(meal, meals);
         } catch (EZMealPlanException ezMealPlanException) {
             System.err.println(ezMealPlanException.getMessage());
+            System.err.println("The current meal will be skipped.\n");
+            logger.info("EZMealPlanException triggered");
         }
     }
 
     private static void executeCommand(Command command, MealManager mealManager, UserInterface ui) {
-        //Throw error message if detected an ingredient with invalid price and skips to the next meal.
         try {
             // Executes the command parsed out
             command.execute(mealManager, ui);
         } catch (EZMealPlanException ezMealPlanException) {
             ui.printErrorMessage(ezMealPlanException);
+            logger.info("EZMealPlanException triggered");
         }
     }
 
