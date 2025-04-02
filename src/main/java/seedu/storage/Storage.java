@@ -39,6 +39,7 @@ public class Storage {
     public static void createListFiles() throws IOException {
         userListFile = new File(USER_LIST_FILE_PATH);
         mainListFile = new File(MAIN_LIST_FILE_PATH);
+        createListFile(mainListFile);
         createListFile(userListFile);
     }
 

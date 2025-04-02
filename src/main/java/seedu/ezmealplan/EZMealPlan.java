@@ -53,21 +53,31 @@ public class EZMealPlan {
         // Create and load both main meal list (mainList.txt) and user meal list (userList.txt)
         try {
             Storage.createListFiles();
-            File mainMealFile = Storage.getMainListFile();
-            File userMealFile = Storage.getUserListFile();
-            constructList(mealManager, mainMealFile);
-            constructList(mealManager, userMealFile);
+            constructMainList(mealManager);
+            constructUserList(mealManager);
         } catch (IOException ioException) {
             System.err.println("Could not load tasks: " + ioException.getMessage());
         }
     }
 
-    private static void constructList(MealManager mealManager, File selectedFile) throws IOException {
+
+    private static void constructUserList(MealManager mealManager) throws IOException {
+        File userMealFile = Storage.getUserListFile();
+        Meals userMeals = mealManager.getUserMeals();
+        constructList(mealManager, userMealFile, userMeals);
+    }
+
+    private static void constructMainList(MealManager mealManager) throws IOException {
+        File mainMealFile = Storage.getMainListFile();
+        Meals mainMeals = mealManager.getMainMeals();
+        constructList(mealManager, mainMealFile, mainMeals);
+    }
+
+    private static void constructList(MealManager mealManager, File selectedFile, Meals selectedMeals)
+            throws IOException {
         // Retrieve saved meals from the respective file and append them into the respective Meals class
         // If the file (mainList.txt) is empty, preset meals are appended into the MainMeals class instead.
         List<Meal> mealList = Storage.loadExistingList(selectedFile);
-        Meals selectedMeals = selectedFile.equals(Storage.getMainListFile()) ?
-                mealManager.getMainMeals() : mealManager.getUserMeals();
         // Load pre-set meals if the meal list from the main list file is empty.
         if (mealList.isEmpty() && selectedFile.equals(Storage.getMainListFile())) {
             mealList = Storage.loadPresetMeals();
