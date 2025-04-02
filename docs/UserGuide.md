@@ -2,10 +2,9 @@
 
 ## Introduction
 
-EZMealPlan is a CLI-based system that helps users to plan their meals. Users can view a list of pre-created meals in the
-main meal list, filter them by meal name, ingredients and cost according to their personal preferences, and add them 
-into their personal meal list. Users can also create their own meals, or remove meals from their personal user meal list
-or the main meal list.
+EZMealPlan is a CLI-based system that helps users to plan their meals. Users can view a list of pre-created meals in the main
+recipes list, filter them by meal name, ingredients and cost according to their personal preferences, and add them 
+into their personal wishlist. Users can also create their own meals which will be added into the recipes list and remove meals from their personal wishlist and the main recipes list .
 
 ## Quick Start
 
@@ -17,19 +16,19 @@ or the main meal list.
 3. Copy the file to the folder you want to use as the _home folder_ for your EZMealPlan.
 4. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar ezmealplan.jar` command
 to run the application. The app will contain some preset meals.
-5. Type the command in the command box and press Enter to execute it. e.g. typing `meal` and pressing Enter will open 
-the meal window. Some example commands you can try:
+5. Type the command in the command box and press Enter to execute it. e.g. typing `wishlist` and pressing Enter will open 
+the wishlist window. Some example commands you can try:
 
-`list` : Lists all meals from the main meal list.
+`recipes` : Lists all meals from the recipes list.
 
 `create /mname meal test /ing ingA(1), ingB(2), ingC(3)` : Creates a meal called `meal test` with the following 
 ingredients with their respective costs: `ingA ($1.00), ingB ($2.00) and ingC ($3.00)`
 
-`remove 3` : Removes the 3rd meal shown in the user meal list.
+`remove 3` : Removes the 3rd meal shown in the user's wishlist.
 
-`clear` : Deletes all meals in the user meal list.
+`clear` : Deletes all meals in the user's wishlist.
 
-`bye` : Saves the meals in the main meal list and the user meal list respectively and exits the app.
+`bye` : Saves the meals in the recipes list and the wishlist respectively and exits the app.
 
 Refer to the [Features](https://ay2425s2-cs2113-f14-4.github.io/tp/UserGuide.html#features) below for details of each
 command.
@@ -43,10 +42,10 @@ e.g. in `filter /mname MEAL_NAME`, `MEAL_NAME` is a parameter which can be used 
 * Items in square brackets are optional.
 e.g `select 1 [/mcost 3]` can be used as `select 1 /mcost 3` or as `select 1`.
 
-* Extraneous parameters for commands that do not take in parameters (such as `meal`, `list`, `bye` and `clear`) will be ignored.
+* Extraneous parameters for commands that do not take in parameters (such as `wishlist`, `recipes`, `bye` and `clear`) will be ignored.
 e.g. if the command specifies `bye 123`, it will be interpreted as `bye`.
 
-* The command inputs are case-insensitive. The meal(s) will be sorted alphabetically by the meal name irrespective of the letter casings in both main meal list and user meal list. The ingredient(s) in each meal will also be sorted in the same
+* The command inputs are case-insensitive. The meal(s) will be sorted alphabetically by the meal name irrespective of the letter casings in both recipes list and the user's wishlist. The ingredient(s) in each meal will also be sorted in the same
 manner. 
 
 ### Viewing help: `help`
@@ -54,7 +53,7 @@ Views the description, respective sample input(s) and sample output(s) of the co
 
 Format: `help COMMAND_KEYWORD`
 
-* The list of `COMMAND_KEYWORD` includes `bye`,`clear`,`create`,`delete`,`filter`,`help`,`list`,`meal`,`remove`,`select` and `view`.
+* The list of `COMMAND_KEYWORD` includes `bye`,`clear`,`create`,`delete`,`filter`,`help`,`recipes`,`remove`,`select`,`view` and `wishlist`.
 
 Example of usage: 
 
@@ -63,7 +62,7 @@ Example of usage:
 `help select`
 
 ### Creating a new meal: `create`
-Creates a new meal with the relevant ingredients and adds the meal into the main meal list.
+Creates a new meal with the relevant ingredients and adds the meal into the recipes list.
 
 Format: `create /mname MEAL_NAME /ing INGREDIENT_1_NAME (INGREDIENT_1_COST), INGREDIENT_2_NAME (INGREDIENT_2_COST)`
 
@@ -80,7 +79,7 @@ Format: `create /mname MEAL_NAME /ing INGREDIENT_1_NAME (INGREDIENT_1_COST), ING
      have <ins>different meal names</ins>.
      * Meals that contain <ins>different sets of ingredients</ins> (ignoring both ingredient and meal prices) can have
      the <ins>same meal name</ins> (optional).
-     * To check for any existing meal before creating a new meal: you may use the `list` or `filter /mname` command to 
+     * To check for any existing meal before creating a new meal: you may use the `recipes` or `filter /mname` command to 
      find meals having the _same meal name that you intend to use_, followed by the `view` or `filter /ing` command to 
      check for _the list of ingredients in the meal(s) having the same meal name_ or _identify the meals having the same 
      set of ingredients._
