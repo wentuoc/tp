@@ -59,8 +59,7 @@ public class EZMealPlan {
             System.err.println("Could not load tasks: " + ioException.getMessage());
         }
     }
-
-
+  
     private static void constructUserList(MealManager mealManager) throws IOException {
         File userMealFile = Storage.getUserListFile();
         Meals userMeals = mealManager.getUserMeals();
