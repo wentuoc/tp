@@ -32,7 +32,7 @@ public abstract class RemoveDeleteCommand extends Command {
                     "passing all the checks for input formatting error.");
         }
         assert isValidUserInput;
-        int index = Integer.parseInt(validUserInput.split("\\s+")[indexOfIndex]);
+        int index = Integer.parseInt(validUserInput.split("\\s+")[indexOfIndex]) - 1;
         if (removeOrDelete.equals(remove)) {
             removedOrDeletedMeal = mealManager.removeMeal(index, userMeals);
             ui.printRemovedMessage(removedOrDeletedMeal, userMeals.size());

@@ -119,4 +119,18 @@ class MealTest {
         assertEquals("[Chicken ($1.00), Rice ($0.50), Cucumber ($0.30)]", meal1.getIngredientList().toString());
         logger.info("Ingredient list and price is correct");
     }
+
+    @Test
+    void toString_meal_correctFormat() throws InvalidPriceException, DuplicateIngredientException {
+        logger.fine("Running toString_meal_correctFormat()");
+        Meal meal = new Meal("Chicken Rice");
+        Ingredient chicken = new Ingredient("Chicken", 1);
+        Ingredient rice = new Ingredient("Rice", 0.5);
+        Ingredient cucumber = new Ingredient("Cucumber", 0.3);
+        meal.addIngredient(chicken);
+        meal.addIngredient(rice);
+        meal.addIngredient(cucumber);
+        assertEquals("Chicken Rice ($1.80)", meal.toString());
+        logger.info("Printing format is correct");
+    }
 }
