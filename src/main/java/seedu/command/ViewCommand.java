@@ -7,7 +7,7 @@ import seedu.exceptions.ViewEmptyListException;
 import seedu.exceptions.ViewIndexOutOfRangeException;
 import seedu.food.Meal;
 import seedu.logic.MealManager;
-import seedu.meallist.Meals;
+import seedu.meallist.MealList;
 import seedu.ui.UserInterface;
 
 
@@ -15,9 +15,9 @@ import java.util.logging.Logger;
 
 public class ViewCommand extends Command {
     private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    String mainOrUser;
-    final String main = "/m";
-    final String user = "/u";
+    String recipesOrWishlist;
+    final String recipesSymbol = "/r";
+    final String wishListSymbol = "/w";
 
     public ViewCommand(String userInput) {
         this.validUserInput = userInput.trim();
@@ -26,65 +26,56 @@ public class ViewCommand extends Command {
 
     @Override
     public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
-        setMainOrUser();
+        setRecipesOrWishlist();
         boolean isValidUserInput = checkValidUserInput();
         if (!isValidUserInput) {
             logger.severe("Huge issue detected! The user input format remains invalid despite " +
                     "passing all the checks for input formatting error.");
         }
         assert isValidUserInput;
-        viewMeal(mainOrUser, mealManager, ui);
+        viewMeal(recipesOrWishlist, mealManager, ui);
     }
 
-    private void viewMeal(String mainOrUser, MealManager mealManager, UserInterface ui) throws EZMealPlanException {
-        Meals meals = mainOrUser.equals(main) ? mealManager.getMainMeals()
-                : mealManager.getUserMeals();
-        if (checkEmptyMealList(mainOrUser, meals)) {
-            throw new ViewEmptyListException();
+    private void viewMeal(String recipesOrWishlist, MealManager mealManager, UserInterface ui)
+            throws EZMealPlanException {
+        MealList mealList = recipesOrWishlist.equals(recipesSymbol) ? mealManager.getRecipesList()
+                : mealManager.getWishList();
+        if (mealList.getList().isEmpty()) {
+            throw new ViewEmptyListException(mealList.getMealListName());
         }
-        int afterKeywordIndex = lowerCaseInput.indexOf(mainOrUser) + mainOrUser.length();
+        int afterKeywordIndex = lowerCaseInput.indexOf(recipesOrWishlist) + recipesOrWishlist.length();
         String afterKeyword = lowerCaseInput.substring(afterKeywordIndex).trim();
         int mealListIndex = Integer.parseInt(afterKeyword);
-        Meal meal = getMeal(meals, mealListIndex);
+        Meal meal = getMeal(mealList, mealListIndex);
         ui.printIngredientList(meal);
     }
 
-    private boolean checkEmptyMealList(String mainOrUser, Meals meals) {
-        String mainMealListName = "main meal list";
-        String userMealListName = "user meal list";
-        if (meals.getList().isEmpty()) {
-            String mealListString = mainOrUser.equals(main) ? mainMealListName : userMealListName;
-            System.out.println("The " + mealListString + " is empty.\n");
-            return true;
-        }
-        return false;
-    }
-
-    private static Meal getMeal(Meals meals, int mealListIndex) throws EZMealPlanException {
+    private static Meal getMeal(MealList mealList, int mealListIndex) throws EZMealPlanException {
         try {
             int indexOffset = 1;
             int actualIndex = mealListIndex - indexOffset;
-            return meals.getList().get(actualIndex);
+            return mealList.getList().get(actualIndex);
         } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
-            throw new ViewIndexOutOfRangeException(mealListIndex, meals);
+            throw new ViewIndexOutOfRangeException(mealListIndex, mealList);
         }
     }
 
-
-    public void setMainOrUser() throws EZMealPlanException {
-        boolean isContainsMain = this.lowerCaseInput.contains(main) && !this.lowerCaseInput.contains(user);
-        boolean isContainsUser = this.lowerCaseInput.contains(user) && !this.lowerCaseInput.contains(main);
-        if (isContainsMain) {
-            mainOrUser = main;
-        } else if (isContainsUser) {
-            mainOrUser = user;
+    public void setRecipesOrWishlist() throws EZMealPlanException {
+        boolean isContainsRecipesSymbol = this.lowerCaseInput.contains(recipesSymbol) &&
+                                          !this.lowerCaseInput.contains(wishListSymbol);
+        boolean isContainsWishlistSymbol = this.lowerCaseInput.contains(wishListSymbol) &&
+                                           !this.lowerCaseInput.contains(recipesSymbol);
+        if (isContainsRecipesSymbol) {
+            recipesOrWishlist = recipesSymbol;
+        } else if (isContainsWishlistSymbol) {
+            recipesOrWishlist = wishListSymbol;
         } else {
             throw new InvalidViewKeywordException();
         }
     }
 
     private boolean checkValidUserInput() throws EZMealPlanException {
-        ViewChecker checker = new ViewChecker(validUserInput, mainOrUser);
+        ViewChecker checker = new ViewChecker(validUserInput, recipesOrWishlist);
         checker.check();
         return checker.isPassed();
     }

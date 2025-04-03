@@ -6,13 +6,13 @@ import seedu.exceptions.InvalidViewIndexException;
 import seedu.exceptions.MissingMealIndexException;
 
 public class ViewChecker extends Checker {
-    String mainOrUser;
+    String recipeOrWishlist;
     String view = "view";
 
-    public ViewChecker(String userInputText, String mainOrUser) {
+    public ViewChecker(String userInputText, String recipeOrWishlist) {
         this.userInput = userInputText.trim();
         this.lowerCaseInput = userInput.toLowerCase();
-        this.mainOrUser = mainOrUser;
+        this.recipeOrWishlist = recipeOrWishlist;
     }
 
     @Override
@@ -25,7 +25,7 @@ public class ViewChecker extends Checker {
 
     private void checkParseMealIndex() throws EZMealPlanException {
         try {
-            int afterKeywordIndex = lowerCaseInput.indexOf(mainOrUser) + mainOrUser.length();
+            int afterKeywordIndex = lowerCaseInput.indexOf(recipeOrWishlist) + recipeOrWishlist.length();
             String afterKeyword = userInput.substring(afterKeywordIndex).trim();
             Integer.parseInt(afterKeyword);
         } catch (NumberFormatException numberFormatException) {
@@ -35,14 +35,14 @@ public class ViewChecker extends Checker {
 
     private void checkValidKeywordIndex() throws EZMealPlanException {
         int commandIndex = lowerCaseInput.indexOf(view);
-        int keywordIndex = lowerCaseInput.indexOf(mainOrUser);
+        int keywordIndex = lowerCaseInput.indexOf(recipeOrWishlist);
         if (commandIndex >= keywordIndex) {
-            throw new InvalidKeywordIndexException(mainOrUser);
+            throw new InvalidKeywordIndexException(recipeOrWishlist);
         }
     }
 
     private void checkMissingMealIndex() throws EZMealPlanException {
-        int afterKeywordIndex = lowerCaseInput.indexOf(mainOrUser) + mainOrUser.length();
+        int afterKeywordIndex = lowerCaseInput.indexOf(recipeOrWishlist) + recipeOrWishlist.length();
         String afterKeyword = userInput.substring(afterKeywordIndex).trim();
         if (afterKeyword.isEmpty()) {
             throw new MissingMealIndexException(view);

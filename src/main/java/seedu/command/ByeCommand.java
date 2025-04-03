@@ -17,61 +17,61 @@ public class ByeCommand extends Command {
 
     @Override
     public void execute(MealManager mealManager, UserInterface ui) {
-        updateMainListFile(mealManager);
-        updateUserListFile(mealManager);
-        updateInventoryFile(mealManager);
+        updateRecipesListFile(mealManager,ui);
+        updateWishListFile(mealManager, ui);
+        updateInventoryFile(mealManager, ui);
         ui.printGoodbye();
     }
 
-    private void updateUserListFile(MealManager mealManager) {
-        List<Meal> userMealList = mealManager.getUserMeals().getList();
-        String userListFilePath = Storage.getUserListFilePath();
-        clearAndUpdateFile(userMealList, userListFilePath);
+    private void updateWishListFile(MealManager mealManager, UserInterface ui) {
+        List<Meal> wishList = mealManager.getWishList().getList();
+        String wishListFilePath = Storage.getWishListFilePath();
+        clearAndUpdateFile(wishList, wishListFilePath, ui);
     }
 
-    private void updateMainListFile(MealManager mealManager) {
-        List<Meal> mainMealList = mealManager.getMainMeals().getList();
-        String mainListFilePath = Storage.getMainListFilePath();
-        clearAndUpdateFile(mainMealList, mainListFilePath);
+    private void updateRecipesListFile(MealManager mealManager, UserInterface ui) {
+        List<Meal> recipesList = mealManager.getRecipesList().getList();
+        String recipesListFilePath = Storage.getRecipesListFilePath();
+        clearAndUpdateFile(recipesList, recipesListFilePath, ui);
     }
 
 
-    private void clearAndUpdateFile(List<Meal> mealList, String filePath) {
-        Storage.clearFile(filePath);
-        writeMealsToFile(mealList, filePath);
+    private void clearAndUpdateFile(List<Meal> mealList, String filePath, UserInterface ui) {
+        Storage.clearFile(filePath, ui);
+        writeMealsToFile(mealList, filePath, ui);
     }
 
-    private static void writeMealsToFile(List<Meal> mealList, String filePath) {
+    private static void writeMealsToFile(List<Meal> mealList, String filePath, UserInterface ui) {
         for (Meal newMeal : mealList) {
             try {
                 Storage.writeToFile(newMeal.toDataString(), filePath);
             } catch (IOException ioException) {
-                UserInterface.printMessage("Error writing to file: " + ioException.getMessage());
+                ui.printMessage("Error writing to file: " + ioException.getMessage());
             }
         }
     }
 
-    private static void writeIngredientsToFile(List<Ingredient> ingredientList, String filePath) {
+    private static void writeIngredientsToFile(List<Ingredient> ingredientList, String filePath, UserInterface ui) {
         for (Ingredient ingredient : ingredientList) {
             try {
                 Storage.writeToFile(ingredient.toDataString(), filePath);
             } catch (IOException ioException) {
-                UserInterface.printMessage("Error writing to file: " + ioException.getMessage());
+                ui.printMessage("Error writing to file: " + ioException.getMessage());
             }
         }
     }
 
-    private void clearAndUpdateFileForIngredients(List<Ingredient> ingredientList, String filePath) {
-        Storage.clearFile(filePath);
-        writeIngredientsToFile(ingredientList, filePath);
+    private void clearAndUpdateFileForIngredients(List<Ingredient> ingredientList, String filePath, UserInterface ui) {
+        Storage.clearFile(filePath, ui);
+        writeIngredientsToFile(ingredientList, filePath, ui);
     }
 
-    private void updateInventoryFile(MealManager mealManager) {
+    private void updateInventoryFile(MealManager mealManager, UserInterface ui) {
         // Retrieve the list of ingredients from the inventory.
         List<Ingredient> ingredientList = mealManager.getInventory().getIngredients();
         // Get the file path for the inventory list.
         String inventoryFilePath = Storage.getInventoryFilePath();
         // Clear the existing file and write the new list.
-        clearAndUpdateFileForIngredients(ingredientList, inventoryFilePath);
+        clearAndUpdateFileForIngredients(ingredientList, inventoryFilePath,ui);
     }
 }

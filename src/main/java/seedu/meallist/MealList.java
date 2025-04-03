@@ -10,12 +10,16 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public abstract class Meals {
+public abstract class MealList {
     protected final List<Meal> mealList = new ArrayList<>();
     protected String mealListName;
 
     public List<Meal> getList() {
         return mealList;
+    }
+
+    public String getMealListName() {
+        return mealListName;
     }
 
     // Adds a new meal to the specified list after checking for duplicates
