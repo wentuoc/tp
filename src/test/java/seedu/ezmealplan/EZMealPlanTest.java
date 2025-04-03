@@ -66,7 +66,7 @@ public class EZMealPlanTest {
      * The test verifies that the output contains key messages indicating correct execution.
      */
     @Test
-    public void testMainIntegration_AllCommands() {
+    public void testMainIntegrationAllCommands() {
         logger.fine("Starting testMainIntegration_AllCommands()");
 
         // Simulate user input covering all major commands.
@@ -113,36 +113,47 @@ public class EZMealPlanTest {
         logger.fine("Captured output: " + output);
 
         // 1. Verify "list" command output.
-        assertTrue(output.contains("main list") || output.contains("no meals found in the main list"),
-                "List command should display global recipes or indicate no recipes found.");
+        assertTrue(output.contains("main list")
+                        || output.contains("no meals found in the main list"),
+                "List command should display " +
+                        "global recipes or indicate no recipes found.");
 
         // 2. Verify "meal" command output.
-        assertTrue(output.contains("your meal list") || output.contains("no meals found in your meal list"),
+        assertTrue(output.contains("your meal list")
+                        || output.contains("no meals found in your meal list"),
                 "Meal command should display wish list or indicate it is empty.");
 
         // 3. Verify "create" command output: check that 'testmeal' is added.
         assertTrue(output.contains("testmeal") && output.contains("added"),
-                "Create command should confirm that 'testmeal' was added to the global recipe list.");
+                "Create command should confirm " +
+                        "that 'testmeal' was added to the global recipe list.");
 
-        // 4. Verify "filter" command output: check that filtered results include 'testmeal' or appropriate message.
-        assertTrue(output.contains("testmeal") || output.contains("cannot find any meal names with"),
+        // 4. Verify "filter" command output: check
+        // that filtered results include 'testmeal' or appropriate message.
+        assertTrue(output.contains("testmeal")
+                        || output.contains("cannot find any meal names with"),
                 "Filter command should return filtered results or an appropriate message.");
 
-        // 5. Verify "select" command output: should contain confirmation message indicating recipe was added to the wish list.
-        assertTrue(output.contains("successfully added a meal:") && output.contains("user meal list"),
-                "Select command should confirm that the recipe was added to the wish list.");
+        // 5. Verify "select" command output:
+        // should contain confirmation message indicating recipe was added to the wish list.
+        assertTrue(output.contains("successfully added a meal:")
+                        && output.contains("user meal list"),
+                "Select command should confirm " +
+                        "that the recipe was added to the wish list.");
 
         // 6. Verify "clear" command output.
         assertTrue(output.contains("cleared"),
                 "Clear command should indicate that the wish list has been cleared.");
 
         // 7. Verify "help list" command output.
-        assertTrue(output.contains("sample input: list") && output.contains("sample output:"),
+        assertTrue(output.contains("sample input: list")
+                        && output.contains("sample output:"),
                 "Help command should display detailed help for the list command.");
 
         // 8. Verify "remove" command output.
         assertTrue(output.contains("removed"),
-                "Remove command should confirm that a recipe was removed from the wish list.");
+                "Remove command should confirm " +
+                        "that a recipe was removed from the wish list.");
 
         // 9. Verify "view" command output: should display ingredient list heading.
         assertTrue(output.contains("here are the ingredients for"),
@@ -150,7 +161,8 @@ public class EZMealPlanTest {
 
         // 10. Verify "delete" command output.
         assertTrue(output.contains("has been removed from the global meal list!"),
-                "Delete command should indicate that a recipe was removed from the global recipe list.");
+                "Delete command should indicate " +
+                        "that a recipe was removed from the global recipe list.");
 
         // 11. Verify "buy" command output: should contain "ingredient1 bought".
         assertTrue(output.contains("ingredient1 bought"),
@@ -162,10 +174,12 @@ public class EZMealPlanTest {
 
         // 13. Verify "recommend" command output.
         assertTrue(output.contains("recommend") || output.contains("shortfall"),
-                "Recommend command should output recommendations and indicate ingredient shortfall if any.");
+                "Recommend command should output " +
+                        "recommendations and indicate ingredient shortfall if any.");
 
         // 14. Verify "bye" command output.
-        assertTrue(output.contains("bye") || output.contains("exited") || output.contains("hope to see you again"),
+        assertTrue(output.contains("bye") || output.contains("exited")
+                        || output.contains("hope to see you again"),
                 "Program should exit gracefully after 'bye' command.");
 
         logger.info("testMainIntegration_AllCommands() passed");
