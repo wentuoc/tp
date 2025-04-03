@@ -1,13 +1,17 @@
 package seedu.storage;
 
 import seedu.exceptions.DuplicateIngredientException;
+import seedu.exceptions.EZMealPlanException;
 import seedu.exceptions.InvalidPriceException;
 import seedu.food.Ingredient;
+import seedu.food.Inventory;
 import seedu.food.Meal;
+import seedu.logic.MealManager;
 import seedu.presetmeals.PresetMeals;
 import seedu.ui.UserInterface;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,33 +19,36 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Storage {
-    static File userListFile;
-    static File mainListFile;
-    private static final String USER_LIST_FILE_PATH = "data/userList.txt";
-    private static final String MAIN_LIST_FILE_PATH = "data/mainList.txt";
+    static File wishListFile;
+    static File recipesListFile;
+    static File inventoryFile;
+    private static final String WISH_LIST_FILE_PATH = "data/wishList.txt";
+    private static final String RECIPES_LIST_FILE_PATH = "data/recipesList.txt";
     private static final String INVENTORY_LIST_FILE_PATH = "data/inventoryList.txt";
 
-    public static File getUserListFile() {
-        return userListFile;
+    public static File getWishListFile() {
+        return wishListFile;
     }
 
-    public static File getMainListFile() {
-        return mainListFile;
+    public static File getRecipesListFile() {
+        return recipesListFile;
     }
 
-    public static String getUserListFilePath() {
-        return USER_LIST_FILE_PATH;
+    public static String getWishListFilePath() {
+        return WISH_LIST_FILE_PATH;
     }
 
-    public static String getMainListFilePath() {
-        return MAIN_LIST_FILE_PATH;
+    public static String getRecipesListFilePath() {
+        return RECIPES_LIST_FILE_PATH;
     }
 
     public static void createListFiles() throws IOException {
-        userListFile = new File(USER_LIST_FILE_PATH);
-        mainListFile = new File(MAIN_LIST_FILE_PATH);
-        createListFile(mainListFile);
-        createListFile(userListFile);
+        wishListFile = new File(WISH_LIST_FILE_PATH);
+        recipesListFile = new File(RECIPES_LIST_FILE_PATH);
+        inventoryFile = new File(INVENTORY_LIST_FILE_PATH);
+        createListFile(recipesListFile);
+        createListFile(wishListFile);
+        createListFile(inventoryFile);
     }
 
     public static void createListFile(File listFile) throws IOException {
@@ -52,6 +59,21 @@ public class Storage {
         // Create the file if it doesn't already exist
         if (!listFile.exists()) {
             listFile.createNewFile();
+        }
+    }
+
+    public static void loadExistingInventory(MealManager mealManager) throws FileNotFoundException {
+        Inventory ingredients = mealManager.getInventory();
+        if (inventoryFile.exists()) {
+            Scanner scanner = new Scanner(inventoryFile);
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine().trim();
+                if (line.isEmpty()) {
+                    continue;
+                }
+                checkValidIngredients(line, ingredients);
+            }
+            scanner.close();
         }
     }
 
@@ -145,14 +167,24 @@ public class Storage {
         }
     }
 
-    public static void clearFile(String filePath) {
+    public static void clearFile(String filePath, UserInterface ui) {
         try (FileWriter fileWriter = new FileWriter(filePath)) {
         } catch (IOException ioException) {
-            UserInterface.printMessage(ioException.getMessage());
+            ui.printMessage(ioException.getMessage());
         }
     }
 
     public static String getInventoryFilePath() {
         return INVENTORY_LIST_FILE_PATH;
+    }
+
+
+    private static void checkValidIngredients(String line, Inventory ingredients) {
+        try {
+            Ingredient newIngredient = Ingredient.fromData(line);
+            ingredients.addIngredient(newIngredient);
+        } catch (EZMealPlanException ezMealPlanException) {
+            System.err.println(ezMealPlanException.getMessage());
+        }
     }
 }

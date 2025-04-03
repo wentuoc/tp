@@ -19,11 +19,11 @@ import seedu.food.Meal;
 import seedu.logic.MealManager;
 import seedu.ui.UserInterface;
 
-public class ListCommandTest {
-    private static final Logger logger = Logger.getLogger(ListCommandTest.class.getName());
+public class WishlistCommandTest {
+    private static final Logger logger = Logger.getLogger(WishlistCommandTest.class.getName());
 
-    public ListCommandTest() {
-        String fileName = "ListCommandTest.log";
+    public WishlistCommandTest() {
+        String fileName = "WishlistCommandTest.log";
         setupLogger(fileName);
     }
 
@@ -49,7 +49,7 @@ public class ListCommandTest {
     /**
      * Define a UserInterface class for testing, to capture the params of printMealList.
      */
-    public class TestUserInterface extends UserInterface {
+    public static class TestUserInterface extends UserInterface {
         List<Meal> capturedMeals;
         String capturedListName;
 
@@ -62,23 +62,23 @@ public class ListCommandTest {
     }
 
     @Test
-    public void testExecute_listCommand_printsMainList() throws EZMealPlanException {
-        logger.fine("Running testExecute_listCommand_printsMainList()");
+    public void testExecute_wishlistCommand_printsUserChosenMeals() throws EZMealPlanException {
+        logger.fine("running testExecute_wishlistCommand_printsUserChosenMeals()");
         MealManager mealManager = new MealManager();
-        Meal meal1 = new Meal("Main Meal 1");
-        Meal meal2 = new Meal("Main Meal 2");
-        mealManager.getMainMeals().getList().add(meal1);
-        mealManager.getMainMeals().getList().add(meal2);
+        Meal meal1 = new Meal("Meal A");
+        Meal meal2 = new Meal("Meal B");
+        mealManager.getWishList().getList().add(meal1);
+        mealManager.getWishList().getList().add(meal2);
 
         TestUserInterface testUI = new TestUserInterface();
-        ListCommand listCommand = new ListCommand();
-        listCommand.execute(mealManager, testUI);
+        MealCommand mealCommand = new MealCommand();
+        mealCommand.execute(mealManager, testUI);
 
-        assertEquals("main list", testUI.capturedListName);
+        assertEquals(mealManager.getWishList().getMealListName(), testUI.capturedListName);
         List<Meal> expectedMeals = new ArrayList<>();
         expectedMeals.add(meal1);
         expectedMeals.add(meal2);
         assertIterableEquals(expectedMeals, testUI.capturedMeals);
-        logger.info("testExecute_listCommand_printsMainList() passed");
+        logger.fine("testExecute_wishlistCommand_printsUserChosenMeals() passed");
     }
 }

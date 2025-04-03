@@ -60,19 +60,6 @@ public class Meal extends Product {
         }
     }
 
-    // If searching for an ingredient is a behavior of a single meal,
-    // you can include a method to return matching ingredients.
-    public List<Ingredient> findIngredient(String ingredientName) {
-        String lcIngredientName = ingredientName.toLowerCase();
-        List<Ingredient> matchingIngredList = new ArrayList<>();
-        for (Ingredient ingredient : ingredientList) {
-            if (ingredient.getName().toLowerCase().contains(lcIngredientName)) {
-                matchingIngredList.add(ingredient);
-            }
-        }
-        return matchingIngredList;
-    }
-
     public String toDataString() {
         StringBuilder stringBuilder = new StringBuilder();
         // Append the meal name.

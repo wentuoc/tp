@@ -2,7 +2,7 @@ package seedu.command;
 
 import seedu.logic.MealManager;
 import seedu.ui.UserInterface;
-import seedu.meallist.Meals;
+import seedu.meallist.MealList;
 import seedu.food.Meal;
 import seedu.food.Ingredient;
 import seedu.food.Inventory;
@@ -13,7 +13,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public class RecommendCommand extends Command {
-    private String ingredientKeyword;
+    private final String ingredientKeyword;
 
     /**
      * Constructs a RecommendCommand.
@@ -21,10 +21,12 @@ public class RecommendCommand extends Command {
      */
     public RecommendCommand(String userInput) {
         String[] parts = userInput.split("/ing");
-        if (parts.length < 2) {
+        int validLength = 2;
+        if (parts.length < validLength) {
             ingredientKeyword = "";
         } else {
-            ingredientKeyword = parts[1].trim();
+            int ingredientsIndex = 1;
+            ingredientKeyword = parts[ingredientsIndex].trim();
         }
     }
 
@@ -33,12 +35,12 @@ public class RecommendCommand extends Command {
         Inventory inventory = mealManager.getInventory();
 
         // First, filter the user meal list (wishlist) by the ingredient keyword.
-        Meals userMeals = mealManager.getUserMeals();
+        MealList userMeals = mealManager.getWishList();
         List<Meal> candidateMeals = filterMealsByIngredient(userMeals.getList(), ingredientKeyword);
 
         // If no matching meals in the user list, try the main meal list.
         if (candidateMeals.isEmpty()) {
-            Meals mainMeals = mealManager.getMainMeals();
+            MealList mainMeals = mealManager.getRecipesList();
             candidateMeals = filterMealsByIngredient(mainMeals.getList(), ingredientKeyword);
         }
 
@@ -61,7 +63,9 @@ public class RecommendCommand extends Command {
         List<Ingredient> mealIngredients = selectedMeal.getIngredientList();
         for (int i = 0; i < mealIngredients.size(); i++) {
             Ingredient ing = mealIngredients.get(i);
-            sb.append("   ").append(i + 1).append(". ").append(ing.toString()).append(System.lineSeparator());
+            int indexAdjustment = 1;
+            sb.append("   ").append(i + indexAdjustment).append(". ").append(ing.toString())
+                    .append(System.lineSeparator());
         }
 
         // Determine which ingredients are missing from the inventory.

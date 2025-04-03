@@ -19,11 +19,11 @@ public class HelpCommand extends Command {
             return;
         }
         switch(commandDescription) {
-        case "list":
-            ui.printListCommandHelp();
+        case "recipes":
+            ui.printRecipesCommandHelp();
             break;
-        case "meal":
-            ui.printMealCommandHelp();
+        case "wishlist":
+            ui.printWishlistCommandHelp();
             break;
         case "filter":
             ui.printFilterCommandHelp();

@@ -1,14 +1,14 @@
 package seedu.exceptions;
 
 public class InvalidKeywordIndexException extends EZMealPlanException {
-    String mainOrUser;
+    String recipeOrWishlist;
 
-    public InvalidKeywordIndexException(String mainOrUser) {
-        this.mainOrUser = mainOrUser;
+    public InvalidKeywordIndexException(String recipeOrWishlist) {
+        this.recipeOrWishlist = recipeOrWishlist;
     }
 
     @Override
     public String getMessage() {
-        return "'" + mainOrUser + "' must be present after the 'view' keyword in the 'view' command.\n";
+        return "'" + recipeOrWishlist + "' must be present after the 'view' keyword in the 'view' command.\n";
     }
 }
