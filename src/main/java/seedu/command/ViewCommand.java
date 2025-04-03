@@ -3,6 +3,7 @@ package seedu.command;
 import seedu.checkers.ViewChecker;
 import seedu.exceptions.EZMealPlanException;
 import seedu.exceptions.InvalidViewKeywordException;
+import seedu.exceptions.ViewEmptyListException;
 import seedu.exceptions.ViewIndexOutOfRangeException;
 import seedu.food.Meal;
 import seedu.logic.MealManager;
@@ -39,7 +40,7 @@ public class ViewCommand extends Command {
         Meals meals = mainOrUser.equals(main) ? mealManager.getMainMeals()
                 : mealManager.getUserMeals();
         if (checkEmptyMealList(mainOrUser, meals)) {
-            return;
+            throw new ViewEmptyListException();
         }
         int afterKeywordIndex = lowerCaseInput.indexOf(mainOrUser) + mainOrUser.length();
         String afterKeyword = lowerCaseInput.substring(afterKeywordIndex).trim();
