@@ -1,9 +1,13 @@
 package seedu.exceptions;
 
 public class ViewEmptyListException extends EZMealPlanException {
+    String recipeOrWishlistName;
 
+    public ViewEmptyListException(String recipeOrWishlistName) {
+        this.recipeOrWishlistName = recipeOrWishlistName;
+    }
     @Override
     public String getMessage() {
-        return "The meal list is empty.\n";
+        return "The " + recipeOrWishlistName + " is empty.\n";
     }
 }

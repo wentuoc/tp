@@ -3,6 +3,7 @@ package seedu.command;
 import seedu.checkers.ViewChecker;
 import seedu.exceptions.EZMealPlanException;
 import seedu.exceptions.InvalidViewKeywordException;
+import seedu.exceptions.ViewEmptyListException;
 import seedu.exceptions.ViewIndexOutOfRangeException;
 import seedu.food.Meal;
 import seedu.logic.MealManager;
@@ -39,23 +40,14 @@ public class ViewCommand extends Command {
             throws EZMealPlanException {
         MealList mealList = recipesOrWishlist.equals(recipesSymbol) ? mealManager.getRecipesList()
                 : mealManager.getWishList();
-        if (checkEmptyMealList(mealList)) {
-            return;
+        if (mealList.getList().isEmpty()) {
+            throw new ViewEmptyListException(mealList.getMealListName());
         }
         int afterKeywordIndex = lowerCaseInput.indexOf(recipesOrWishlist) + recipesOrWishlist.length();
         String afterKeyword = lowerCaseInput.substring(afterKeywordIndex).trim();
         int mealListIndex = Integer.parseInt(afterKeyword);
         Meal meal = getMeal(mealList, mealListIndex);
         ui.printIngredientList(meal);
-    }
-
-    private boolean checkEmptyMealList(MealList mealList) {
-        if (mealList.getList().isEmpty()) {
-            String mealListString = mealList.getMealListName();
-            System.out.println("The " + mealListString + " is empty.\n");
-            return true;
-        }
-        return false;
     }
 
     private static Meal getMeal(MealList mealList, int mealListIndex) throws EZMealPlanException {
@@ -67,7 +59,6 @@ public class ViewCommand extends Command {
             throw new ViewIndexOutOfRangeException(mealListIndex, mealList);
         }
     }
-
 
     public void setRecipesOrWishlist() throws EZMealPlanException {
         boolean isContainsRecipesSymbol = this.lowerCaseInput.contains(recipesSymbol) &&
