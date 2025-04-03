@@ -9,13 +9,14 @@ import seedu.command.CreateCommand;
 import seedu.command.DeleteCommand;
 import seedu.command.FilterCommand;
 import seedu.command.HelpCommand;
+import seedu.command.InventoryCommand;
 import seedu.command.RecipesCommand;
-import seedu.command.WishlistCommand;
 import seedu.command.RecommendCommand;
 import seedu.command.RemoveCommand;
 import seedu.command.SelectCommand;
 import seedu.command.UnknownCommand;
 import seedu.command.ViewCommand;
+import seedu.command.WishlistCommand;
 
 public class Parser {
     static String bye = "bye";
@@ -32,6 +33,7 @@ public class Parser {
     static String recommend = "recommend";
     static String consume = "consume";
     static String buy = "buy";
+    static String inventory = "inventory";
 
     public static Command parse(String userInput) {
         String lowerCaseUserInput = userInput.toLowerCase().trim();
@@ -64,6 +66,8 @@ public class Parser {
             return new ConsumeCommand(userInput);
         } else if (lowerCaseUserInput.startsWith(buy)) {
             return new BuyCommand(userInput);
+        } else if (lowerCaseUserInput.startsWith(inventory)) {
+            return new InventoryCommand();
         } else {
             return new UnknownCommand(userInput);
         }
