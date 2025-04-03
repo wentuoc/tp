@@ -72,8 +72,8 @@ public class WishlistCommandTest {
         mealManager.getWishList().getList().add(meal2);
 
         TestUserInterface testUI = new TestUserInterface();
-        MealCommand mealCommand = new MealCommand();
-        mealCommand.execute(mealManager, testUI);
+        WishlistCommand wishlistCommand = new WishlistCommand();
+        wishlistCommand.execute(mealManager, testUI);
 
         assertEquals(mealManager.getWishList().getMealListName(), testUI.capturedListName);
         List<Meal> expectedMeals = new ArrayList<>();

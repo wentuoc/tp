@@ -8,7 +8,7 @@ import seedu.ui.UserInterface;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class MealCommand extends Command {
+public class WishlistCommand extends Command {
     private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     @Override

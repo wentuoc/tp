@@ -10,7 +10,7 @@ import seedu.command.DeleteCommand;
 import seedu.command.FilterCommand;
 import seedu.command.HelpCommand;
 import seedu.command.RecipesCommand;
-import seedu.command.MealCommand;
+import seedu.command.WishlistCommand;
 import seedu.command.RecommendCommand;
 import seedu.command.RemoveCommand;
 import seedu.command.SelectCommand;
@@ -47,7 +47,7 @@ public class Parser {
         } else if (lowerCaseUserInput.startsWith(recipes)) {
             return new RecipesCommand();
         } else if (lowerCaseUserInput.startsWith(wishlist)) {
-            return new MealCommand();
+            return new WishlistCommand();
         } else if (lowerCaseUserInput.startsWith(clear)) {
             return new ClearCommand();
         } else if (lowerCaseUserInput.startsWith(help)) {
