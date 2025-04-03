@@ -60,7 +60,7 @@ throws an exception.
 Both commands extend the abstract Command class, thereby following our command design pattern to decouple user input parsing from the actual execution of features. 
 The primary objective of these commands is to ensure a clear separation of concerns, improve maintainability, and allow for easier testing.
 
-#### 1. MealCommand
+#### 1. RecipesCommand
 
 ##### 1.1 Design Overview
 
@@ -70,7 +70,7 @@ MealCommand is responsible for fetching the user meals from the MealManager and 
 ###### Design Goals
 
 **Single Responsibility:**
-- MealCommand only deals with retrieving the user-selected meal list and forwarding it to the UI.
+- RecipesCommand only deals with retrieving the user-selected meal list and forwarding it to the UI.
 
 **Decoupling:**
 - By isolating the command logic from both the UI and data management, future changes in either will have minimal impact.
@@ -80,7 +80,7 @@ MealCommand is responsible for fetching the user meals from the MealManager and 
 
 ##### 1.2 Implementation Details
 
-###### Component Level: MealCommand Class
+###### Component Level: RecipesCommand Class
 
 - Inherits from the abstract Command class
 - Implements the `execute(MealManager mealManager, UserInterface ui)` method
@@ -90,60 +90,62 @@ MealCommand is responsible for fetching the user meals from the MealManager and 
 
 ###### Code Example
 ```java
-@Override
 public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
-    logger.fine("Executing MealCommand");
-    List<Meal> userMealList = mealManager.getUserMeals().getList();
-    ui.printMealList(userMealList, "user chosen meals");
+    assert mealManager != null : "MealManager cannot be null";
+    logger.fine("Executing 'recipes' command");
+    String recipesListName = mealManager.getRecipesList().getMealListName();
+    List<Meal> recipesList = mealManager.getRecipesList().getList();
+    ui.printMealList(recipesList, recipesListName);
 }
 ```
 
 ##### 1.3 Sequence Diagram
 
-![.\diagrams\MealCommand.png](.\diagrams\MealCommand.png)
+![.\diagrams\RecipesCommand.png](.\diagrams\RecipesCommand.png)
 
 ##### 1.4 Unit Testing
 
 ###### Testing Approach
 - A test-specific subclass of UserInterface (named TestUserInterface) is defined to capture the parameters passed to the `printMealList` method
 - The unit test populates the MealManager's user meals list with sample meals
-- Executes MealCommand
+- Executes RecipesCommand
 - Asserts that the UI received the expected label and list of meals
 
 ###### Unit Test Code
 ```java
 @Test
-public void testExecute_mealCommand_printsUserChosenMeals() throws EZMealPlanException {
-
+public void testExecute_recipesCommand_printsRecipesList() throws EZMealPlanException {
+    logger.fine("Running testExecute_recipesCommand_printsRecipesList()");
     MealManager mealManager = new MealManager();
-    Meal meal1 = new Meal("Meal A");
-    Meal meal2 = new Meal("Meal B");
-    mealManager.getUserMeals().getList().add(meal1);
-    mealManager.getUserMeals().getList().add(meal2);
+    Meal meal1 = new Meal("Main Meal 1");
+    Meal meal2 = new Meal("Main Meal 2");
+    mealManager.getRecipesList().getList().add(meal1);
+    mealManager.getRecipesList().getList().add(meal2);
 
     TestUserInterface testUI = new TestUserInterface();
-    MealCommand mealCommand = new MealCommand();
-    mealCommand.execute(mealManager, testUI);
+    RecipesCommand recipesCommand = new RecipesCommand();
+    recipesCommand.execute(mealManager, testUI);
 
-    assertEquals("user chosen meals", testUI.capturedListName);
+    assertEquals(mealManager.getRecipesList().getMealListName(), testUI.capturedListName);
     List<Meal> expectedMeals = new ArrayList<>();
     expectedMeals.add(meal1);
     expectedMeals.add(meal2);
     assertIterableEquals(expectedMeals, testUI.capturedMeals);
+    logger.info("testExecute_recipesCommand_printsRecipesList() passed");
 }
 ```
 
-#### 2. ListCommand
+#### 2. WishlistCommand
 
 ##### 2.1 Design Overview
 
 ###### Function
-ListCommand fetches the main meal list from the MealManager and instructs the UI to display it.
+WishlistCommand fetches the main meal list from the MealManager and instructs the UI to display it.
 
 ###### Design Goals
 
 **Single Responsibility:**
-- ListCommand solely handles the retrieval and display of the main meals.
+- WishlistCommand solely handles the retrieval and display of the main meals.
 
 **Decoupling:**
 - By segregating responsibilities, it makes the code easier to maintain and extend.
@@ -153,7 +155,7 @@ ListCommand fetches the main meal list from the MealManager and instructs the UI
 
 ##### 2.2 Implementation Details
 
-###### Component Level: ListCommand Class
+###### Component Level: WishlistCommand Class
 
 - Inherits from the abstract Command class
 - Implements the `execute(MealManager mealManager, UserInterface ui)` method
@@ -163,51 +165,155 @@ ListCommand fetches the main meal list from the MealManager and instructs the UI
 
 ###### Code Example
 ```java
-@Override
 public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
-    logger.fine("Executing 'list' command");
-    List<Meal> mainMealList = mealManager.getMainMeals().getList();
-    ui.printMealList(mainMealList, "main list");
+    assert mealManager != null : "MealManager cannot be null";
+    logger.fine("Executing 'wishlist' Command");
+    List<Meal> wishList = mealManager.getWishList().getList();
+    String wishListName = mealManager.getWishList().getMealListName();
+    ui.printMealList(wishList, wishListName);
 }
 ```
 
 ##### 2.3 Sequence Diagram
 
-![.\diagrams\ListCommand.png](.\diagrams\ListCommand.png)
+![.\diagrams\WishlistCommand.png](.\diagrams\WishlistCommand.png)
 
 ##### 2.4 Unit Testing
 
 ###### Testing Approach
 - Uses a test-specific TestUserInterface subclass to capture the output of `printMealList`
 - Sets up the main meal list in the MealManager
-- Executes ListCommand
+- Executes WishlistCommand
 - Verifies that the UI output matches the expected label and meal list
 
 ###### Unit Test Code
 ```java
 @Test
-public void testExecute_listCommand_printsMainList() throws EZMealPlanException {
-
+public void testExecute_wishlistCommand_printsUserChosenMeals() throws EZMealPlanException {
+    logger.fine("running testExecute_wishlistCommand_printsUserChosenMeals()");
     MealManager mealManager = new MealManager();
-    Meal meal1 = new Meal("Main Meal 1");
-    Meal meal2 = new Meal("Main Meal 2");
-    mealManager.getMainMeals().getList().add(meal1);
-    mealManager.getMainMeals().getList().add(meal2);
+    Meal meal1 = new Meal("Meal A");
+    Meal meal2 = new Meal("Meal B");
+    mealManager.getWishList().getList().add(meal1);
+    mealManager.getWishList().getList().add(meal2);
 
     TestUserInterface testUI = new TestUserInterface();
-    ListCommand listCommand = new ListCommand();
-    listCommand.execute(mealManager, testUI);
+    WishlistCommand wishlistCommand = new WishlistCommand();
+    wishlistCommand.execute(mealManager, testUI);
 
-    assertEquals("main list", testUI.capturedListName);
+    assertEquals(mealManager.getWishList().getMealListName(), testUI.capturedListName);
     List<Meal> expectedMeals = new ArrayList<>();
     expectedMeals.add(meal1);
     expectedMeals.add(meal2);
     assertIterableEquals(expectedMeals, testUI.capturedMeals);
+    logger.fine("testExecute_wishlistCommand_printsUserChosenMeals() passed");
 }
 ```
-### CreateCommand and CreateChecker
 
-##### 2.1 Design Overview
+#### 3. SelectCommand
+
+##### 3.1 Design Overview
+
+###### Function
+SelectCommand allows the user to select a recipe from the filtered list (obtained via the FilterCommand) by providing its index, and then adds the selected recipe into the user's wish list.
+
+###### Design Goals
+- **Single Responsibility:**
+    - SelectCommand is solely responsible for validating the user-provided index, retrieving the corresponding recipe from the filtered list, and adding that recipe to the wish list.
+
+- **Decoupling:**
+    - By isolating the selection logic from other commands, it becomes easier to maintain and extend without affecting other parts of the system.
+
+- **Testability:**
+    - The design supports unit testing by using a test-specific UserInterface subclass to capture the output, allowing us to verify that the correct recipe is added to the wish list and the appropriate confirmation message is displayed.
+
+##### 3.2 Implementation Details
+
+###### Component Level: SelectCommand Class
+- Inherits from the abstract FilterSelectCommand class.
+- Implements the execute(MealManager mealManager, UserInterface ui) method.
+- Uses logging to indicate execution and to record any input validation issues.
+- Validates the user input index using helper methods (getIndexSubstring, checkValidParse, and checkValidInputIndex).
+- Retrieves the filtered meal list via the inherited method getFilteredMealList(mealManager).
+- Retrieves the wish list from the MealManager.
+- Adds the selected recipe to the wish list and calls ui.printAddMealMessage to display a confirmation message.
+
+###### Code Example
+```java
+    public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
+        boolean isValidUserInput = checkValidUserInput(filterOrSelect);
+        if (!isValidUserInput) {
+            logger.severe("Huge issue detected! The user input format remains invalid despite " +
+                    "passing all the checks for input formatting error.");
+        }
+        assert isValidUserInput;
+        List<Meal> filteredMealList = getFilteredMealList(mealManager);
+        if (filteredMealList.isEmpty()) {
+            System.out.println("The filtered meal list is empty.");
+            return;
+        }
+        String indexSubstring = getIndexSubstring();
+        int inputIndex = checkValidParse(indexSubstring);
+        Meal selectedMeal = checkValidInputIndex(inputIndex, filteredMealList);
+        MealList wishList = mealManager.getWishList();
+        mealManager.addMeal(selectedMeal, wishList);
+        ui.printAddMealMessage(selectedMeal, wishList);
+    }
+```
+
+##### 3.3 Sequence Diagram
+Below is the UML sequence diagram for the SelectCommand, illustrating its interactions with the system components:
+
+![.\diagrams\SelectCommand.png](.\diagrams\SelectCommand.png)
+
+##### 3.4 Unit Testing
+
+###### Testing Approach
+- Tests are divided into success and failure scenarios using separate test methods
+- A custom logger is set up to track test execution with both console and file handlers
+- For successful selection tests:
+    - Tests run on both empty and populated meal lists
+    - Multiple selection command formats are tested (/mname, /ing, /mcost)
+- For failure scenarios, tests verify appropriate exceptions are thrown for:
+    - Invalid index formats (non-numeric values)
+    - Out-of-range indices (negative, zero, or beyond list size)
+    - Invalid price formats and negative prices
+    - Duplicate meal selections (attempting to add the same meal twice)
+- The test utilizes preset meals loaded from Storage to populate the meal list
+- Each test verifies expected exception messages match actual exception messages
+- 
+###### Unit Test Code
+```java
+@Test
+public void selectCommand_success() {
+    mealManager.getRecipesList().getList().clear();
+    mealManager.getWishList().getList().clear();
+    logger.fine("running selectCommand_success()");
+    String[] validSelectCommands = {"select 2 /mname a", "select 1 /ing b,c", "select 2 /mcost 2"
+            , "select 4 /mname Mname", "select 2 /ing Ing", "select 1 /mcost 5"};
+    runValidSelectCommands(validSelectCommands);
+    addMeals();
+    runValidSelectCommands(validSelectCommands);
+    logger.info("selectCommand_success() passed");
+}
+
+@Test
+public void selectCommand_fail() {
+    logger.fine("running selectCommand_fail()");
+    mealManager.getRecipesList().getList().clear();
+    mealManager.getWishList().getList().clear();
+    addMeals();
+    checkInvalidPrice();
+    checkSelectDuplicateMeal();
+    checkInvalidSelectIndex();
+    checkIndexOutOfRange();
+    logger.info("selectCommand_fail() passed");
+}
+```
+
+### 4. CreateCommand and CreateChecker
+
+##### 4.1 Design Overview
 
 ###### Function
 CreateChecker checks if the user input is valid before passing to the CreateCommand to create a new meal from the user input and adds it into the recipes list.
@@ -222,24 +328,24 @@ CreateChecker solely handles checking of the Create command input by the user.
 - By segregating responsibilities, it makes the code easier to maintain and extend.
 
 **Testability:**
-- The design supports unit testing by allowing a test-specific UI to capture and verify the output.
+- The design supports unit testing by allowing test-specific CreateCommandTest and CreateCheckerTest to capture and verify the output.
 
-##### 2.2 Implementation Details
+##### 4.2 Implementation Details
 
 ###### Component Level: CreateChecker Class
 
-- Inherits from the abstract Checker Class
-- Implements the `check()` method
-- Uses logging to indicate execution
-- `isPassed` is set to `true` once the user input passes all the required checks
-- Passes the valid user input back into the CreateCommand class for processing into a new meal
+- Inherits from the abstract Checker Class.
+- Implements the `check()` method.
+- Uses logging to indicate execution.
+- `isPassed` is set to `true` once the user input passes all the required checks.
+- Passes the valid user input back into the CreateCommand class for processing into a new meal.
 
 ###### Component Level: CreateCommand Class
 
-- Inherits from the abstract Command class
-- Implements the `execute(MealManager mealManager, UserInterface ui)` method
-- Uses logging to indicate execution
-- Creates a new meal and passes it to the MealManager for adding the meal into the recipes list
+- Inherits from the abstract Command class.
+- Implements the `execute(MealManager mealManager, UserInterface ui)` method.
+- Uses logging to indicate execution.
+- Creates a new meal and passes it to the MealManager for adding the meal into the recipes list.
 
 ###### Code Example
 ```java
@@ -271,16 +377,17 @@ public void check() throws EZMealPlanException {
         ui.printAddMealMessage(newMeal, recipesList);
     }
 ```
-##### 2.3 Sequence Diagrams
+##### 4.3 Sequence Diagrams
+Here are Sequence Diagrams depicting the flow of the proceesing of user inputs into a new meal:
 ![CreateCommand.puml](puml/CreateCommand.puml)
 ![CreateChecker.puml](puml/CreateChecker.puml)
-##### 2.4 Unit Testing
+##### 4.4 Unit Testing
 
 ###### Testing Approach
-- Uses a test-specific CreateCheckerTest and CreateCommandTest to ensure that the CreateChecker and CreateCommand account for different types of user inputs and proceed as normal
-- Test with different types of user inputs that gives no error and some exceptions
-- Executes CreateChecker and CreateCommand
-- Verifies that the exceptions are thrown according to the user inputs
+- Uses a test-specific CreateCheckerTest and CreateCommandTest to ensure that the CreateChecker and CreateCommand account for different types of user inputs and proceed as normal.
+- Test with different types of user inputs that gives no error and some exceptions.
+- Executes CreateChecker and CreateCommand.
+- Verifies that the exceptions are thrown according to the user inputs.
 
 ###### Unit Test Code
 ```java
@@ -422,9 +529,9 @@ java -jar ezmealplan.jar
 
 - **`Load data`**: Ensure main_meal_list.txt and user_meal_list.txt are present.
 
-- **`list`**: Shows all meals alphabetically sorted.
+- **`recipes`**: Shows all meals alphabetically sorted.
 
-- **`meal`**: Displays meals user has selected.
+- **`wishlist`**: Displays meals user has selected.
 
 - **`filter /mcost 5.00`**: Shows meals costing exactly $5.00.
 
