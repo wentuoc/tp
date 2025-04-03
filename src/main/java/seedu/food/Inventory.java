@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Inventory {
-    private List<Ingredient> ingredients;
+    private final List<Ingredient> ingredients;
 
     public Inventory() {
         ingredients = new ArrayList<>();

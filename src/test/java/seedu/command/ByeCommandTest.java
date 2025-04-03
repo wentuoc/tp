@@ -3,7 +3,7 @@ package seedu.command;
 import seedu.exceptions.EZMealPlanException;
 import seedu.food.Meal;
 import seedu.logic.MealManager;
-import seedu.meallist.Meals;
+import seedu.meallist.MealList;
 import seedu.storage.Storage;
 import seedu.ui.UserInterface;
 
@@ -117,7 +117,7 @@ public class ByeCommandTest {
     }
 
     private void restoreLatestWishList(File tempWishListFile) throws IOException {
-        File wishListFile = Storage.getUserListFile();
+        File wishListFile = Storage.getWishListFile();
         Scanner scanner = new Scanner(tempWishListFile);
         try (FileWriter fileCleaner = new FileWriter(wishListFile);
              FileWriter fileWriter = new FileWriter(wishListFile, true)) {
@@ -129,17 +129,17 @@ public class ByeCommandTest {
         tempWishListFile.delete();
     }
 
-    private void restoreLatestRecipes(File tempRecipesFile) throws IOException {
-        File recipesFile = Storage.getMainListFile();
-        Scanner scanner = new Scanner(tempRecipesFile);
-        try (FileWriter fileCleaner = new FileWriter(recipesFile);
-             FileWriter fileWriter = new FileWriter(recipesFile, true)) {
+    private void restoreLatestRecipes(File tempRecipesListFile) throws IOException {
+        File recipesListFile = Storage.getRecipesListFile();
+        Scanner scanner = new Scanner(tempRecipesListFile);
+        try (FileWriter fileCleaner = new FileWriter(recipesListFile);
+             FileWriter fileWriter = new FileWriter(recipesListFile, true)) {
             while (scanner.hasNextLine()) {
                 fileWriter.append(scanner.nextLine()).append(System.lineSeparator());
             }
             scanner.close();
         }
-        tempRecipesFile.delete();
+        tempRecipesListFile.delete();
     }
 
     private List<File> saveLatestLists() throws IOException {
@@ -152,7 +152,7 @@ public class ByeCommandTest {
     private File saveLatestWishList() throws IOException {
         String tempWishListPath = "data/tempWishList.txt";
         File tempWishListFile = new File(tempWishListPath);
-        File wishListFile = Storage.getUserListFile();
+        File wishListFile = Storage.getWishListFile();
         Scanner scanner = new Scanner(wishListFile);
         try (FileWriter fileWriter = new FileWriter(tempWishListFile, true)) {
             while (scanner.hasNextLine()) {
@@ -164,9 +164,9 @@ public class ByeCommandTest {
     }
 
     private File saveLatestRecipes() throws IOException {
-        String tempRecipesPath = "data/tempRecipes.txt";
+        String tempRecipesPath = "data/tempRecipesList.txt";
         File tempRecipesFile = new File(tempRecipesPath);
-        File recipesFile = Storage.getMainListFile();
+        File recipesFile = Storage.getRecipesListFile();
         Scanner scanner = new Scanner(recipesFile);
         try (FileWriter fileWriter = new FileWriter(tempRecipesFile, true)) {
             while (scanner.hasNextLine()) {
@@ -183,31 +183,31 @@ public class ByeCommandTest {
     }
 
     private static void checkWishLists(List<Meal> expectedWishList) throws IOException {
-        File wishListFile = Storage.getUserListFile();
+        File wishListFile = Storage.getWishListFile();
         List<Meal> wishListFromFile = Storage.loadExistingList(wishListFile);
         assertEquals(expectedWishList, wishListFromFile, "Wish list does not match.");
     }
 
     private static void checkRecipesLists(List<Meal> expectedRecipesList) throws IOException {
-        File recipesFile = Storage.getMainListFile();
+        File recipesFile = Storage.getRecipesListFile();
         List<Meal> recipesFromFile = Storage.loadExistingList(recipesFile);
         assertEquals(expectedRecipesList, recipesFromFile, "Recipes list does not match.");
     }
 
     private List<Meal> getExpectedWishList(List<Meal> mealsList) throws EZMealPlanException {
         int three = 3;
-        Meals wishList = mealManager.getUserMeals();
+        MealList wishList = mealManager.getWishList();
         return addMealsIntoList(three, mealsList, wishList);
     }
 
     private List<Meal> getExpectedRecipesList(List<Meal> mealsList) throws EZMealPlanException {
         int five = 5;
-        Meals recipes = mealManager.getMainMeals();
-        return addMealsIntoList(five, mealsList, recipes);
+        MealList recipesList = mealManager.getRecipesList();
+        return addMealsIntoList(five, mealsList, recipesList);
     }
 
 
-    private List<Meal> addMealsIntoList(int number, List<Meal> mealsList, Meals meals) throws EZMealPlanException {
+    private List<Meal> addMealsIntoList(int number, List<Meal> mealsList, MealList meals) throws EZMealPlanException {
         List<Meal> expectedList = new ArrayList<>();
         for (int i = 0; i < number; i++) {
             assert mealsList.get(i) != null;

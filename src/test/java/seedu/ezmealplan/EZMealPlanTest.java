@@ -40,8 +40,8 @@ public class EZMealPlanTest {
             FileHandler fileHandler = new FileHandler(fileName, true);
             fileHandler.setLevel(Level.FINE);
             logger.addHandler(fileHandler);
-        } catch (Exception e) {
-            logger.severe("File logger is not working: " + e.getMessage());
+        } catch (Exception exception) {
+            logger.severe("File logger is not working: " + exception.getMessage());
         }
     }
 
@@ -49,15 +49,15 @@ public class EZMealPlanTest {
      * Test the main integration flow of the application.
      * <p>
      * The test simulates user inputs for all major commands:
-     * 1. list                   - Display global recipes (Recipe List)
-     * 2. meal                   - Display user's wish list (User Meal List)
+     * 1. recipes                  - Display global recipes (Recipe List)
+     * 2. wishlist                - Display user's wish list (User Meal List)
      * 3. create ...             - Create a new recipe
      * 4. filter /mname testmeal - Filter recipes by name ("testMeal")
      * 5. select 1               - Select the first filtered recipe into the wish list
      * 6. clear                  - Clear the wish list
-     * 7. help list              - Display help for the list command
+     * 7. help recipes              - Display help for the recipes command
      * 8. remove 1               - Remove recipe at index 1 from the wish list
-     * 9. view /m 1              - View details (ingredients) of recipe at index 1 from the global list
+     * 9. view /r 1              - View details (ingredients) of recipe at index 1 from the global list
      * 10. delete 1              - Delete recipe at index 1 from the global list
      * 11. buy /ing ingredient1 (1.0)     - Buy ingredient1 with price 1.0 (update inventory)
      * 12. consume /ing ingredient2         - Consume ingredient2 (update inventory)
@@ -72,16 +72,16 @@ public class EZMealPlanTest {
 
         // Simulate user input covering all major commands.
         String simulatedInput = String.join(System.lineSeparator(),
-                "list",
-                "meal",
+                "recipes",
+                "wishlist",
                 "create /mname testMeal /ing ingredient1 (1.0), ingredient2 (2.0)",
                 "filter /mname testmeal",
-                "select 1",
+                "select 98",
                 "clear",
-                "help list",
+                "help recipes",
                 "remove 1",
-                "view /m 1",
-                "delete 1",
+                "view /r 1",
+                "delete 98",
                 "buy /ing ingredient1 (1.0)",
                 "consume /ing ingredient2",
                 "recommend",
@@ -102,7 +102,8 @@ public class EZMealPlanTest {
             System.setOut(new PrintStream(testOut));
 
             // Execute main program.
-            EZMealPlan.main(new String[0]);
+            int index = 0;
+            EZMealPlan.main(new String[index]);
         } finally {
             // Restore original streams.
             System.setIn(originalIn);
@@ -113,15 +114,15 @@ public class EZMealPlanTest {
         String output = testOut.toString().toLowerCase();
         logger.fine("Captured output: " + output);
 
-        // 1. Verify "list" command output.
-        assertTrue(output.contains("main list")
-                        || output.contains("no meals found in the main list"),
-                "List command should display " +
+        // 1. Verify "recipes" command output.
+        assertTrue(output.contains("recipes list")
+                        || output.contains("no meals found in the recipes list"),
+                "Recipes command should display " +
                         "global recipes or indicate no recipes found.");
 
         // 2. Verify "meal" command output.
-        assertTrue(output.contains("your meal list")
-                        || output.contains("no meals found in your meal list"),
+        assertTrue(output.contains("your wishlist")
+                        || output.contains("no meals found in your wishlist"),
                 "Meal command should display wish list or indicate it is empty.");
 
         // 3. Verify "create" command output: check that 'testmeal' is added.
@@ -138,35 +139,35 @@ public class EZMealPlanTest {
         // 5. Verify "select" command output:
         // should contain confirmation message indicating recipe was added to the wish list.
         assertTrue(output.contains("successfully added a meal:")
-                        && output.contains("user meal list"),
+                        && output.contains("wishlist"),
                 "Select command should confirm " +
-                        "that the recipe was added to the wish list.");
+                        "that the recipe was added to the wishlist.");
 
         // 6. Verify "clear" command output.
         assertTrue(output.contains("cleared"),
-                "Clear command should indicate that the wish list has been cleared.");
+                "Clear command should indicate that the wishlist has been cleared.");
 
         // 7. Verify "help list" command output.
-        assertTrue(output.contains("sample input: list")
+        assertTrue(output.contains("sample input: recipes")
                         && output.contains("sample output:"),
-                "Help command should display detailed help for the list command.");
+                "Help command should display detailed help for the recipes command.");
 
         // 8. Verify "remove" command output.
         assertTrue(output.contains("removed"),
                 "Remove command should confirm " +
-                        "that a recipe was removed from the wish list.");
+                        "that a recipe was removed from the wishlist.");
 
         // 9. Verify "view" command output: should display ingredient list heading.
         assertTrue(output.contains("here are the ingredients for"),
                 "View command should display recipe details with ingredients.");
 
         // 10. Verify "delete" command output.
-        assertTrue(output.contains("has been removed from the global meal list!"),
+        assertTrue(output.contains("has been removed from the recipes list!"),
                 "Delete command should indicate " +
                         "that a recipe was removed from the global recipe list.");
 
         // 11. Verify "buy" command output: should contain "ingredient1 bought".
-        assertTrue(output.contains("ingredient1 bought"),
+        assertTrue(output.contains("ingredient1 ($1.00) bought"),
                 "Buy command should confirm that the ingredient was added to inventory.");
 
         // 12. Verify "consume" command output: should contain "ingredient2 consumed".

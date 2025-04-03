@@ -8,8 +8,8 @@ import seedu.exceptions.EZMealPlanException;
 import seedu.exceptions.InvalidPriceException;
 import seedu.food.Ingredient;
 import seedu.food.Meal;
-import seedu.meallist.MainMeals;
-import seedu.meallist.Meals;
+import seedu.meallist.MealList;
+import seedu.meallist.RecipesList;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -113,15 +113,16 @@ public class UserInterfaceTest {
     void printAddMealMessage_validMeal_success() throws EZMealPlanException {
         logger.fine("running printAddMealMessage_validMeal_success()");
         Meal mockMeal = new Meal("Chicken Rice");
-        Meals mockMealList = new MainMeals();
+        MealList mockMealList = new RecipesList();
         mockMealList.addMeal(mockMeal);
 
         ui.printAddMealMessage(mockMeal, mockMealList);
-        String expected = "You have successfully added a meal: Chicken Rice ($0.00) into main meal list." + ls +
-                          "Here are the meals in main meal list:" + ls +
+        String expected = "You have successfully added a meal: Chicken Rice ($0.00) into "+
+                          mockMealList.getMealListName() +"." + ls +
+                          "Here are the meals in "+ mockMealList.getMealListName() + ":" + ls +
                           "    1. Chicken Rice ($0.00)" + ls +
                           ls +
-                          "Currently, you have 1 meals in main meal list." + ls;
+                          "Currently, you have 1 meals in " + mockMealList.getMealListName() + "." + ls;
         assertEquals(expected, outContent.toString(), "Add meal message output does not match.");
         logger.info("printAddMealMessage_validMeal_success() passed");
     }
@@ -145,8 +146,9 @@ public class UserInterfaceTest {
     void printMealList_validMealList_success() throws InvalidPriceException {
         logger.fine("running printMealList_validMealList_success()");
         List<Meal> meals = List.of(new Meal("Chicken Rice"), new Meal("Fish Ball Noodles"));
-        ui.printMealList(meals, "main meal list");
-        String expected = "Here are the meals in main meal list:" + ls +
+        String recipesListName = new RecipesList().getMealListName();
+        ui.printMealList(meals, recipesListName);
+        String expected = "Here are the meals in " + recipesListName +":" + ls +
                           "    1. Chicken Rice ($0.00)" + ls +
                           "    2. Fish Ball Noodles ($0.00)" + ls + ls;
         assertEquals(expected, outContent.toString(), "Meal list output does not match.");
@@ -159,7 +161,7 @@ public class UserInterfaceTest {
         Meal mockMeal = new Meal("Chicken Rice");
         ui.printRemovedMessage(mockMeal, 2);
         String expected = "Chicken Rice ($0.00) has been removed from your meal list!" + ls +
-                          "You have 2 meals in your meal list.";
+                          "You have 2 meals in your meal list.\n";
         assertEquals(expected, outContent.toString(), "Removed message output does not match.");
         logger.info("printRemovedMessage_validMeal_success() passed");
     }
@@ -169,8 +171,8 @@ public class UserInterfaceTest {
         logger.fine("running printDeletedMessage_validMeal_success()");
         Meal mockMeal = new Meal("Chicken Rice");
         ui.printDeletedMessage(mockMeal, 5);
-        String expected = "Chicken Rice ($0.00) has been removed from the global meal list!" + ls +
-                          "There are now 5 meals in the global meal list.";
+        String expected = "Chicken Rice ($0.00) has been removed from the recipes list!" + ls +
+                          "There are now 5 meals in the recipes list.\n";
         assertEquals(expected, outContent.toString(), "Deleted message output does not match.");
         logger.info("printDeletedMessage_validMeal_success() passed");
     }
@@ -188,7 +190,7 @@ public class UserInterfaceTest {
     void printClearedList_noInput_success() {
         logger.fine("running printClearedList_noInput_success()");
         ui.printClearedList();
-        String expected = "All meals cleared from your meal list!" + ls;
+        String expected = "All meals cleared from your wishlist!" + ls;
         assertEquals(expected, outContent.toString(), "Cleared list message output does not match.");
         logger.info("printClearedList_noInput_success() passed");
     }
@@ -214,30 +216,30 @@ public class UserInterfaceTest {
     }
 
     @Test
-    void printMealCommandHelp_noInput_success() {
-        logger.fine("running printMealCommandHelp_noInput_success()");
-        ui.printMealCommandHelp();
-        String expected = "Entering the meal command will list out all the meals you have selected from the " +
-                          "main list." + ls +
-                          "Sample input: meal" + ls +
+    void printWishlistCommandHelp_noInput_success() {
+        logger.fine("running printWishlistCommandHelp_noInput_success()");
+        ui.printWishlistCommandHelp();
+        String expected = "Entering the wishlist command will list out all the meals you have selected from the " +
+                          "recipes list." + ls +
+                          "Sample input: wishlist" + ls +
                           "Sample output:" + ls +
                           "               1. Chicken Rice" + ls +
                           "               2. Fish Ball Noodles" + ls;
-        assertEquals(expected, outContent.toString(), "Meal command help output does not match.");
-        logger.info("printMealCommandHelp_noInput_success() passed");
+        assertEquals(expected, outContent.toString(), "Wishlist command help output does not match.");
+        logger.info("printWishlistCommandHelp_noInput_success() passed");
     }
 
     @Test
-    void printListCommandHelp_noInput_success() {
-        logger.fine("running printListCommandHelp_noInput_success()");
-        ui.printListCommandHelp();
-        String expected = "Entering the list command will list out all the meals from the main list." + ls +
-                          "Sample input: list" + ls +
+    void printRecipesCommandHelp_noInput_success() {
+        logger.fine("running printRecipesCommandHelp_noInput_success()");
+        ui.printRecipesCommandHelp();
+        String expected = "Entering the recipes command will list out all the meals from the recipes list." + ls +
+                          "Sample input: recipes" + ls +
                           "Sample output:" + ls +
                           "               1. Chicken Rice" + ls +
                           "               2. Fish Ball Noodles" + ls;
-        assertEquals(expected, outContent.toString(), "List command help output does not match.");
-        logger.info("printListCommandHelp_noInput_success() passed");
+        assertEquals(expected, outContent.toString(), "Recipes command help output does not match.");
+        logger.info("printRecipesCommandHelp_noInput_success() passed");
     }
 
     @Test
@@ -260,10 +262,10 @@ public class UserInterfaceTest {
     void printRemoveCommandHelp_noInput_success() {
         logger.fine("running printRemoveCommandHelp_noInput_success()");
         ui.printRemoveCommandHelp();
-        String expected = "Entering the remove command will remove a meal in the user's meal list" + ls +
+        String expected = "Entering the remove command will remove a meal in the wishlist" + ls +
                           "Sample input: remove 1 " + ls +
                           "Sample output:" + ls +
-                          "               OK.  Chicken Rice ($3.00) have been removed from the meal list." + ls;
+                          "               OK.  Chicken Rice ($3.00) have been removed from the wishlist." + ls;
         assertEquals(expected, outContent.toString(), "Remove command help output does not match.");
         logger.info("printRemoveCommandHelp_noInput_success() passed");
     }
@@ -273,13 +275,13 @@ public class UserInterfaceTest {
         logger.fine("running printSelectCommandHelp_noInput_success()");
         ui.printSelectCommandHelp();
         String expected = "Entering the select command will add the selected meal from the filtered or unfiltered " +
-                          "main meal list into the user meal list" + ls +
+                          "recipes list into the wishlist" + ls +
                           "Sample input (filtered by ingredient(s)): select 1 /ing yellow noodle, fish" + ls +
                           "Sample input (filtered by meal cost): select 1 /mcost 2" + ls +
                           "Sample input (filtered by meal name(s)): select 1 /mname fish, ball" + ls +
                           "Sample input: select 1" + ls +
                           "Sample output based on the sample input 'select 1':" + ls +
-                          "               OK.  Chicken Rice ($3.00) have been added to the meal list." + ls;
+                          "               OK.  Chicken Rice ($3.00) have been added to the wishlist." + ls;
         assertEquals(expected, outContent.toString(), "Select command help output does not match.");
         logger.info("printSelectCommandHelp_noInput_success() passed");
     }
@@ -288,7 +290,7 @@ public class UserInterfaceTest {
     void printFilterCommandHelp_noInput_success() {
         logger.fine("running printFilterCommandHelp_noInput_success()");
         ui.printFilterCommandHelp();
-        String expected = "Entering the filter command will filter a meal in the main list" + ls +
+        String expected = "Entering the filter command will filter a meal in the recipes list" + ls +
                           "There are three filter option by cost, by ingredient or by meal name" + ls +
                           "Sample input: filter /mcost 5.50" + ls +
                           "Sample output:" + ls +
@@ -307,10 +309,10 @@ public class UserInterfaceTest {
     void printDeleteCommandHelp_noInput_success() {
         logger.fine("running printDeleteCommandHelp_noInput_success()");
         ui.printDeleteCommandHelp();
-        String expected = "Entering the delete command will delete a meal in the main list" + ls +
+        String expected = "Entering the delete command will delete a meal in the recipes list" + ls +
                           "Sample input: delete 1 " + ls +
                           "Sample output:" + ls +
-                          "               OK.  Chicken Rice ($3.00) have been deleted from the main list." + ls;
+                          "               OK.  Chicken Rice ($3.00) have been deleted from the recipes list." + ls;
         assertEquals(expected, outContent.toString(), "Delete command help output does not match.");
         logger.info("printDeleteCommandHelp_noInput_success() passed");
     }
@@ -319,7 +321,8 @@ public class UserInterfaceTest {
     void printViewCommandHelp_noInput_success() {
         logger.fine("running printViewCommandHelp_noInput_success()");
         ui.printViewCommandHelp();
-        String expected = "Entering the view command will view a view all the ingredients of the selected meal" + ls +
+        String expected = "Entering the view command will give a view of all the ingredients of the selected meal" +
+                          ls +
                           "Sample input: view 1 " + ls +
                           "Sample output:" + ls +
                           "               1. yellow noodle" + ls +
@@ -337,10 +340,10 @@ public class UserInterfaceTest {
     void printClearCommandHelp_noInput_success() {
         logger.fine("running printClearCommandHelp_noInput_success()");
         ui.printClearCommandHelp();
-        String expected = "Entering the clear command will clear all the meals in the meal list" + ls +
+        String expected = "Entering the clear command will clear all the meals in the wishlist" + ls +
                           "Sample input: clear" + ls +
                           "Sample output:" + ls +
-                          "               The meal list has been cleared." + ls;
+                          "               The wishlist has been cleared." + ls;
         assertEquals(expected, outContent.toString(), "Clear command help output does not match.");
         logger.info("printClearCommandHelp_noInput_success() passed");
     }

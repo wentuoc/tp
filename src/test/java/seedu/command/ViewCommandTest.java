@@ -25,7 +25,6 @@ import seedu.logic.MealManager;
 import seedu.ui.UserInterface;
 
 public class ViewCommandTest {
-
     private static final Logger logger = Logger.getLogger(ViewCommandTest.class.getName());
 
     @BeforeAll
@@ -40,8 +39,8 @@ public class ViewCommandTest {
             FileHandler fileHandler = new FileHandler("ViewCommandTest.log", true);
             fileHandler.setLevel(Level.FINE);
             logger.addHandler(fileHandler);
-        } catch (IOException e) {
-            logger.log(Level.SEVERE, "File logger setup failed", e);
+        } catch (IOException exception) {
+            logger.log(Level.SEVERE, "File logger setup failed", exception.getMessage());
         }
     }
 
@@ -60,111 +59,110 @@ public class ViewCommandTest {
     }
 
     @Test
-    public void testExecute_viewMainMeal_success() throws EZMealPlanException {
-
-        logger.fine("Running testExecute_viewMainMeal_success()");
+    public void testExecute_viewRecipeMeal_success() throws EZMealPlanException {
+        logger.fine("Running testExecute_viewRecipeMeal_success()");
 
         MealManager mealManager = new MealManager();
-        Meal meal1 = new Meal("Main Meal 1");
-        Ingredient ingredient1 = new Ingredient("egg", 0.50);
-        Ingredient ingredient2 = new Ingredient("rice", 1.0);
-        meal1.addIngredient(ingredient1);
-        meal1.addIngredient(ingredient2);
+        Meal meal1 = new Meal("Recipes Meal 1");
+        Ingredient firstIngredient = new Ingredient("egg", 0.50);
+        Ingredient secondIngredient = new Ingredient("rice", 1.0);
+        meal1.addIngredient(firstIngredient);
+        meal1.addIngredient(secondIngredient);
 
-        mealManager.getMainMeals().getList().add(meal1);
+        mealManager.getRecipesList().getList().add(meal1);
 
         ViewCommandTest.TestUserInterface testUI = new ViewCommandTest.TestUserInterface();
-        ViewCommand ViewCommand = new ViewCommand("/m 1");
-        ViewCommand.execute(mealManager, testUI);
+        ViewCommand viewCommand = new ViewCommand("view /r 1");
+        viewCommand.execute(mealManager, testUI);
 
-        assertEquals("Main Meal 1 ($1.50)", testUI.capturedMeal.toString());
+        assertEquals("Recipes Meal 1 ($1.50)", testUI.capturedMeal.toString());
         List<Ingredient> expectedIngredients = new ArrayList<>();
-        expectedIngredients.add(ingredient1);
-        expectedIngredients.add(ingredient2);
+        expectedIngredients.add(firstIngredient);
+        expectedIngredients.add(secondIngredient);
         assertIterableEquals(expectedIngredients, testUI.capturedIngredients);
 
-        logger.info("testExecute_viewMainMeal_success passed");
+        logger.info("testExecute_viewRecipeMeal_success passed");
     }
 
 
     @Test
-    public void testExecute_viewUserMeal_success() throws EZMealPlanException {
-        logger.fine("Running testExecute_viewUserMeal_success()");
+    public void testExecute_viewWishlistMeal_success() throws EZMealPlanException {
+        logger.fine("Running testExecute_viewWishlistMeal_success()");
         MealManager mealManager = new MealManager();
-        Meal meal = new Meal("User Meal 1");
-        Ingredient i1 = new Ingredient("tofu", 1.20);
-        Ingredient i2 = new Ingredient("noodles", 1.80);
-        meal.addIngredient(i1);
-        meal.addIngredient(i2);
-        mealManager.getUserMeals().getList().add(meal);
+        Meal meal = new Meal("Wishlist Meal 1");
+        Ingredient firstIngredient = new Ingredient("tofu", 1.20);
+        Ingredient secondIngredient = new Ingredient("noodles", 1.80);
+        meal.addIngredient(firstIngredient);
+        meal.addIngredient(secondIngredient);
+        mealManager.getWishList().getList().add(meal);
 
         TestUserInterface testUI = new TestUserInterface();
-        ViewCommand command = new ViewCommand("/u 1");
+        ViewCommand command = new ViewCommand("view /w 1");
         command.execute(mealManager, testUI);
 
-        assertEquals("User Meal 1 ($3.00)", testUI.capturedMeal.toString());
-        assertIterableEquals(List.of(i1, i2), testUI.capturedIngredients);
-        logger.info("testExecute_viewUserMeal_success passed");
+        assertEquals("Wishlist Meal 1 ($3.00)", testUI.capturedMeal.toString());
+        assertIterableEquals(List.of(firstIngredient, secondIngredient), testUI.capturedIngredients);
+        logger.info("testExecute_viewWishlistMeal_success passed");
     }
 
     @Test
-    public void testExecute_viewMainMeal_emptyList() throws EZMealPlanException{
-        logger.fine("Running testExecute_viewMainMeal_emptyList()");
+    public void testExecute_viewRecipesMeal_emptyList(){
+        logger.fine("Running testExecute_viewRecipesMeal_emptyList()");
         MealManager mealManager = new MealManager();
         TestUserInterface testUI = new TestUserInterface();
-        ViewCommand command = new ViewCommand("/m 1");
+        ViewCommand command = new ViewCommand("view /r 1");
         assertThrows(ViewEmptyListException.class, () -> command.execute(mealManager, testUI));
 
-        logger.info("testExecute_viewMainMeal_emptyList passed");
+        logger.info("testExecute_viewRecipesMeal_emptyList passed");
     }
 
     @Test
-    public void testExecute_viewUserMeal_emptyList() throws EZMealPlanException{
-        logger.fine("Running testExecute_viewUserMeal_emptyList()");
+    public void testExecute_viewWishlistMeal_emptyList(){
+        logger.fine("Running testExecute_viewWishlistMeal_emptyList()");
         MealManager mealManager = new MealManager();
         TestUserInterface testUI = new TestUserInterface();
-        ViewCommand command = new ViewCommand("/u 5");
+        ViewCommand command = new ViewCommand("view /w 5");
         assertThrows(ViewEmptyListException.class, () -> command.execute(mealManager, testUI));
 
-        logger.info("testExecute_viewUserMeal_emptyList passed");
+        logger.info("testExecute_viewWishlistMeal_emptyList passed");
     }
 
     @Test
-    public void testExecute_viewMainMeal_outOfRange() throws EZMealPlanException {
-        logger.fine("Running testExecute_viewMainMeal_outOfRange()");
+    public void testExecute_viewRecipesMeal_outOfRange() throws EZMealPlanException {
+        logger.fine("Running testExecute_viewRecipesMeal_outOfRange()");
         MealManager mealManager = new MealManager();
-        Meal meal = new Meal("Main Meal 1");
-        Ingredient i1 = new Ingredient("tofu", 1.20);
-        Ingredient i2 = new Ingredient("noodles", 1.80);
-        meal.addIngredient(i1);
-        meal.addIngredient(i2);
-        mealManager.getMainMeals().getList().add(meal);
+        Meal meal = new Meal("Recipes Meal 1");
+        Ingredient firstIngredient = new Ingredient("tofu", 1.20);
+        Ingredient secondIngredient = new Ingredient("noodles", 1.80);
+        meal.addIngredient(firstIngredient);
+        meal.addIngredient(secondIngredient);
+        mealManager.getRecipesList().getList().add(meal);
 
         TestUserInterface testUI = new TestUserInterface();
-        ViewCommand command = new ViewCommand("/m 2");
+        ViewCommand command = new ViewCommand("view /r 2");
 
         assertThrows(ViewIndexOutOfRangeException.class, () -> command.execute(mealManager,testUI));
 
-        logger.info("testExecute_viewMainMeal_outOfRange passed");
+        logger.info("testExecute_viewRecipesMeal_outOfRange passed");
     }
 
     @Test
-    public void testExecute_viewUserMeal_outOfRange() throws EZMealPlanException{
-        logger.fine("Running testExecute_viewUserMeal_outOfRange()");
+    public void testExecute_viewWishlistMeal_outOfRange() throws EZMealPlanException{
+        logger.fine("Running testExecute_viewWishlistMeal_outOfRange()");
         MealManager mealManager = new MealManager();
-        Meal meal = new Meal("User Meal 1");
-        Ingredient i1 = new Ingredient("tofu", 1.20);
-        Ingredient i2 = new Ingredient("noodles", 1.80);
-        meal.addIngredient(i1);
-        meal.addIngredient(i2);
-        mealManager.getUserMeals().getList().add(meal);
+        Meal meal = new Meal("Wishlist Meal 1");
+        Ingredient firstIngredient = new Ingredient("tofu", 1.20);
+        Ingredient secondIngredient = new Ingredient("noodles", 1.80);
+        meal.addIngredient(firstIngredient);
+        meal.addIngredient(secondIngredient);
+        mealManager.getWishList().getList().add(meal);
 
         TestUserInterface testUI = new TestUserInterface();
-        ViewCommand command = new ViewCommand("/u 2");
+        ViewCommand command = new ViewCommand("view /w 2");
 
         assertThrows(ViewIndexOutOfRangeException.class, () -> command.execute(mealManager,testUI));
 
-        logger.info("testExecute_viewUserMeal_outOfRange passed");
+        logger.info("testExecute_viewWishlistMeal_outOfRange passed");
     }
 }
 

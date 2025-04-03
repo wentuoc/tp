@@ -6,7 +6,7 @@ import seedu.exceptions.InvalidFilterMethodException;
 import seedu.exceptions.InvalidMcostException;
 import seedu.food.Meal;
 import seedu.logic.MealManager;
-import seedu.meallist.Meals;
+import seedu.meallist.MealList;
 import seedu.storage.Storage;
 import seedu.ui.UserInterface;
 
@@ -29,7 +29,7 @@ public class FilterCommandTest {
     final UserInterface ui = new UserInterface();
 
     public FilterCommandTest() {
-        String fileName = "CreateCommandTest.log";
+        String fileName = "FilterCommandTest.log";
         setupLogger(fileName);
     }
 
@@ -54,15 +54,15 @@ public class FilterCommandTest {
 
     private void addMeals() {
         List<Meal> mealList = Storage.loadPresetMeals();
-        Meals mainMeal = mealManager.getMainMeals();
+        MealList recipesList = mealManager.getRecipesList();
         for (Meal meal : mealList) {
-            addMeal(meal, mainMeal);
+            addMeal(meal, recipesList);
         }
     }
 
-    private void addMeal(Meal meal, Meals mainMeal) {
+    private void addMeal(Meal meal, MealList mealList) {
         try {
-            mealManager.addMeal(meal, mainMeal);
+            mealManager.addMeal(meal, mealList);
         } catch (EZMealPlanException ezMealPlanException) {
             System.err.println(ezMealPlanException.getMessage());
         }
@@ -71,7 +71,7 @@ public class FilterCommandTest {
 
     @Test
     public void filterCommand_success() {
-        mealManager.getMainMeals().getList().clear();
+        mealManager.getRecipesList().getList().clear();
         logger.fine("running filterCommand_success()");
         String[] validFilterCommands = {"filter /mname a", "filter /ing b,c", "filter /mcost 2", "filter /mname Mname"
                 , "filter /ing Ing", "filter /mcost 5"};
@@ -84,7 +84,7 @@ public class FilterCommandTest {
     @Test
     public void filterCommand_fail() {
         logger.fine("running filterCommand_fail()");
-        mealManager.getMainMeals().getList().clear();
+        mealManager.getRecipesList().getList().clear();
         addMeals();
         checkMissingFilterKeyword();
         checkInvalidPrice();
