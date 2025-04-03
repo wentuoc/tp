@@ -218,4 +218,5 @@ public class UserInterface {
     public void printBought(Ingredient ingredient) {
         System.out.println(ingredient + " bought");
     }
+
 }
