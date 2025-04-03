@@ -11,6 +11,6 @@ Additionally, users have the ability to add their own recipes to the main recipe
   * User guide:
     * Add documentation for different commands
   * Developer Guide:
-    * Add description for ListCommand and MealCommand 
-    * Add UML for ListCommand and MealCommand
+    * Add description for different Commands
+    * Add UML for different Commands
     * Add user stories
