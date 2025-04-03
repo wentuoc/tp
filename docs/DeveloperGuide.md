@@ -260,6 +260,56 @@ SelectCommand allows the user to select a recipe from the filtered list (obtaine
         ui.printAddMealMessage(selectedMeal, wishList);
     }
 ```
+##### 3.3 Sequence Diagram
+Below is the UML sequence diagram for the SelectCommand, illustrating its interactions with the system components:
+
+![.\diagrams\SelectCommand.png](.\diagrams\SelectCommand.png)
+
+##### 3.4 Unit Testing
+
+###### Testing Approach
+- Tests are divided into success and failure scenarios using separate test methods
+- A custom logger is set up to track test execution with both console and file handlers
+- For successful selection tests:
+  - Tests run on both empty and populated meal lists
+  - Multiple selection command formats are tested (/mname, /ing, /mcost)
+- For failure scenarios, tests verify appropriate exceptions are thrown for:
+  - Invalid index formats (non-numeric values)
+  - Out-of-range indices (negative, zero, or beyond list size)
+  - Invalid price formats and negative prices
+  - Duplicate meal selections (attempting to add the same meal twice)
+- The test utilizes preset meals loaded from Storage to populate the meal list
+- Each test verifies expected exception messages match actual exception messages
+-
+###### Unit Test Code
+```java
+@Test
+public void selectCommand_success() {
+    mealManager.getRecipesList().getList().clear();
+    mealManager.getWishList().getList().clear();
+    logger.fine("running selectCommand_success()");
+    String[] validSelectCommands = {"select 2 /mname a", "select 1 /ing b,c", "select 2 /mcost 2"
+            , "select 4 /mname Mname", "select 2 /ing Ing", "select 1 /mcost 5"};
+    runValidSelectCommands(validSelectCommands);
+    addMeals();
+    runValidSelectCommands(validSelectCommands);
+    logger.info("selectCommand_success() passed");
+}
+
+@Test
+public void selectCommand_fail() {
+    logger.fine("running selectCommand_fail()");
+    mealManager.getRecipesList().getList().clear();
+    mealManager.getWishList().getList().clear();
+    addMeals();
+    checkInvalidPrice();
+    checkSelectDuplicateMeal();
+    checkInvalidSelectIndex();
+    checkIndexOutOfRange();
+    logger.info("selectCommand_fail() passed");
+}
+```
+
 
 #### 4. DeleteCommand
 
@@ -317,57 +367,6 @@ DeleteCommand is responsible for removing a specific meal from the main meal lis
 ##### 3.3 Sequence Diagram
 ![.\diagrams\DeleteCommand.png](./diagrams/DeleteCommand.png)
 
-
-
-##### 3.3 Sequence Diagram
-Below is the UML sequence diagram for the SelectCommand, illustrating its interactions with the system components:
-
-![.\diagrams\SelectCommand.png](.\diagrams\SelectCommand.png)
-
-##### 3.4 Unit Testing
-
-###### Testing Approach
-- Tests are divided into success and failure scenarios using separate test methods
-- A custom logger is set up to track test execution with both console and file handlers
-- For successful selection tests:
-    - Tests run on both empty and populated meal lists
-    - Multiple selection command formats are tested (/mname, /ing, /mcost)
-- For failure scenarios, tests verify appropriate exceptions are thrown for:
-    - Invalid index formats (non-numeric values)
-    - Out-of-range indices (negative, zero, or beyond list size)
-    - Invalid price formats and negative prices
-    - Duplicate meal selections (attempting to add the same meal twice)
-- The test utilizes preset meals loaded from Storage to populate the meal list
-- Each test verifies expected exception messages match actual exception messages
-- 
-###### Unit Test Code
-```java
-@Test
-public void selectCommand_success() {
-    mealManager.getRecipesList().getList().clear();
-    mealManager.getWishList().getList().clear();
-    logger.fine("running selectCommand_success()");
-    String[] validSelectCommands = {"select 2 /mname a", "select 1 /ing b,c", "select 2 /mcost 2"
-            , "select 4 /mname Mname", "select 2 /ing Ing", "select 1 /mcost 5"};
-    runValidSelectCommands(validSelectCommands);
-    addMeals();
-    runValidSelectCommands(validSelectCommands);
-    logger.info("selectCommand_success() passed");
-}
-
-@Test
-public void selectCommand_fail() {
-    logger.fine("running selectCommand_fail()");
-    mealManager.getRecipesList().getList().clear();
-    mealManager.getWishList().getList().clear();
-    addMeals();
-    checkInvalidPrice();
-    checkSelectDuplicateMeal();
-    checkInvalidSelectIndex();
-    checkIndexOutOfRange();
-    logger.info("selectCommand_fail() passed");
-}
-```
 
 ## Implementation
 
