@@ -48,23 +48,37 @@ e.g. if the command specifies `bye 123`, it will be interpreted as `bye`.
 * The command inputs are case-insensitive. The meal(s) will be sorted alphabetically by the meal name irrespective of the letter casings in both recipes list and the user's wishlist. The ingredient(s) in each meal will also be sorted in the same
 manner. 
 
-### Viewing help: `help`
+### Viewing help: _help_
 Views the description, respective sample input(s) and sample output(s) of the command function that the user has doubts with.
 
-Format: `help COMMAND_KEYWORD`
+Syntax:
+```
+    help COMMAND_KEYWORDS
+```  
+Example code:
+```
+    help wishlist
+```
+Sample Output
+
+![helpCommandWorkingSample.png](diagrams/helpCommandWorkingSample.png)
 
 * The list of `COMMAND_KEYWORD` includes `bye`,`clear`,`create`,`delete`,`filter`,`help`,`recipes`,`remove`,`select`,`view` and `wishlist`.
-
-Example of usage: 
-
-`help help`
-
-`help select`
 
 ### Creating a new meal: `create`
 Creates a new meal with the relevant ingredients and adds the meal into the recipes list.
 
-Format: `create /mname MEAL_NAME /ing INGREDIENT_1_NAME (INGREDIENT_1_COST), INGREDIENT_2_NAME (INGREDIENT_2_COST)`
+Syntax:
+```
+    create /mname MEAL_NAME /ing INGREDIENT_1_NAME (INGREDIENT_1_COST), INGREDIENT_2_NAME (INGREDIENT_2_COST)
+```  
+Example code:
+```
+    create /mname Meal_1 /ing A(1.5), B(1.5)
+```
+Sample Output
+
+![creatCommandWorkingSample.png](diagrams/creatCommandWorkingSample.png)
 
 * The ingredient cost such as `INGREDIENT_1_COST` must be enclosed within `()` and parsable into a `double`.
 * The order of the ingredients does not matter e.g.
@@ -121,7 +135,7 @@ Sample output:
 
 ![byeCommandWorkingSample.png](diagrams/byeCommandWorkingSample.png)
 
-### Listing the Recipes Lists: _Recipes_
+### Listing the Recipes Lists: _recipes_
 
 The command prints the list of the recipes that is preloaded.
 
@@ -134,6 +148,8 @@ Example code:
     recipes
 ```
 Sample output:
+
+![recipesCommandWorkingSample.png](diagrams/recipesCommandWorkingSample.png)
 
 ### Listing the Lists of food that the users selected: _wishlist_
 
@@ -149,17 +165,19 @@ Example code:
 ```
 Sample output:
 
-### Listing the Lists of ingredients that the users haves: _inventorylist_
+![wishlistCommandWorkingSample.png](diagrams/wishlistCommandWorkingSample.png)
+
+### Listing the Lists of ingredients that the users haves: _inventory_
 
 The command prints the list of selected meals by the user.
 
 Syntax:
 ```
-    inventorylist
+    inventory
 ```
 Example code:
 ```
-    inventorylist
+    inventory
 ```
 Sample output:
 
@@ -245,43 +263,22 @@ Sample output:
 
 ![filterCommandWorkingSample.png](diagrams/filterCommandWorkingSample.png)
 
-### Filter the recipes list via cost, ingredients or the recipe name: _filter_
-
-This command allows user to select a recipe from the preloaded list and add it to their own list
-
-Syntax:
-```
-    filter /mcost COST
-    filter /ing INGREDIENT_ONE, INGREDIENT_TWO
-    filter /mname RECIPE_NAME
-```
-Example code:
-```
-    filter /mcost 5.50
-    filter /ing Chicken
-    filter /mname Chicken Rice
-```
-Sample output:
-
-![filterCommandWorkingSample.png](diagrams/filterCommandWorkingSample.png)
-
-
 ### view ingredients from the preloaded recipes list or selected recipes list: _view_
 
 This command allows user to view the ingredients of a recipes from the preloaded recipes list or the recipe list that the user selected.
 
 Syntax:
 ```
-    view /m INDEX_NUMBER
-    view /u INDEX_NUMBER
+    view /r INDEX_NUMBER
+    view /w INDEX_NUMBER
 ```
 Example code:
 ```
-    view /u 1
+    view /r 1
 ```
 Sample output:
 
-![viewCommandWorkingSample.png](diagrams/viewCommandWorkingSample.png)
+![UpdatedViewCommandWorkingSample.png](diagrams/UpdatedViewCommandWorkingSample.png)
 
 ### Delete a recipe from the preloaded recipes list: _delete_
 
@@ -293,12 +290,43 @@ Syntax:
 ```
 Example code:
 ```
-    delete 15
+    delete 87
 ```
 Sample output:
 
-![viewCommandWorkingSample.png](diagrams/viewCommandWorkingSample.png)
+![deleteCommandWorkingSample.png](diagrams/deleteCommandWorkingSample.png)
 
+### Remove a recipe from the user recipes list that the user selected: _remove_
+
+This command allows user to delete the wishlist.
+
+Syntax:
+```
+    remove INDEX_NUMBER
+```
+Example code:
+```
+    remove 2
+```
+Sample output:
+
+![removeCommandWorkingSample.png](diagrams/removeCommandWorkingSample.png)
+
+### Recommend the user a recipes with an ingredient that the user desires: _recommend_
+
+This will recommend the user a recipe that contains the ingredient in the wish list if the wish list do not have anything containing it than it will recommend a recipe from the recipes list
+
+Syntax:
+```
+    recommend
+```
+Example code:
+```
+    recommend /ing Minced Pork
+```
+Sample output:
+
+![recommendCommandWorkingSample.png](diagrams/recommendCommandWorkingSample.png)
 
 ## FAQ
 
