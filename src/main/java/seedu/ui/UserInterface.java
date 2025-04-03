@@ -207,4 +207,16 @@ public class UserInterface {
         System.out.println("                    Sample input: bye");
         System.out.println("                    Sample output: Bye. Hope to see you again soon!");
     }
+
+    public void printConsumed(String ingredientName) {
+        System.out.println(ingredientName + " consumed");
+    }
+
+    public void printIngredientNotFound(String ingredientName) {
+        System.out.println(ingredientName + " not found");
+    }
+
+    public void printBought(String ingredientName, double price) {
+        System.out.println(ingredientName + " bought");
+    }
 }
