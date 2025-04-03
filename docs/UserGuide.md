@@ -40,7 +40,7 @@ Notes about the command format:
 e.g. in `filter /mname MEAL_NAME`, `MEAL_NAME` is a parameter which can be used as `filter /mname roti prata`.
 
 * Items in square brackets are optional.
-e.g `select 1 [/mcost 3]` can be used as `select 1 /mcost 3` or as `select 1`.
+e.g. `select 1 [/mcost 3]` can be used as `select 1 /mcost 3` or as `select 1`.
 
 * Extraneous parameters for commands that do not take in parameters (such as `wishlist`, `recipes`, `bye` and `clear`) will be ignored.
 e.g. if the command specifies `bye 123`, it will be interpreted as `bye`.
@@ -104,6 +104,201 @@ Let A, B and C be ingredients. Let Meal_No. be meal name.
 `create /mname Meal_1 /ing A(1.5), B(1.5)`
 
 `create /mname Meal_1 /ing B(1), A(2)`
+
+### Exiting the Application: _bye_
+
+The bye command terminates the application gracefully. It prints a goodbye message to indicate that the session is closing.
+
+Syntax:
+```
+    bye
+```  
+Example code:
+```
+    bye
+```
+Sample output:
+
+![byeCommandWorkingSample.png](diagrams/byeCommandWorkingSample.png)
+
+### Listing the Recipes Lists: _Recipes_
+
+The command prints the list of the recipes that is preloaded.
+
+Syntax:
+```
+    recipes
+```
+Example code:
+```
+    recipes
+```
+Sample output:
+
+### Listing the Lists of food that the users selected: _wishlist_
+
+The command prints the list of selected meals by the user.
+
+Syntax:
+```
+    wishlist
+```
+Example code:
+```
+    wishlist
+```
+Sample output:
+
+### Listing the Lists of ingredients that the users haves: _inventorylist_
+
+The command prints the list of selected meals by the user.
+
+Syntax:
+```
+    inventorylist
+```
+Example code:
+```
+    inventorylist
+```
+Sample output:
+
+### Add ingredients into the inventory: _buy_
+
+This command allows user to add ingredients into the inventory list
+
+Syntax:
+```
+    buy /ing INGRIDIENT_NAME (INGRIDIENT_PRICE)
+```
+Example code:
+```
+    buy /ing Chicken (1.0) /ing fish (1.0)
+```
+Sample output:
+
+![buyCommandWorkingSample.png](diagrams/buyCommandWorkingSample.png)
+
+### Remove ingredients from the inventory: _consume_
+
+This command allows user to remove ingredients from the inventory list
+
+Syntax:
+```
+    consume /ing INGRIDIENT_NAME
+```
+Example code:
+```
+    consume /ing Chicken /ing fish
+```
+Sample output:
+
+![consumeCommandWorkingSample.png](diagrams/consumeCommandWorkingSample.png)
+
+### Clear all selected meal from wishlist: _clear_
+
+This command allows user to remove all the recipes from their own list
+
+Syntax:
+```
+    clear
+```
+Example code:
+```
+    clear
+```
+Sample output:
+
+![clearCommandWorkingSample.png](diagrams/clearCommandWorkingSample.png)
+
+### selects a meal from recipe list and add it wishlist: _select_
+
+This command allows user to select a recipe from the preloaded list and add it to their own list
+
+Syntax:
+```
+    select
+```
+Example code:
+```
+    select INDEX_NUMBER
+```
+Sample output:
+
+### Filter the recipes list via cost, ingredients or the recipe name: _filter_
+
+This command allows user to select a recipe from the preloaded list and add it to their own list
+
+Syntax:
+```
+    filter /mcost COST
+    filter /ing INGREDIENT_ONE, INGREDIENT_TWO
+    filter /mname RECIPE_NAME
+```
+Example code:
+```
+    filter /mcost 5.50
+    filter /ing Chicken
+    filter /mname Chicken Rice
+```
+Sample output:
+
+![filterCommandWorkingSample.png](diagrams/filterCommandWorkingSample.png)
+
+### Filter the recipes list via cost, ingredients or the recipe name: _filter_
+
+This command allows user to select a recipe from the preloaded list and add it to their own list
+
+Syntax:
+```
+    filter /mcost COST
+    filter /ing INGREDIENT_ONE, INGREDIENT_TWO
+    filter /mname RECIPE_NAME
+```
+Example code:
+```
+    filter /mcost 5.50
+    filter /ing Chicken
+    filter /mname Chicken Rice
+```
+Sample output:
+
+![filterCommandWorkingSample.png](diagrams/filterCommandWorkingSample.png)
+
+
+### view ingredients from the preloaded recipes list or selected recipes list: _view_
+
+This command allows user to view the ingredients of a recipes from the preloaded recipes list or the recipe list that the user selected.
+
+Syntax:
+```
+    view /m INDEX_NUMBER
+    view /u INDEX_NUMBER
+```
+Example code:
+```
+    view /u 1
+```
+Sample output:
+
+![viewCommandWorkingSample.png](diagrams/viewCommandWorkingSample.png)
+
+### Delete a recipe from the preloaded recipes list: _delete_
+
+This command allows user to view the ingredients of a recipes from the preloaded recipes list or the recipe list that the user selected.
+
+Syntax:
+```
+    delete INDEX_NUMBER
+```
+Example code:
+```
+    delete 15
+```
+Sample output:
+
+![viewCommandWorkingSample.png](diagrams/viewCommandWorkingSample.png)
+
 
 ## FAQ
 
