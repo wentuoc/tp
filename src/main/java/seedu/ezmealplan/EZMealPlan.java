@@ -53,23 +53,34 @@ public class EZMealPlan {
         // Create and load both main meal list (mainList.txt) and user meal list (userList.txt)
         try {
             Storage.createListFiles();
-            File mainMealFile = Storage.getMainListFile();
-            File userMealFile = Storage.getUserListFile();
-            constructList(mealManager, mainMealFile);
-            constructList(mealManager, userMealFile);
+            constructMainList(mealManager);
+            constructUserList(mealManager);
         } catch (IOException ioException) {
             System.err.println("Could not load tasks: " + ioException.getMessage());
         }
     }
 
-    private static void constructList(MealManager mealManager, File selectedFile) throws IOException {
+    private static void constructUserList(MealManager mealManager) throws IOException {
+        File userMealFile = Storage.getWishListFile();
+        MealList wishList = mealManager.getWishList();
+        constructList(mealManager, userMealFile, wishList);
+    }
+
+    private static void constructMainList(MealManager mealManager) throws IOException {
+        File mainMealFile = Storage.getRecipesListFile();
+        MealList recipesList = mealManager.getRecipesList();
+        constructList(mealManager, mainMealFile, recipesList);
+    }
+
+    private static void constructList(MealManager mealManager, File selectedFile, MealList selectedMeals)
+            throws IOException {
         // Retrieve saved meals from the respective file and append them into the respective Meals class
         // If the file (mainList.txt) is empty, preset meals are appended into the MainMeals class instead.
         List<Meal> mealList = Storage.loadExistingList(selectedFile);
-        MealList selectedMealList = selectedFile.equals(Storage.getMainListFile()) ?
+        MealList selectedMealList = selectedFile.equals(Storage.getRecipesListFile()) ?
                 mealManager.getRecipesList() : mealManager.getWishList();
         // Load pre-set meals if the meal list from the main list file is empty.
-        if (mealList.isEmpty() && selectedFile.equals(Storage.getMainListFile())) {
+        if (mealList.isEmpty() && selectedFile.equals(Storage.getRecipesListFile())) {
             mealList = Storage.loadPresetMeals();
         }
         for (Meal meal : mealList) {

@@ -15,31 +15,33 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Storage {
-    static File userListFile;
-    static File mainListFile;
-    private static final String USER_LIST_FILE_PATH = "data/userList.txt";
-    private static final String MAIN_LIST_FILE_PATH = "data/mainList.txt";
+    static File wishListFile;
+    static File recipesListFile;
+    private static final String WISH_LIST_FILE_PATH = "data/userList.txt";
+    private static final String RECIPES_LIST_FILE_PATH = "data/mainList.txt";
+    private static final String INVENTORY_LIST_FILE_PATH = "data/inventoryList.txt";
 
-    public static File getUserListFile() {
-        return userListFile;
+    public static File getWishListFile() {
+        return wishListFile;
     }
 
-    public static File getMainListFile() {
-        return mainListFile;
+    public static File getRecipesListFile() {
+        return recipesListFile;
     }
 
-    public static String getUserListFilePath() {
-        return USER_LIST_FILE_PATH;
+    public static String getWishListFilePath() {
+        return WISH_LIST_FILE_PATH;
     }
 
-    public static String getMainListFilePath() {
-        return MAIN_LIST_FILE_PATH;
+    public static String getRecipesListFilePath() {
+        return RECIPES_LIST_FILE_PATH;
     }
 
     public static void createListFiles() throws IOException {
-        userListFile = new File(USER_LIST_FILE_PATH);
-        mainListFile = new File(MAIN_LIST_FILE_PATH);
-        createListFile(userListFile);
+        wishListFile = new File(WISH_LIST_FILE_PATH);
+        recipesListFile = new File(RECIPES_LIST_FILE_PATH);
+        createListFile(recipesListFile);
+        createListFile(wishListFile);
     }
 
     public static void createListFile(File listFile) throws IOException {
@@ -150,4 +152,7 @@ public class Storage {
         }
     }
 
+    public static String getInventoryFilePath() {
+        return INVENTORY_LIST_FILE_PATH;
+    }
 }

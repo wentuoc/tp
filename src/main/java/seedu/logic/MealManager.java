@@ -2,6 +2,7 @@ package seedu.logic;
 
 import seedu.exceptions.EZMealPlanException;
 import seedu.food.Ingredient;
+import seedu.food.Inventory;
 import seedu.food.Meal;
 import seedu.meallist.RecipesList;
 import seedu.meallist.MealList;
@@ -14,6 +15,7 @@ public class MealManager {
     MealList chosenMealList;
     private final MealList wishList = new WishList();
     private final MealList recipesList = new RecipesList();
+    private final Inventory inventory = new Inventory();
 
 
     public MealList getWishList() {
@@ -28,32 +30,31 @@ public class MealManager {
     // Adds a new meal to the specified list after checking for duplicates
     public void addMeal(Meal newMeal, MealList mealListInput) throws EZMealPlanException {
         chosenMealList = mealListInput instanceof RecipesList ? getRecipesList() : getWishList();
-        chosenMealList.checkDuplicateMeal(newMeal);
         chosenMealList.addMeal(newMeal);
     }
 
 
     public List<Meal> filteringByMcost(double mcostDouble) {
-        List<Meal> filteredMealList = new ArrayList<>();
-        List<Meal> mainMealList = getRecipesList().getList();
-        for (Meal meal : mainMealList) {
+        List<Meal> filteredRecipesList = new ArrayList<>();
+        List<Meal> recipesList = getRecipesList().getList();
+        for (Meal meal : recipesList) {
             if (meal.getPrice() == mcostDouble) {
-                filteredMealList.add(meal);
+                filteredRecipesList.add(meal);
             }
         }
-        return filteredMealList;
+        return filteredRecipesList;
     }
 
     public List<Meal> filteringByMname(String[] mealNameArray) {
-        List<Meal> filteredMealList = new ArrayList<>();
-        List<Meal> mainMealList = getRecipesList().getList();
-        for (Meal meal : mainMealList) {
+        List<Meal> filteredRecipesList = new ArrayList<>();
+        List<Meal> recipesList = getRecipesList().getList();
+        for (Meal meal : recipesList) {
             boolean isMatchingMname = checkMname(mealNameArray, meal);
             if (isMatchingMname) {
-                filteredMealList.add(meal);
+                filteredRecipesList.add(meal);
             }
         }
-        return filteredMealList;
+        return filteredRecipesList;
     }
 
     private static boolean checkMname(String[] mealNameArray, Meal meal) {
@@ -70,15 +71,15 @@ public class MealManager {
     }
 
     public List<Meal> filteringByIng(String[] ingredientsArray) {
-        List<Meal> filteredMealList = new ArrayList<>();
-        List<Meal> mainMealList = getRecipesList().getList();
-        for (Meal meal : mainMealList) {
+        List<Meal> filteredRecipesList = new ArrayList<>();
+        List<Meal> recipesList = getRecipesList().getList();
+        for (Meal meal : recipesList) {
             boolean isMealContainsIng = checkIngPerMeal(ingredientsArray, meal);
             if (isMealContainsIng) {
-                filteredMealList.add(meal);
+                filteredRecipesList.add(meal);
             }
         }
-        return filteredMealList;
+        return filteredRecipesList;
     }
 
     private static boolean checkIngPerMeal(String[] ingArray, Meal meal) {
@@ -123,10 +124,8 @@ public class MealManager {
     }
 
     public void compareLists() {
-        List<Meal> mainMealList = recipesList.getList();
-        List<Meal> userMealList = wishList.getList();
-        for (Meal meal : userMealList) {
-            if (!mainMealList.contains(meal)) {
+        for (Meal meal : wishList.getList()) {
+            if (!recipesList.contains(meal)) {
                 try {
                     addMeal(meal, recipesList);
                 } catch (EZMealPlanException ezMealPlanException) {
@@ -134,5 +133,9 @@ public class MealManager {
                 }
             }
         }
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 }

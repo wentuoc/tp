@@ -130,7 +130,7 @@ public class SelectCommandTest {
                 , "select 10"};
         String[] mealNames = {"Chicken Satay", "Chicken Rice", "Claypot Rice", "Braised Duck Rice"};
         addMealsIntoUserList(validSelectCommands);
-        String listName = "user meal list";
+        String listName = "wish list";
         for (int i = 0; i < mealNames.length; i++) {
             String expectedMessage = new DuplicateMealException(mealNames[i], listName).getMessage();
             checkInvalidSelectInput(testName, expectedMessage, validSelectCommands[i]);

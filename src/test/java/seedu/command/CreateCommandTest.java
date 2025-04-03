@@ -136,7 +136,7 @@ public class CreateCommandTest {
                 command.execute(mealManager, ui);
             } catch (EZMealPlanException ezMealPlanException) {
                 String chickenRice = "chicken rice";
-                String listName = "main meal list";
+                String listName = "recipes list";
                 assertEquals(new DuplicateMealException(chickenRice, listName).getMessage()
                         , ezMealPlanException.getMessage());
                 String dupMealMsg = "Duplicate meal caught!";

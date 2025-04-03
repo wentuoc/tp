@@ -2,6 +2,7 @@ package seedu.meallist;
 
 import seedu.exceptions.DuplicateMealException;
 import seedu.exceptions.EZMealPlanException;
+import seedu.exceptions.MealNotFoundException;
 import seedu.exceptions.RemoveIndexOutOfRangeException;
 import seedu.food.Meal;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 public abstract class MealList {
     protected final List<Meal> meals = new ArrayList<>();
+    protected String mealListName;
 
     public List<Meal> getList() {
         return meals;
@@ -21,15 +23,16 @@ public abstract class MealList {
      *
      * @throws DuplicateMealException if the same meal already exists in the List.
      */
-    public void addMeal(Meal newMeal) throws DuplicateMealException {
+    public void addMeal(Meal newMeal) throws EZMealPlanException {
         checkDuplicateMeal(newMeal);
         meals.add(newMeal);
         meals.sort(Comparator.comparing(meal -> meal.getName().toLowerCase()));
     }
 
-    // Checks whether the newMeal already exists in the given meal list
-    public void checkDuplicateMeal(Meal newMeal) throws DuplicateMealException {
-        String mealListName = this instanceof RecipesList ? "main meal list" : "user meal list";
+    /**
+     * Checks whether newMeal already exists in the mealList.
+     */
+    private void checkDuplicateMeal(Meal newMeal) throws EZMealPlanException {
         for (Meal meal : meals) {
             if (meal.equals(newMeal)) {
                 throw new DuplicateMealException(newMeal.getName(), mealListName);
@@ -56,10 +59,17 @@ public abstract class MealList {
     }
 
     /**
-     * Returns the index of a specified meal object in the list.
+     * Returns the index of a specified meal object in the list, starting from index 0.
+     *
+     * @throws MealNotFoundException if the specified meal cannot be found.
      */
-    public int getIndex(Meal meal) {
-        return meals.indexOf(meal);
+    public int getIndex(Meal meal) throws MealNotFoundException {
+        int index = meals.indexOf(meal);
+        if (index == -1) {
+            throw new MealNotFoundException(meal);
+        } else {
+            return index;
+        }
     }
 
     public boolean contains(Meal meal) {

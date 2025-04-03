@@ -49,7 +49,7 @@ public class WishlistCommandTest {
     /**
      * Define a UserInterface class for testing, to capture the params of printMealList.
      */
-    public static class TestUserInterface extends UserInterface {
+    public class TestUserInterface extends UserInterface {
         List<Meal> capturedMeals;
         String capturedListName;
 

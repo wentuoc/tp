@@ -272,9 +272,13 @@ public class UserInterfaceTest {
     void printSelectCommandHelp_noInput_success() {
         logger.fine("running printSelectCommandHelp_noInput_success()");
         ui.printSelectCommandHelp();
-        String expected = "Entering the select command will add the selected meal in the meal list" + ls +
-                          "Sample input: select 1 " + ls +
-                          "Sample output:" + ls +
+        String expected = "Entering the select command will add the selected meal from the filtered or unfiltered " +
+                          "main meal list into the user meal list" + ls +
+                          "Sample input (filtered by ingredient(s)): select 1 /ing yellow noodle, fish" + ls +
+                          "Sample input (filtered by meal cost): select 1 /mcost 2" + ls +
+                          "Sample input (filtered by meal name(s)): select 1 /mname fish, ball" + ls +
+                          "Sample input: select 1" + ls +
+                          "Sample output based on the sample input 'select 1':" + ls +
                           "               OK.  Chicken Rice ($3.00) have been added to the meal list." + ls;
         assertEquals(expected, outContent.toString(), "Select command help output does not match.");
         logger.info("printSelectCommandHelp_noInput_success() passed");
@@ -292,7 +296,7 @@ public class UserInterfaceTest {
                           "Sample input: filter /ing  Fish Ball" + ls +
                           "Sample output:" + ls +
                           "               1. Chicken Rice ($5.50)" + ls +
-                          "Sample input: filter /manme Hokkien Mee" + ls +
+                          "Sample input: filter /mname Hokkien Mee" + ls +
                           "Sample output:" + ls +
                           "               1. Hokkien Mee ($5.50)" + ls;
         assertEquals(expected, outContent.toString(), "Filter command help output does not match.");
