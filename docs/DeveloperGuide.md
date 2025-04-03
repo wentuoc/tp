@@ -60,7 +60,7 @@ the respective commands will be explained in greater details and illustrated wit
 
 ### `food`
 
-The food package contains the abstract class `Product`, as well as `Ingredient` and `Meal` classes.
+The `food` package contains the abstract class `Product`, as well as `Ingredient` and `Meal` classes.
 
 ![Food.png](diagrams/Food.png)
 
@@ -73,8 +73,19 @@ The `Meal` class,
 * Represents a meal, which has a `name`, `price`, and `ingredientList` of type `List<Ingredient>`.
 * Contains the `addIngredient` method that adds an `Ingredient` into its `ingredientList`. While doing so, it
 also retrieves and adds the `price` of the `Ingredient` into the meal's `price`.
-* Contains a private method that checks if an `Ingredient` to be added is already duplicated in the `ingredienList`, and
-throws an exception.
+* Contains a private method that checks if an `Ingredient` to be added is already duplicated in the `ingredientList`, 
+* and throws an exception.
+
+### `command` 
+
+The `command` package contains the abstract class `Command`, as well as various different subclasses that represent
+specific commands, such as `CreateCommand`, `ByeCommand`, `HelpCommand`. The specific commands will be elaborated below.
+
+Note that `FilterCommand` and `SelectCommand` inherit an abstract `FilterSelectCommand` class that inherits from 
+`Command`. Similarly, `RemoveCommand` and `DeleteCommand` inherit an abstract `RemoveDeleteCommand`. This was 
+done to abstract out similarities between the pairs of classes.
+
+![CommandClass.png](diagrams/CommandClass.png)
 
 ### Enhancements in the Command Module
 
