@@ -260,8 +260,28 @@ EZMealPlan provides a **simple, command-line interface** for **selecting and man
 | v1.0    | Social user              | Share my favorite recipes with friends                                                                  | Get feedback from friends or cooks                                            |
 | v1.0    | new user                 | see usage instructions                                                                                  | refer to them when I forget how to use the application                        |
 
-|v2.0|user|find a to-do item by name|locate a to-do without having to go through the entire list|
-
+| Version | As a ...                 | I want to ...                                                                                | So that I can ...                                                             |
+|---------|--------------------------|---------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
+| v2.0    | New user                 | See a list of available commands                                                             | Understand how to use the application                                          |
+| v2.0    | User                     | View the recipe list                                                                         | Browse all available recipes in the system                                     |
+| v2.0    | User                     | View my wishlist                                                                             | See recipes I've saved for later                                              |
+| v2.0    | User                     | Select recipes by name (not just index)                                                      | More easily add recipes to my wishlist                                         |
+| v2.0    | User                     | Create custom recipes                                                                        | Add personalized meals to the recipe list                                      |
+| v2.0    | User                     | Delete recipes from the recipe list                                                          | Remove recipes I don't want anymore                                            |
+| v2.0    | User                     | Filter recipes by name, ingredients, and cost                                                | Find specific recipes more easily                                              |
+| v2.0    | User                     | Add recipes to my wishlist                                                                   | Save recipes I'm interested in for later                                       |
+| v2.0    | User                     | Remove recipes from my wishlist                                                              | Keep my wishlist organized and relevant                                        |
+| v2.0    | Organized user           | View my ingredient inventory                                                                 | Know what ingredients I currently have available                               |
+| v2.0    | User                     | Add bought ingredients to my inventory                                                       | Keep track of ingredients I purchased                                          |
+| v2.0    | User                     | Remove consumed ingredients from my inventory                                                | Keep my ingredient inventory accurate and up to date                           |
+| v2.0    | Indecisive user          | Get recipe recommendations from my wishlist                                                  | Decide what to cook next                                                       |
+| v2.0    | Practical user           | See which ingredients I'm missing for wishlist recipes                                       | Know what I need to buy before cooking                                         |
+| v2.0    | Budget-conscious user    | Get recommendations based on minimal ingredient shortfall                                    | Use what I already have and minimize additional purchases                      |
+| v2.0    | User                     | Clear the screen                                                                            | Have a cleaner interface while using the application                           |
+| v2.0    | User                     | Exit the application with a simple command                                                   | Close the program when I'm finished                                            |
+| v2.0    | Budget-conscious user    | Get recipe recommendations within a specific budget                                          | Plan meals that fit my financial constraints                                   |
+| v2.0    | Organized user           | View the missing ingredients between my inventory and wishlist recipes                       | Efficiently plan my shopping                                                   |
+| v2.0    | Efficiency-minded user   | Get recommendations for recipes requiring the fewest additional ingredients                  | Minimize shopping trips and use what I already have                            |
 ### Appendix C: Non-Functional Requirements
 
 - Runs on any **Java 17-compatible environment**.
