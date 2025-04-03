@@ -6,7 +6,8 @@ import seedu.exceptions.InvalidMcostException;
 import seedu.exceptions.InvalidSelectIndexException;
 import seedu.food.Meal;
 import seedu.logic.MealManager;
-import seedu.meallist.Meals;
+import seedu.meallist.MealList;
+import seedu.meallist.WishList;
 import seedu.storage.Storage;
 import seedu.ui.UserInterface;
 
@@ -54,8 +55,8 @@ public class SelectCommandTest {
 
     @Test
     public void selectCommand_success() {
-        mealManager.getMainMeals().getList().clear();
-        mealManager.getUserMeals().getList().clear();
+        mealManager.getRecipesList().getList().clear();
+        mealManager.getWishList().getList().clear();
         logger.fine("running selectCommand_success()");
         String[] validSelectCommands = {"select 2 /mname a", "select 1 /ing b,c", "select 2 /mcost 2"
                 , "select 4 /mname Mname", "select 2 /ing Ing", "select 1 /mcost 5"};
@@ -68,8 +69,8 @@ public class SelectCommandTest {
     @Test
     public void selectCommand_fail() {
         logger.fine("running selectCommand_fail()");
-        mealManager.getMainMeals().getList().clear();
-        mealManager.getUserMeals().getList().clear();
+        mealManager.getRecipesList().getList().clear();
+        mealManager.getWishList().getList().clear();
         addMeals();
         checkInvalidPrice();
         checkSelectDuplicateMeal();
@@ -130,7 +131,7 @@ public class SelectCommandTest {
                 , "select 10"};
         String[] mealNames = {"Chicken Satay", "Chicken Rice", "Claypot Rice", "Braised Duck Rice"};
         addMealsIntoUserList(validSelectCommands);
-        String listName = "user meal list";
+        String listName = new WishList().getMealListName();
         for (int i = 0; i < mealNames.length; i++) {
             String expectedMessage = new DuplicateMealException(mealNames[i], listName).getMessage();
             checkInvalidSelectInput(testName, expectedMessage, validSelectCommands[i]);
@@ -177,15 +178,15 @@ public class SelectCommandTest {
 
     private void addMeals() {
         List<Meal> mealList = Storage.loadPresetMeals();
-        Meals mainMeal = mealManager.getMainMeals();
+        MealList recipesList = mealManager.getRecipesList();
         for (Meal meal : mealList) {
-            addMeal(meal, mainMeal);
+            addMeal(meal, recipesList);
         }
     }
 
-    private void addMeal(Meal meal, Meals mainMeal) {
+    private void addMeal(Meal meal, MealList mealList) {
         try {
-            mealManager.addMeal(meal, mainMeal);
+            mealManager.addMeal(meal, mealList);
         } catch (EZMealPlanException ezMealPlanException) {
             System.err.println(ezMealPlanException.getMessage());
         }

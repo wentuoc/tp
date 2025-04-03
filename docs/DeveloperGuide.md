@@ -60,7 +60,7 @@ throws an exception.
 Both commands extend the abstract Command class, thereby following our command design pattern to decouple user input parsing from the actual execution of features. 
 The primary objective of these commands is to ensure a clear separation of concerns, improve maintainability, and allow for easier testing.
 
-#### 1. MealCommand
+#### 1. RecipesCommand
 
 ##### 1.1 Design Overview
 
@@ -70,7 +70,7 @@ MealCommand is responsible for fetching the user meals from the MealManager and 
 ###### Design Goals
 
 **Single Responsibility:**
-- MealCommand only deals with retrieving the user-selected meal list and forwarding it to the UI.
+- RecipesCommand only deals with retrieving the user-selected meal list and forwarding it to the UI.
 
 **Decoupling:**
 - By isolating the command logic from both the UI and data management, future changes in either will have minimal impact.
@@ -80,7 +80,7 @@ MealCommand is responsible for fetching the user meals from the MealManager and 
 
 ##### 1.2 Implementation Details
 
-###### Component Level: MealCommand Class
+###### Component Level: RecipesCommand Class
 
 - Inherits from the abstract Command class
 - Implements the `execute(MealManager mealManager, UserInterface ui)` method
@@ -90,60 +90,62 @@ MealCommand is responsible for fetching the user meals from the MealManager and 
 
 ###### Code Example
 ```java
-@Override
 public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
-    logger.fine("Executing MealCommand");
-    List<Meal> userMealList = mealManager.getUserMeals().getList();
-    ui.printMealList(userMealList, "user chosen meals");
+    assert mealManager != null : "MealManager cannot be null";
+    logger.fine("Executing 'recipes' command");
+    String recipesListName = mealManager.getRecipesList().getMealListName();
+    List<Meal> recipesList = mealManager.getRecipesList().getList();
+    ui.printMealList(recipesList, recipesListName);
 }
 ```
 
 ##### 1.3 Sequence Diagram
 
-![.\diagrams\MealCommand.png](./diagrams/MealCommand.png)
+![.\diagrams\RecipesCommand.png](.\diagrams\RecipesCommand.png)
 
 ##### 1.4 Unit Testing
 
 ###### Testing Approach
 - A test-specific subclass of UserInterface (named TestUserInterface) is defined to capture the parameters passed to the `printMealList` method
 - The unit test populates the MealManager's user meals list with sample meals
-- Executes MealCommand
+- Executes RecipesCommand
 - Asserts that the UI received the expected label and list of meals
 
 ###### Unit Test Code
 ```java
 @Test
-public void testExecute_mealCommand_printsUserChosenMeals() throws EZMealPlanException {
-
+public void testExecute_recipesCommand_printsRecipesList() throws EZMealPlanException {
+    logger.fine("Running testExecute_recipesCommand_printsRecipesList()");
     MealManager mealManager = new MealManager();
-    Meal meal1 = new Meal("Meal A");
-    Meal meal2 = new Meal("Meal B");
-    mealManager.getUserMeals().getList().add(meal1);
-    mealManager.getUserMeals().getList().add(meal2);
+    Meal meal1 = new Meal("Main Meal 1");
+    Meal meal2 = new Meal("Main Meal 2");
+    mealManager.getRecipesList().getList().add(meal1);
+    mealManager.getRecipesList().getList().add(meal2);
 
     TestUserInterface testUI = new TestUserInterface();
-    MealCommand mealCommand = new MealCommand();
-    mealCommand.execute(mealManager, testUI);
+    RecipesCommand recipesCommand = new RecipesCommand();
+    recipesCommand.execute(mealManager, testUI);
 
-    assertEquals("user chosen meals", testUI.capturedListName);
+    assertEquals(mealManager.getRecipesList().getMealListName(), testUI.capturedListName);
     List<Meal> expectedMeals = new ArrayList<>();
     expectedMeals.add(meal1);
     expectedMeals.add(meal2);
     assertIterableEquals(expectedMeals, testUI.capturedMeals);
+    logger.info("testExecute_recipesCommand_printsRecipesList() passed");
 }
 ```
 
-#### 2. ListCommand
+#### 2. WishlistCommand
 
 ##### 2.1 Design Overview
 
 ###### Function
-ListCommand fetches the main meal list from the MealManager and instructs the UI to display it.
+WishlistCommand fetches the main meal list from the MealManager and instructs the UI to display it.
 
 ###### Design Goals
 
 **Single Responsibility:**
-- ListCommand solely handles the retrieval and display of the main meals.
+- WishlistCommand solely handles the retrieval and display of the main meals.
 
 **Decoupling:**
 - By segregating responsibilities, it makes the code easier to maintain and extend.
@@ -153,7 +155,7 @@ ListCommand fetches the main meal list from the MealManager and instructs the UI
 
 ##### 2.2 Implementation Details
 
-###### Component Level: ListCommand Class
+###### Component Level: WishlistCommand Class
 
 - Inherits from the abstract Command class
 - Implements the `execute(MealManager mealManager, UserInterface ui)` method
@@ -163,52 +165,105 @@ ListCommand fetches the main meal list from the MealManager and instructs the UI
 
 ###### Code Example
 ```java
-@Override
 public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
-    logger.fine("Executing 'list' command");
-    List<Meal> mainMealList = mealManager.getMainMeals().getList();
-    ui.printMealList(mainMealList, "main list");
+    assert mealManager != null : "MealManager cannot be null";
+    logger.fine("Executing 'wishlist' Command");
+    List<Meal> wishList = mealManager.getWishList().getList();
+    String wishListName = mealManager.getWishList().getMealListName();
+    ui.printMealList(wishList, wishListName);
 }
 ```
 
 ##### 2.3 Sequence Diagram
 
-![.\diagrams\ListCommand.png](./diagrams/ListCommand.png)
+![.\diagrams\WishlistCommand.png](./diagrams/WishlistCommand.png)
 
 ##### 2.4 Unit Testing
 
 ###### Testing Approach
 - Uses a test-specific TestUserInterface subclass to capture the output of `printMealList`
 - Sets up the main meal list in the MealManager
-- Executes ListCommand
+- Executes WishlistCommand
 - Verifies that the UI output matches the expected label and meal list
 
 ###### Unit Test Code
 ```java
 @Test
-public void testExecute_listCommand_printsMainList() throws EZMealPlanException {
-
+public void testExecute_wishlistCommand_printsUserChosenMeals() throws EZMealPlanException {
+    logger.fine("running testExecute_wishlistCommand_printsUserChosenMeals()");
     MealManager mealManager = new MealManager();
-    Meal meal1 = new Meal("Main Meal 1");
-    Meal meal2 = new Meal("Main Meal 2");
-    mealManager.getMainMeals().getList().add(meal1);
-    mealManager.getMainMeals().getList().add(meal2);
+    Meal meal1 = new Meal("Meal A");
+    Meal meal2 = new Meal("Meal B");
+    mealManager.getWishList().getList().add(meal1);
+    mealManager.getWishList().getList().add(meal2);
 
     TestUserInterface testUI = new TestUserInterface();
-    ListCommand listCommand = new ListCommand();
-    listCommand.execute(mealManager, testUI);
+    WishlistCommand wishlistCommand = new WishlistCommand();
+    wishlistCommand.execute(mealManager, testUI);
 
-    assertEquals("main list", testUI.capturedListName);
+    assertEquals(mealManager.getWishList().getMealListName(), testUI.capturedListName);
     List<Meal> expectedMeals = new ArrayList<>();
     expectedMeals.add(meal1);
     expectedMeals.add(meal2);
     assertIterableEquals(expectedMeals, testUI.capturedMeals);
+    logger.fine("testExecute_wishlistCommand_printsUserChosenMeals() passed");
 }
 ```
 
-#### 3. DeleteCommand
+#### 3. SelectCommand
 
 ##### 3.1 Design Overview
+
+###### Function
+SelectCommand allows the user to select a recipe from the filtered list (obtained via the FilterCommand) by providing its index, and then adds the selected recipe into the user's wish list.
+
+###### Design Goals
+- **Single Responsibility:**
+    - SelectCommand is solely responsible for validating the user-provided index, retrieving the corresponding recipe from the filtered list, and adding that recipe to the wish list.
+
+- **Decoupling:**
+    - By isolating the selection logic from other commands, it becomes easier to maintain and extend without affecting other parts of the system.
+
+- **Testability:**
+    - The design supports unit testing by using a test-specific UserInterface subclass to capture the output, allowing us to verify that the correct recipe is added to the wish list and the appropriate confirmation message is displayed.
+
+##### 3.2 Implementation Details
+
+###### Component Level: SelectCommand Class
+- Inherits from the abstract FilterSelectCommand class.
+- Implements the execute(MealManager mealManager, UserInterface ui) method.
+- Uses logging to indicate execution and to record any input validation issues.
+- Validates the user input index using helper methods (getIndexSubstring, checkValidParse, and checkValidInputIndex).
+- Retrieves the filtered meal list via the inherited method getFilteredMealList(mealManager).
+- Retrieves the wish list from the MealManager.
+- Adds the selected recipe to the wish list and calls ui.printAddMealMessage to display a confirmation message.
+
+###### Code Example
+```java
+    public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
+        boolean isValidUserInput = checkValidUserInput(filterOrSelect);
+        if (!isValidUserInput) {
+            logger.severe("Huge issue detected! The user input format remains invalid despite " +
+                    "passing all the checks for input formatting error.");
+        }
+        assert isValidUserInput;
+        List<Meal> filteredMealList = getFilteredMealList(mealManager);
+        if (filteredMealList.isEmpty()) {
+            System.out.println("The filtered meal list is empty.");
+            return;
+        }
+        String indexSubstring = getIndexSubstring();
+        int inputIndex = checkValidParse(indexSubstring);
+        Meal selectedMeal = checkValidInputIndex(inputIndex, filteredMealList);
+        MealList wishList = mealManager.getWishList();
+        mealManager.addMeal(selectedMeal, wishList);
+        ui.printAddMealMessage(selectedMeal, wishList);
+    }
+```
+
+#### 4. DeleteCommand
+
+##### 4.1 Design Overview
 
 ###### Function
 DeleteCommand is responsible for removing a specific meal from the main meal list and, if applicable, also removing the same meal from the user's wish list. It ensures consistency between related lists and provides user feedback via the UserInterface.
@@ -227,7 +282,7 @@ DeleteCommand is responsible for removing a specific meal from the main meal lis
 
 - Built on top of the shared abstract class RemoveDeleteCommand, which allows common functionality (like index parsing and list access) to be reused across similar commands (e.g., RemoveCommand).
 
-##### 3.2 Implementation Details
+##### 4.2 Implementation Details
 
 ###### Component Level: DeleteCommand Class
 
@@ -262,6 +317,57 @@ DeleteCommand is responsible for removing a specific meal from the main meal lis
 ##### 3.3 Sequence Diagram
 ![.\diagrams\DeleteCommand.png](./diagrams/DeleteCommand.png)
 
+
+
+##### 3.3 Sequence Diagram
+Below is the UML sequence diagram for the SelectCommand, illustrating its interactions with the system components:
+
+![.\diagrams\SelectCommand.png](.\diagrams\SelectCommand.png)
+
+##### 3.4 Unit Testing
+
+###### Testing Approach
+- Tests are divided into success and failure scenarios using separate test methods
+- A custom logger is set up to track test execution with both console and file handlers
+- For successful selection tests:
+    - Tests run on both empty and populated meal lists
+    - Multiple selection command formats are tested (/mname, /ing, /mcost)
+- For failure scenarios, tests verify appropriate exceptions are thrown for:
+    - Invalid index formats (non-numeric values)
+    - Out-of-range indices (negative, zero, or beyond list size)
+    - Invalid price formats and negative prices
+    - Duplicate meal selections (attempting to add the same meal twice)
+- The test utilizes preset meals loaded from Storage to populate the meal list
+- Each test verifies expected exception messages match actual exception messages
+- 
+###### Unit Test Code
+```java
+@Test
+public void selectCommand_success() {
+    mealManager.getRecipesList().getList().clear();
+    mealManager.getWishList().getList().clear();
+    logger.fine("running selectCommand_success()");
+    String[] validSelectCommands = {"select 2 /mname a", "select 1 /ing b,c", "select 2 /mcost 2"
+            , "select 4 /mname Mname", "select 2 /ing Ing", "select 1 /mcost 5"};
+    runValidSelectCommands(validSelectCommands);
+    addMeals();
+    runValidSelectCommands(validSelectCommands);
+    logger.info("selectCommand_success() passed");
+}
+
+@Test
+public void selectCommand_fail() {
+    logger.fine("running selectCommand_fail()");
+    mealManager.getRecipesList().getList().clear();
+    mealManager.getWishList().getList().clear();
+    addMeals();
+    checkInvalidPrice();
+    checkSelectDuplicateMeal();
+    checkInvalidSelectIndex();
+    checkIndexOutOfRange();
+    logger.info("selectCommand_fail() passed");
+}
+```
 
 ## Implementation
 
@@ -318,8 +424,28 @@ EZMealPlan provides a **simple, command-line interface** for **selecting and man
 | v1.0    | Social user              | Share my favorite recipes with friends                                                                  | Get feedback from friends or cooks                                            |
 | v1.0    | new user                 | see usage instructions                                                                                  | refer to them when I forget how to use the application                        |
 
-|v2.0|user|find a to-do item by name|locate a to-do without having to go through the entire list|
-
+| Version | As a ...                 | I want to ...                                                                                | So that I can ...                                                             |
+|---------|--------------------------|---------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
+| v2.0    | New user                 | See a list of available commands                                                             | Understand how to use the application                                          |
+| v2.0    | User                     | View the recipe list                                                                         | Browse all available recipes in the system                                     |
+| v2.0    | User                     | View my wishlist                                                                             | See recipes I've saved for later                                              |
+| v2.0    | User                     | Select recipes by name (not just index)                                                      | More easily add recipes to my wishlist                                         |
+| v2.0    | User                     | Create custom recipes                                                                        | Add personalized meals to the recipe list                                      |
+| v2.0    | User                     | Delete recipes from the recipe list                                                          | Remove recipes I don't want anymore                                            |
+| v2.0    | User                     | Filter recipes by name, ingredients, and cost                                                | Find specific recipes more easily                                              |
+| v2.0    | User                     | Add recipes to my wishlist                                                                   | Save recipes I'm interested in for later                                       |
+| v2.0    | User                     | Remove recipes from my wishlist                                                              | Keep my wishlist organized and relevant                                        |
+| v2.0    | Organized user           | View my ingredient inventory                                                                 | Know what ingredients I currently have available                               |
+| v2.0    | User                     | Add bought ingredients to my inventory                                                       | Keep track of ingredients I purchased                                          |
+| v2.0    | User                     | Remove consumed ingredients from my inventory                                                | Keep my ingredient inventory accurate and up to date                           |
+| v2.0    | Indecisive user          | Get recipe recommendations from my wishlist                                                  | Decide what to cook next                                                       |
+| v2.0    | Practical user           | See which ingredients I'm missing for wishlist recipes                                       | Know what I need to buy before cooking                                         |
+| v2.0    | Budget-conscious user    | Get recommendations based on minimal ingredient shortfall                                    | Use what I already have and minimize additional purchases                      |
+| v2.0    | User                     | Clear the screen                                                                            | Have a cleaner interface while using the application                           |
+| v2.0    | User                     | Exit the application with a simple command                                                   | Close the program when I'm finished                                            |
+| v2.0    | Budget-conscious user    | Get recipe recommendations within a specific budget                                          | Plan meals that fit my financial constraints                                   |
+| v2.0    | Organized user           | View the missing ingredients between my inventory and wishlist recipes                       | Efficiently plan my shopping                                                   |
+| v2.0    | Efficiency-minded user   | Get recommendations for recipes requiring the fewest additional ingredients                  | Minimize shopping trips and use what I already have                            |
 ### Appendix C: Non-Functional Requirements
 
 - Runs on any **Java 17-compatible environment**.

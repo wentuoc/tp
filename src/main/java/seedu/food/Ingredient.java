@@ -56,17 +56,20 @@ public class Ingredient extends Product {
 
     // Serializes the ingredient into a string format (e.g., "name|price")
     public String toDataString() {
-        return getName() + "|" + getPrice();
+        return getName() + " | " + getPrice();
     }
 
     // Deserializes the string back into an Ingredient object
     public static Ingredient fromData(String data) throws InvalidPriceException {
-        String[] parts = data.split("\\|");
-        if (parts.length < 2) {
+        String[] parts = data.split("\\s*\\|\\s*");
+        int validLength = 2;
+        if (parts.length < validLength) {
             throw new IllegalArgumentException("Invalid ingredient data: " + data);
         }
-        String name = parts[0];
-        double price = Double.parseDouble(parts[1]);
+        int nameIndex = 0;
+        int costIndex = 1;
+        String name = parts[nameIndex];
+        double price = Double.parseDouble(parts[costIndex]);
         return new Ingredient(name, price);
     }
 }

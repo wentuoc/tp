@@ -30,7 +30,6 @@ public class RemoveDeleteChecker extends Checker {
 
     private String extractIndex(String input) throws EZMealPlanException {
         int indexOfIndex = 1;
-
         try {
             return input.split("\\s+")[indexOfIndex];
         } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {

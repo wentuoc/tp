@@ -59,7 +59,7 @@ public class CreateCommandTest {
                                 " rice (1.5), egg (0.5), cucumber (1)";
         Command command = new CreateCommand(validUserInput);
         command.execute(mealManager, ui);
-        int mealListSize = mealManager.getMainMeals().size();
+        int mealListSize = mealManager.getRecipesList().size();
         int expectedMealListSize = 1;
         assertEquals(expectedMealListSize, mealListSize);
         checkExpectedStrings();
@@ -111,7 +111,7 @@ public class CreateCommandTest {
 
     private void checkExpectedStrings() {
         int zeroIndex = 0;
-        Meal meal = mealManager.getMainMeals().getList().get(zeroIndex);
+        Meal meal = mealManager.getRecipesList().getList().get(zeroIndex);
         String expectedMealString = "chicken rice ($5.50)";
         assertEquals(expectedMealString, meal.toString());
         String mealStringMsg = "Matching meal string.";
@@ -136,7 +136,7 @@ public class CreateCommandTest {
                 command.execute(mealManager, ui);
             } catch (EZMealPlanException ezMealPlanException) {
                 String chickenRice = "chicken rice";
-                String listName = "main meal list";
+                String listName = mealManager.getRecipesList().getMealListName();
                 assertEquals(new DuplicateMealException(chickenRice, listName).getMessage()
                         , ezMealPlanException.getMessage());
                 String dupMealMsg = "Duplicate meal caught!";
@@ -147,11 +147,11 @@ public class CreateCommandTest {
     }
 
     private void checkExpectedListSize() {
-        int actualSize = mealManager.getMainMeals().getList().size();
+        int actualSize = mealManager.getRecipesList().getList().size();
         int expectedSize = 3;
         assertEquals(expectedSize, actualSize);
         System.out.println();
-        for (Meal meal : mealManager.getMainMeals().getList()) {
+        for (Meal meal : mealManager.getRecipesList().getList()) {
             System.out.println(meal.toString());
         }
     }

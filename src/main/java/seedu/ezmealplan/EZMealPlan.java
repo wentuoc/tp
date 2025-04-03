@@ -4,7 +4,7 @@ import seedu.command.Command;
 import seedu.exceptions.EZMealPlanException;
 import seedu.food.Meal;
 import seedu.logic.MealManager;
-import seedu.meallist.Meals;
+import seedu.meallist.MealList;
 import seedu.storage.Storage;
 import seedu.ui.UserInterface;
 import seedu.parser.Parser;
@@ -53,32 +53,33 @@ public class EZMealPlan {
         // Create and load both main meal list (mainList.txt) and user meal list (userList.txt)
         try {
             Storage.createListFiles();
-            constructMainList(mealManager);
-            constructUserList(mealManager);
+            Storage.loadExistingInventory(mealManager);
+            constructRecipesList(mealManager);
+            constructWishList(mealManager);
         } catch (IOException ioException) {
             System.err.println("Could not load tasks: " + ioException.getMessage());
         }
     }
   
-    private static void constructUserList(MealManager mealManager) throws IOException {
-        File userMealFile = Storage.getUserListFile();
-        Meals userMeals = mealManager.getUserMeals();
-        constructList(mealManager, userMealFile, userMeals);
+    private static void constructWishList(MealManager mealManager) throws IOException {
+        File wishListFile = Storage.getWishListFile();
+        MealList wishList = mealManager.getWishList();
+        constructList(mealManager, wishListFile, wishList);
     }
 
-    private static void constructMainList(MealManager mealManager) throws IOException {
-        File mainMealFile = Storage.getMainListFile();
-        Meals mainMeals = mealManager.getMainMeals();
-        constructList(mealManager, mainMealFile, mainMeals);
+    private static void constructRecipesList(MealManager mealManager) throws IOException {
+        File recipesListFile = Storage.getRecipesListFile();
+        MealList recipesList = mealManager.getRecipesList();
+        constructList(mealManager, recipesListFile, recipesList);
     }
 
-    private static void constructList(MealManager mealManager, File selectedFile, Meals selectedMeals)
+    private static void constructList(MealManager mealManager, File selectedFile, MealList selectedMeals)
             throws IOException {
         // Retrieve saved meals from the respective file and append them into the respective Meals class
-        // If the file (mainList.txt) is empty, preset meals are appended into the MainMeals class instead.
+        // If the file (mainList.txt) is empty, preset meals are appended into the RecipesList class instead.
         List<Meal> mealList = Storage.loadExistingList(selectedFile);
         // Load pre-set meals if the meal list from the main list file is empty.
-        if (mealList.isEmpty() && selectedFile.equals(Storage.getMainListFile())) {
+        if (mealList.isEmpty() && selectedFile.equals(Storage.getRecipesListFile())) {
             mealList = Storage.loadPresetMeals();
         }
         for (Meal meal : mealList) {
@@ -86,10 +87,10 @@ public class EZMealPlan {
         }
     }
 
-    private static void extractMealIntoList(Meal meal, Meals meals, MealManager mealManager) {
+    private static void extractMealIntoList(Meal meal, MealList mealList, MealManager mealManager) {
         //Throw error message if detected an ingredient with invalid price and skips to the next meal.
         try {
-            mealManager.addMeal(meal, meals);
+            mealManager.addMeal(meal, mealList);
         } catch (EZMealPlanException ezMealPlanException) {
             System.err.println(ezMealPlanException.getMessage());
             System.err.println("The current meal will be skipped.\n");

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import seedu.exceptions.EZMealPlanException;
 import seedu.food.Meal;
 import seedu.logic.MealManager;
-import seedu.meallist.Meals;
+import seedu.meallist.MealList;
 import seedu.ui.UserInterface;
 
 import java.io.ByteArrayOutputStream;
@@ -73,31 +73,31 @@ public class ClearCommandTest {
     }
 
     /**
-     * Tests that the ClearCommand clears the user meal list and prints the expected message.
+     * Tests that the ClearCommand clears the wishlist and prints the expected message.
      */
     @Test
-    void clearsUserMeals_noInputs_printsMessage() throws EZMealPlanException {
-        logger.fine("running execute_clearsUserMeals_printsMessage()");
+    void clearsWishList_noInputs_printsMessage() throws EZMealPlanException {
+        logger.fine("running execute_clearsWishList_printsMessage()");
 
-        // Prepare userMeals with some meals
-        Meals userMeals = mealManager.getUserMeals();
-        userMeals.addMeal(new Meal("Chicken Rice"));
-        userMeals.addMeal(new Meal("Pasta"));
+        // Prepare wishlist with some meals
+        MealList wishList = mealManager.getWishList();
+        wishList.addMeal(new Meal("Chicken Rice"));
+        wishList.addMeal(new Meal("Pasta"));
 
-        // Ensure userMealList is not empty before clearing
-        assertEquals(2, userMeals.getList().size(), "User meal list should contain 2 meals before clearing.");
+        // Ensure wishList is not empty before clearing
+        assertEquals(2, wishList.getList().size(), "Wishlist should contain 2 meals before clearing.");
 
         // Execute ClearCommand
         ClearCommand clearCommand = new ClearCommand();
         clearCommand.execute(mealManager, ui);
 
-        // Verify userMeals is now empty
-        assertTrue(userMeals.getList().isEmpty(), "User meal list should be empty after ClearCommand.");
+        // Verify wishList is now empty
+        assertTrue(wishList.getList().isEmpty(), "Wishlist should be empty after ClearCommand.");
 
         // Verify output
-        String expectedOutput = "All meals cleared from your meal list!" + ls;
+        String expectedOutput = "All meals cleared from your wishlist!" + ls;
         assertEquals(expectedOutput, outContent.toString(), "Command output does not match expected message.");
 
-        logger.info("execute_clearsUserMeals_printsMessage() passed");
+        logger.info("execute_clearsWishList_printsMessage() passed");
     }
 }

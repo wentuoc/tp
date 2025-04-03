@@ -2,8 +2,7 @@ package seedu.ui;
 
 import seedu.food.Ingredient;
 import seedu.food.Meal;
-import seedu.meallist.MainMeals;
-import seedu.meallist.Meals;
+import seedu.meallist.MealList;
 
 import java.util.List;
 import java.util.Scanner;
@@ -15,7 +14,7 @@ public class UserInterface {
         scanner = new Scanner(System.in);
     }
 
-    public static void printMessage(String s) {
+    public void printMessage(String s) {
         System.out.println(s);
     }
 
@@ -47,8 +46,8 @@ public class UserInterface {
         System.out.println(exception.getMessage());
     }
 
-    public void printAddMealMessage(Meal meal, Meals mealList) {
-        String mealListName = mealList instanceof MainMeals ? "main meal list" : "user meal List";
+    public void printAddMealMessage(Meal meal, MealList mealList) {
+        String mealListName = mealList.getMealListName();
         String successAddMealMessage = "You have successfully added a meal: " + meal + " into " + mealListName + ".";
         System.out.println(successAddMealMessage);
         List<Meal> meals = mealList.getList();
@@ -86,12 +85,12 @@ public class UserInterface {
 
     public void printRemovedMessage(Meal meal, int size) {
         System.out.println(meal + " has been removed from your meal list!");
-        System.out.printf("You have %d meals in your meal list.", size);
+        System.out.printf("You have %d meals in your meal list.\n", size);
     }
 
     public void printDeletedMessage(Meal meal, int size) {
-        System.out.println(meal + " has been removed from the global meal list!");
-        System.out.printf("There are now %d meals in the global meal list.", size);
+        System.out.println(meal + " has been removed from the recipes list!");
+        System.out.printf("There are now %d meals in the recipes list.\n", size);
     }
 
     public void prompt() {
@@ -99,7 +98,7 @@ public class UserInterface {
     }
 
     public void printClearedList() {
-        printMessage("All meals cleared from your meal list!");
+        printMessage("All meals cleared from your wishlist!");
     }
 
     public void printByeCommandHelp() {
@@ -112,18 +111,18 @@ public class UserInterface {
         System.out.println("you have not entered any command line options");
     }
 
-    public void printMealCommandHelp() {
-        System.out.println("Entering the meal command will list out all the meals you " +
-                           "have selected from the main list.");
-        System.out.println("Sample input: meal");
+    public void printWishlistCommandHelp() {
+        System.out.println("Entering the wishlist command will list out all the meals you " +
+                           "have selected from the recipes list.");
+        System.out.println("Sample input: wishlist");
         System.out.println("Sample output:");
         System.out.println("               1. Chicken Rice");
         System.out.println("               2. Fish Ball Noodles");
     }
 
-    public void printListCommandHelp() {
-        System.out.println("Entering the list command will list out all the meals from the main list.");
-        System.out.println("Sample input: list");
+    public void printRecipesCommandHelp() {
+        System.out.println("Entering the recipes command will list out all the meals from the recipes list.");
+        System.out.println("Sample input: recipes");
         System.out.println("Sample output:");
         System.out.println("               1. Chicken Rice");
         System.out.println("               2. Fish Ball Noodles");
@@ -140,25 +139,25 @@ public class UserInterface {
     }
 
     public void printRemoveCommandHelp() {
-        System.out.println("Entering the remove command will remove a meal in the user's meal list");
+        System.out.println("Entering the remove command will remove a meal in the wishlist");
         System.out.println("Sample input: remove 1 ");
         System.out.println("Sample output:");
-        System.out.println("               OK.  Chicken Rice ($3.00) have been removed from the meal list.");
+        System.out.println("               OK.  Chicken Rice ($3.00) have been removed from the wishlist.");
     }
 
     public void printSelectCommandHelp() {
         System.out.println("Entering the select command will add the selected meal from the filtered or unfiltered " +
-                           "main meal list into the user meal list");
+                           "recipes list into the wishlist");
         System.out.println("Sample input (filtered by ingredient(s)): select 1 /ing yellow noodle, fish");
         System.out.println("Sample input (filtered by meal cost): select 1 /mcost 2");
         System.out.println("Sample input (filtered by meal name(s)): select 1 /mname fish, ball");
         System.out.println("Sample input: select 1");
         System.out.println("Sample output based on the sample input 'select 1':");
-        System.out.println("               OK.  Chicken Rice ($3.00) have been added to the meal list.");
+        System.out.println("               OK.  Chicken Rice ($3.00) have been added to the wishlist.");
     }
 
     public void printFilterCommandHelp() {
-        System.out.println("Entering the filter command will filter a meal in the main list");
+        System.out.println("Entering the filter command will filter a meal in the recipes list");
         System.out.println("There are three filter option by cost, by ingredient or by meal name");
         System.out.println("Sample input: filter /mcost 5.50");
         System.out.println("Sample output:");
@@ -172,14 +171,14 @@ public class UserInterface {
     }
 
     public void printDeleteCommandHelp() {
-        System.out.println("Entering the delete command will delete a meal in the main list");
+        System.out.println("Entering the delete command will delete a meal in the recipes list");
         System.out.println("Sample input: delete 1 ");
         System.out.println("Sample output:");
-        System.out.println("               OK.  Chicken Rice ($3.00) have been deleted from the main list.");
+        System.out.println("               OK.  Chicken Rice ($3.00) have been deleted from the recipes list.");
     }
 
     public void printViewCommandHelp() {
-        System.out.println("Entering the view command will view a view all the ingredients of the selected meal");
+        System.out.println("Entering the view command will give a view of all the ingredients of the selected meal");
         System.out.println("Sample input: view 1 ");
         System.out.println("Sample output:");
         System.out.println("               1. yellow noodle");
@@ -192,10 +191,10 @@ public class UserInterface {
     }
 
     public void printClearCommandHelp() {
-        System.out.println("Entering the clear command will clear all the meals in the meal list");
+        System.out.println("Entering the clear command will clear all the meals in the wishlist");
         System.out.println("Sample input: clear");
         System.out.println("Sample output:");
-        System.out.println("               The meal list has been cleared.");
+        System.out.println("               The wishlist has been cleared.");
     }
 
     public void printHelpCommandHelp() {
@@ -216,7 +215,22 @@ public class UserInterface {
         System.out.println(ingredientName + " not found");
     }
 
-    public void printBought(String ingredientName, double price) {
-        System.out.println(ingredientName + " bought");
+    public void printBought(Ingredient ingredient) {
+        System.out.println(ingredient + " bought");
+    }
+
+    public void printInventory(List<Ingredient> ingredientsList) {
+        if (ingredientsList.isEmpty()) {
+            System.out.println("No ingredients found in your inventory.\n");
+            return;
+        }
+
+        System.out.println("Here are the ingredients that you own:");
+        int count = 0;
+        for (Ingredient ingredient : ingredientsList) {
+            count++;
+            System.out.println("    " + count + ". " + ingredient);
+        }
+        System.out.println();
     }
 }

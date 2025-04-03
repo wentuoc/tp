@@ -3,20 +3,19 @@ package seedu.command;
 import seedu.logic.MealManager;
 import seedu.ui.UserInterface;
 import seedu.food.Inventory;
-import seedu.food.Ingredient;
+
+
+import java.util.ArrayList;
+
 import java.util.List;
-import java.util.Iterator;
 
 public class ConsumeCommand extends Command {
-    private List<String> ingredients;
+    private static final String CONSUME = "consume";
+    private static final List<String> ingredients = new ArrayList<>();
 
-    /**
-     * Constructs a ConsumeCommand with the specified list of ingredient names.
-     *
-     * @param ingredients a list of ingredient names to be consumed.
-     */
-    public ConsumeCommand(List<String> ingredients) {
-        this.ingredients = ingredients;
+
+    public ConsumeCommand(String userInput) {
+        this.validUserInput = userInput.trim();
     }
 
     /**
@@ -27,28 +26,38 @@ public class ConsumeCommand extends Command {
      */
     @Override
     public void execute(MealManager mealManager, UserInterface ui) {
+        int afterConsumeIndex = validUserInput.indexOf(CONSUME) + CONSUME.length();
+        String args = validUserInput.substring(afterConsumeIndex).trim();
+        parseIngredients(args);
         // Retrieve the inventory from the MealManager.
         Inventory inventory = mealManager.getInventory();
-        // Assuming Inventory has a method to get its ingredient list.
-        List<Ingredient> ingredientList = inventory.getIngredients();
-
         // Process each ingredient name provided in the command.
         for (String ingredientName : ingredients) {
-            boolean removed = false;
-            // Use an iterator to safely remove items while iterating.
-            Iterator<Ingredient> iterator = ingredientList.iterator();
-            while (iterator.hasNext()) {
-                Ingredient ingredient = iterator.next();
-                if (ingredient.getName().equalsIgnoreCase(ingredientName)) {
-                    iterator.remove();
-                    ui.printConsumed(ingredientName);
-                    removed = true;
-                    break;
-                }
-            }
-            if (!removed) {
+            if (inventory.removeIngredient(ingredientName)) {
+                ui.printConsumed(ingredientName);
+            } else {
                 ui.printIngredientNotFound(ingredientName);
+            }
+        }
+        ingredients.clear();
+    }
+
+    private static void parseIngredients(String args) {
+        if (args.isEmpty()) {
+            return;
+        }
+        // Split using "/ing" as the delimiter.
+        String ing = "/ing";
+        int afterIngIndex = args.indexOf(ing) + ing.length();
+        String argsAfterIng = args.substring(afterIngIndex).trim();
+        String[] tokens = argsAfterIng.split(",");
+        for (String token : tokens) {
+            token = token.trim();
+            if (!token.isEmpty()) {
+                ingredients.add(token);
             }
         }
     }
 }
+
+
