@@ -10,13 +10,18 @@ EZMealPlan follows a modular and object-oriented design centered around a comman
 
 ### Architecture Overview
 
-- **Parser**: Interprets user input and delegates to appropriate command classes.
-- **Command classes**: Each command is encapsulated in its own class (e.g., `ListCommand`, `FilterCommand`, `SelectCommand`) that implements an `execute()` method.
-- **MealList and UserMealList**: Encapsulate meal storage and operations, such as adding, removing, and viewing meals.
-- **Meal and Ingredient**: Core data classes representing recipes and their components.
-- **Storage**: Handles saving and loading from `main_meal_list.txt` and `user_meal_list.txt`.
+EZMealPlan consists of the following main packages:
+- `ezmealplan`: Initialises the app and starts the other components. Closes the other components upon exit  of the app. 
+- `ui`: Captures user input and displays outputs via the command line.
+- `parser`: Interprets user input and delegates to appropriate command classes.
+- `command`: Represents different actions that can be executed. Commands have corresponding `checker`s that perform data
+validation and error handling.
+- `logic`: Interacts with the `meallist`. 
+- `meallist`: Encapsulates meal storage and implements operations on them, such as adding, removing, and viewing meals.
+- `food`: Represents meals and their subcomponents.
+- `storage`: Initialises, saves, and loads data to and from the disk.
 
-### Logging
+#### Logging
 
 - Global logger is initialized in the `EZMealPlan` class.
 
@@ -24,24 +29,40 @@ EZMealPlan follows a modular and object-oriented design centered around a comman
 
 - JUnit test classes use their own logger with `logger.INFO` for exceptions.
 
-## Input Handling
+### `ezmealplan`
+This package contains the main `EZMealPlan` class, which is the entrance point for the app.
+
+It instantiates one `MealManager` and one `UserInterface`, which are shared across all other classes. It also
+calls static methods in the `Command`, `Storage` and `Parser` classes. Below is a partial class diagram representing
+the associations:
+![EZMealPlanClass.png](diagrams/EZMealPlanClass.png)
+
+This sequence diagram shows the processes that EZMealPlan system has to undergo while it is being booted up before it 
+is ready for usage.
+![BootingUpEZMealPlan.png](diagrams/BootingUpEZMealPlan.png)
+
+This sequence diagram shows the procedures of extracting meals from the `recipesListFile` (`recipesList.txt`). A similar 
+procedure follows for extracting meals from the `wishListFile` (`wishList.txt`).
+![ConstructingMainMeals.png](diagrams/ConstructingMainMeals.png)
+
+
+### `ui`
+
+User input is captured by `readInput` in the `UserInterface` object, which is returned to `EZMealPlan`. `EZMealPlan`
+calls the static method `parse` in `Parser` to process the input, which then creates the appropriate `Command` object.
+
+This sequence diagram shows the general flow of how the EZMealPlan system process the respective command inputted by 
+the user. Many relevant details and classes have been omitted for the purpose of simplicity. The implementations for 
+the respective commands will be explained in greater details and illustrated with UML diagrams later.
+![RunCommandSequenceDiagram.png](diagrams/RunCommandSequenceDiagram.png)
 
 - All user inputs are case-sensitive and normalised to lowercase.
 
-![BootingUpEZMealPlan.png](diagrams/BootingUpEZMealPlan.png)
-This sequence diagram shows the processes that EZMealPlan system has to undergo while it is being booted up before it is ready for usage.
-
-![ConstructingMainMeals.png](diagrams/ConstructingMainMeals.png)
-This sequence diagram shows the procedures of extracting meals from the "mainMealFile" (mainList.txt). The procedures of extracting meals from the "userMealFile" (userList.txt) can be depicted simply by replacing "mainMealFile" with "userMealFile", storage.getMainListFile() with storage.getUserListFile(), mealManager.getMainMeals() with mealManager.getUserMeals() and lastly, "mainMeals" of MainMeals class with "userMeals" of UserMeals class.
-
-![RunCommandSequenceDiagram.png](diagrams/RunCommandSequenceDiagram.png)
-This sequence diagram shows the general flow of how the EZMealPlan system process the respective command inputted by the user. Many relevant details and classes have been omitted for the purpose of simplicity. The implementations for the respective commands will be explained in greater details and illustrated with UML diagrams later.
-
-### Food Package
+### `food`
 
 The food package contains the abstract class `Product`, as well as `Ingredient` and `Meal` classes.
 
-![.\diagrams\Food.png](.\diagrams\Food.png)
+![Food.png](diagrams/Food.png)
 
 The `Ingredient` class,
 * Represents an ingredient, which has a `name` and `price`
