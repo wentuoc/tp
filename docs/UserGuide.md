@@ -113,6 +113,13 @@ Let A, B and C be ingredients. Let Meal_No. be meal name.
 
 ## Command Summary
 
-{Give a 'cheat sheet' of commands here}
-
-* Add todo `todo n/TODO_NAME d/DEADLINE`
+* Filter recipes `filter /mcost COST` or `filter /ing INGREDIENT1, INGREDIENT2` or `filter /mname NAME`
+* Select recipe `select INDEX` or `select INDEX /FILTER_METHOD FILTER_INPUT`
+* Remove from wishlist `remove INDEX`
+* Create recipe `create /mname MEAL_NAME /ing INGREDIENT1 (COST1), INGREDIENT2 (COST2)`
+* Delete recipe `delete INDEX`
+* View recipe details `view /m INDEX` or `view /u INDEX`
+* Get recommendations `recommend /ing INGREDIENT_NAME`
+* Clear wishlist `clear`
+* Get help `help COMMAND_NAME`
+* Exit program `bye`
