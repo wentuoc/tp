@@ -62,20 +62,15 @@ public class BuyCommand extends Command {
             int invalidIndex = -1;
             if (openParenIndex != invalidIndex && closeParenIndex != invalidIndex &&
                 openParenIndex < closeParenIndex) {
-                extractToken(token, openParenIndex, closeParenIndex);
+                int startIndex = 0;
+                int indexAdjustment = 1;
+                String name = token.substring(startIndex, openParenIndex).trim();
+                String priceStr = token.substring(openParenIndex + indexAdjustment, closeParenIndex).trim();
+                addExtractedToken(token, priceStr, name);
             } else {
                 System.out.println("Invalid format for ingredient: " + token);
             }
         }
-    }
-
-    private static void extractToken(String token, int openParenIndex,
-                                     int closeParenIndex) {
-        int startIndex = 0;
-        int indexAdjustment = 1;
-        String name = token.substring(startIndex, openParenIndex).trim();
-        String priceStr = token.substring(openParenIndex + indexAdjustment, closeParenIndex).trim();
-        addExtractedToken(token, priceStr, name);
     }
 
     private static void addExtractedToken(String token, String priceStr, String name) {
