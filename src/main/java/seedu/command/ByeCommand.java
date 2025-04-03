@@ -1,6 +1,7 @@
 package seedu.command;
 
 import seedu.food.Meal;
+import seedu.food.Ingredient;
 import seedu.storage.Storage;
 import seedu.logic.MealManager;
 import seedu.ui.UserInterface;
@@ -16,17 +17,26 @@ public class ByeCommand extends Command {
 
     @Override
     public void execute(MealManager mealManager, UserInterface ui) {
-        List<Meal> mainMealList = mealManager.getMainMeals().getList();
-        List<Meal> userMealList = mealManager.getUserMeals().getList();
-        clearAndUpdateFile(mainMealList, mealManager);
-        clearAndUpdateFile(userMealList, mealManager);
+        updateMainListFile(mealManager);
+        updateUserListFile(mealManager);
+        updateInventoryFile(mealManager);
         ui.printGoodbye();
     }
 
+    private void updateUserListFile(MealManager mealManager) {
+        List<Meal> userMealList = mealManager.getUserMeals().getList();
+        String userListFilePath = Storage.getUserListFilePath();
+        clearAndUpdateFile(userMealList, userListFilePath);
+    }
 
-    private void clearAndUpdateFile(List<Meal> mealList, MealManager mealManager) {
+    private void updateMainListFile(MealManager mealManager) {
         List<Meal> mainMealList = mealManager.getMainMeals().getList();
-        String filePath = mainMealList.equals(mealList) ? Storage.getMainListFilePath() : Storage.getUserListFilePath();
+        String mainListFilePath = Storage.getMainListFilePath();
+        clearAndUpdateFile(mainMealList, mainListFilePath);
+    }
+
+
+    private void clearAndUpdateFile(List<Meal> mealList, String filePath) {
         Storage.clearFile(filePath);
         writeMealsToFile(mealList, filePath);
     }
@@ -39,5 +49,29 @@ public class ByeCommand extends Command {
                 UserInterface.printMessage("Error writing to file: " + ioException.getMessage());
             }
         }
+    }
+
+    private static void writeIngredientsToFile(List<Ingredient> ingredientList, String filePath) {
+        for (Ingredient ingredient : ingredientList) {
+            try {
+                Storage.writeToFile(ingredient.toDataString(), filePath);
+            } catch (IOException ioException) {
+                UserInterface.printMessage("Error writing to file: " + ioException.getMessage());
+            }
+        }
+    }
+
+    private void clearAndUpdateFileForIngredients(List<Ingredient> ingredientList, String filePath) {
+        Storage.clearFile(filePath);
+        writeIngredientsToFile(ingredientList, filePath);
+    }
+
+    private void updateInventoryFile(MealManager mealManager) {
+        // Retrieve the list of ingredients from the inventory.
+        List<Ingredient> ingredientList = mealManager.getInventory().getIngredients();
+        // Get the file path for the inventory list.
+        String inventoryFilePath = Storage.getInventoryFilePath();
+        // Clear the existing file and write the new list.
+        clearAndUpdateFileForIngredients(ingredientList, inventoryFilePath);
     }
 }

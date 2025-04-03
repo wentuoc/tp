@@ -2,6 +2,7 @@ package seedu.logic;
 
 import seedu.exceptions.EZMealPlanException;
 import seedu.food.Ingredient;
+import seedu.food.Inventory;
 import seedu.food.Meal;
 import seedu.meallist.MainMeals;
 import seedu.meallist.Meals;
@@ -14,6 +15,7 @@ public class MealManager {
     Meals chosenMeals;
     private final Meals userMeals = new UserMeals();
     private final Meals mainMeals = new MainMeals();
+    private final Inventory inventory = new Inventory();
 
 
     public Meals getUserMeals() {
@@ -28,7 +30,6 @@ public class MealManager {
     // Adds a new meal to the specified list after checking for duplicates
     public void addMeal(Meal newMeal, Meals mealsInput) throws EZMealPlanException {
         chosenMeals = mealsInput instanceof MainMeals ? getMainMeals() : getUserMeals();
-        chosenMeals.checkDuplicateMeal(newMeal);
         chosenMeals.addMeal(newMeal);
     }
 
@@ -134,5 +135,9 @@ public class MealManager {
                 }
             }
         }
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 }

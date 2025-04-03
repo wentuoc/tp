@@ -2,6 +2,7 @@ package seedu.meallist;
 
 import seedu.exceptions.DuplicateMealException;
 import seedu.exceptions.EZMealPlanException;
+import seedu.exceptions.MealNotFoundException;
 import seedu.exceptions.RemoveIndexOutOfRangeException;
 import seedu.food.Meal;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 public abstract class Meals {
     protected final List<Meal> mealList = new ArrayList<>();
+    protected String mealListName;
 
     public List<Meal> getList() {
         return mealList;
@@ -23,9 +25,10 @@ public abstract class Meals {
         mealList.sort(Comparator.comparing(meal -> meal.getName().toLowerCase()));
     }
 
-    // Checks whether the newMeal already exists in the given meal list
-    public void checkDuplicateMeal(Meal newMeal) throws EZMealPlanException {
-        String mealListName = this instanceof MainMeals ? "main meal list" : "user meal list";
+    /**
+     * Checks whether newMeal already exists in the mealList.
+     */
+    private void checkDuplicateMeal(Meal newMeal) throws EZMealPlanException {
         for (Meal meal : mealList) {
             if (meal.equals(newMeal)) {
                 throw new DuplicateMealException(newMeal.getName(), mealListName);
@@ -38,8 +41,8 @@ public abstract class Meals {
      */
     public Meal removeMeal(int index) throws EZMealPlanException {
         try {
-            return mealList.remove(index - 1);
-        } catch (IndexOutOfBoundsException e) {
+            return mealList.remove(index);
+        } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
             throw new RemoveIndexOutOfRangeException(index, mealList.size());
         }
     }
@@ -52,10 +55,17 @@ public abstract class Meals {
     }
 
     /**
-     * Returns the index of a specified meal object in the list.
+     * Returns the index of a specified meal object in the list, starting from index 0.
+     *
+     * @throws MealNotFoundException if the specified meal cannot be found.
      */
-    public int getIndex(Meal meal) {
-        return mealList.indexOf(meal);
+    public int getIndex(Meal meal) throws MealNotFoundException {
+        int index = mealList.indexOf(meal);
+        if (index == -1) {
+            throw new MealNotFoundException(meal);
+        } else {
+            return index;
+        }
     }
 
     public boolean contains(Meal meal) {

@@ -19,6 +19,7 @@ public class Storage {
     static File mainListFile;
     private static final String USER_LIST_FILE_PATH = "data/userList.txt";
     private static final String MAIN_LIST_FILE_PATH = "data/mainList.txt";
+    private static final String INVENTORY_LIST_FILE_PATH = "data/inventoryList.txt";
 
     public static File getUserListFile() {
         return userListFile;
@@ -39,6 +40,7 @@ public class Storage {
     public static void createListFiles() throws IOException {
         userListFile = new File(USER_LIST_FILE_PATH);
         mainListFile = new File(MAIN_LIST_FILE_PATH);
+        createListFile(mainListFile);
         createListFile(userListFile);
     }
 
@@ -150,4 +152,7 @@ public class Storage {
         }
     }
 
+    public static String getInventoryFilePath() {
+        return INVENTORY_LIST_FILE_PATH;
+    }
 }
