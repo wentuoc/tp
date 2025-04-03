@@ -246,7 +246,9 @@ Here are the meals in recipes list:
 Currently, you have 102 meals in recipes list.
 How may I help you?
 cheesecake ($9.00) has been removed from the recipes list!
-There are now 101 meals in the recipes list.How may I help you?
+There are now 101 meals in the recipes list.
+How may I help you?
 cheesecake ($10.00) has been removed from the recipes list!
-There are now 100 meals in the recipes list.How may I help you?
+There are now 100 meals in the recipes list.
+How may I help you?
 Bye. Hope to see you again soon!
