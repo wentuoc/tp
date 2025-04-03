@@ -1,4 +1,3 @@
-Bak Chang | Glutinous Rice (1.50) | Pork (1.50) | Mushrooms (0.70) | Salt (0.20)
 Bak Chor Mee | Noodles (1.00) | Minced Pork (1.50) | Vinegar (0.30) | Pork Fat (0.80)
 Bak Kut Teh | Pork Ribs (2.50) | Herbs (0.80) | Garlic (0.30) | Soy Sauce (0.50)
 Beef Rendang | Beef (3.50) | Coconut Milk (1.00) | Spices (0.70) | Herbs (0.50)
@@ -95,6 +94,7 @@ Stir-fried Vegetables | Mixed Vegetables (1.00) | Garlic (0.30) | Oyster Sauce (
 Sweet and Sour Pork | Pork (2.50) | Pineapple (0.80) | Bell Pepper (0.70) | Vinegar (0.30)
 Teochew Porridge | Rice Porridge (1.00) | Fish (2.50) | Pickles (0.50) | Ginger (0.30)
 Teriyaki Chicken Rice | Chicken (2.00) | Teriyaki Sauce (0.80) | Rice (0.80) | Vegetables (0.70)
+testMeal | ingredient1 (1.00) | ingredient2 (2.00)
 Vegetable Bee Hoon | Rice Vermicelli (1.00) | Vegetables (1.00) | Bean Sprouts (0.40) | Fried Shallots (0.60)
 Wanton Noodle | Egg Noodles (1.00) | Pork (1.50) | Wanton (0.80) | Broth (0.70)
 Yong Tau Foo | Tofu (0.80) | Fish Balls (1.00) | Vegetables (0.70) | Rice Noodles (1.00)
