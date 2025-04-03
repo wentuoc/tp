@@ -11,10 +11,10 @@ EZMealPlan follows a modular and object-oriented design centered around a comman
 ### Architecture Overview
 
 - **Parser**: Interprets user input and delegates to appropriate command classes.
-- **Command classes**: Each command is encapsulated in its own class (e.g., `ListCommand`, `FilterCommand`, `SelectCommand`) that implements an `execute()` method.
+- **Command classes**: Each command is encapsulated in its own class (e.g., `RecipesCommand`, `FilterCommand`, `SelectCommand`) that implements an `execute()` method.
 - **MealList and UserMealList**: Encapsulate meal storage and operations, such as adding, removing, and viewing meals.
 - **Meal and Ingredient**: Core data classes representing recipes and their components.
-- **Storage**: Handles saving and loading from `main_meal_list.txt` and `user_meal_list.txt`.
+- **Storage**: Handles saving and loading from `recipesList.txt` and `wishList.txt`.
 
 ### Logging
 
@@ -28,11 +28,11 @@ EZMealPlan follows a modular and object-oriented design centered around a comman
 
 - All user inputs are case-sensitive and normalised to lowercase.
 
-![BootingUpEZMealPlan.png](diagrams/BootingUpEZMealPlan.png)
+![BootingUpEZMealPlan.puml](puml/BootingUpEZMealPlan.puml)
 This sequence diagram shows the processes that EZMealPlan system has to undergo while it is being booted up before it is ready for usage.
 
-![ConstructingMainMeals.png](diagrams/ConstructingMainMeals.png)
-This sequence diagram shows the procedures of extracting meals from the "mainMealFile" (mainList.txt). The procedures of extracting meals from the "userMealFile" (userList.txt) can be depicted simply by replacing "mainMealFile" with "userMealFile", storage.getMainListFile() with storage.getUserListFile(), mealManager.getMainMeals() with mealManager.getUserMeals() and lastly, "mainMeals" of MainMeals class with "userMeals" of UserMeals class.
+![ConstructingRecipesList.puml](puml/ConstructingRecipesList.puml)
+This sequence diagram shows the procedures of extracting meals from the "recipesListFile" (recipesList.txt). The procedures of extracting meals from the "wishListFile" (wishList.txt) can be depicted simply by replacing "recipesListFile" with "wishListFile", storage.getRecipesListFile() with storage.getWishListFile(), mealManager.getRecipesList() with mealManager.getWishList() and lastly, "recipesList" of RecipesList class with "wishList" of WishList class.
 
 ![RunCommandSequenceDiagram.png](diagrams/RunCommandSequenceDiagram.png)
 This sequence diagram shows the general flow of how the EZMealPlan system process the respective command inputted by the user. Many relevant details and classes have been omitted for the purpose of simplicity. The implementations for the respective commands will be explained in greater details and illustrated with UML diagrams later.
@@ -204,6 +204,108 @@ public void testExecute_listCommand_printsMainList() throws EZMealPlanException 
     expectedMeals.add(meal2);
     assertIterableEquals(expectedMeals, testUI.capturedMeals);
 }
+```
+### CreateCommand and CreateChecker
+
+##### 2.1 Design Overview
+
+###### Function
+CreateChecker checks if the user input is valid before passing to the CreateCommand to create a new meal from the user input and adds it into the recipes list.
+
+###### Design Goals
+
+**Single Responsibility:**
+- CreateCommand solely handles the creation and adding of new meal into the recipes list while
+CreateChecker solely handles checking of the Create command input by the user.
+
+**Decoupling:**
+- By segregating responsibilities, it makes the code easier to maintain and extend.
+
+**Testability:**
+- The design supports unit testing by allowing a test-specific UI to capture and verify the output.
+
+##### 2.2 Implementation Details
+
+###### Component Level: CreateChecker Class
+
+- Inherits from the abstract Checker Class
+- Implements the `check()` method
+- Uses logging to indicate execution
+- `isPassed` is set to `true` once the user input passes all the required checks
+- Passes the valid user input back into the CreateCommand class for processing into a new meal
+
+###### Component Level: CreateCommand Class
+
+- Inherits from the abstract Command class
+- Implements the `execute(MealManager mealManager, UserInterface ui)` method
+- Uses logging to indicate execution
+- Creates a new meal and passes it to the MealManager for adding the meal into the recipes list
+
+###### Code Example
+```java
+@Override
+public void check() throws EZMealPlanException {
+    logger.fine("Checking '" + userInput + "' for errors.");
+    checkMnameExists();
+    checkIngExists();
+    checkMnameIngIndexes();
+    checkMealNameExists();
+    checkIngredientExists();
+    checkIngredientFormat();
+    setPassed(true);
+}
+```
+```java
+ @Override
+    public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
+        boolean isValidUserInput = checkValidUserInput();
+        if (!isValidUserInput) {
+            logger.severe("Huge issue detected! The user input format remains invalid despite " +
+                    "passing all the checks for input formatting error.");
+        }
+        assert isValidUserInput;
+
+        Meal newMeal = createNewMeal();
+        MealList recipesList = mealManager.getRecipesList();
+        mealManager.addMeal(newMeal, recipesList);
+        ui.printAddMealMessage(newMeal, recipesList);
+    }
+```
+##### 2.3 Sequence Diagrams
+![CreateCommand.puml](puml/CreateCommand.puml)
+![CreateChecker.puml](puml/CreateChecker.puml)
+##### 2.4 Unit Testing
+
+###### Testing Approach
+- Uses a test-specific CreateCheckerTest and CreateCommandTest to ensure that the CreateChecker and CreateCommand account for different types of user inputs and proceed as normal
+- Test with different types of user inputs that gives no error and some exceptions
+- Executes CreateChecker and CreateCommand
+- Verifies that the exceptions are thrown according to the user inputs
+
+###### Unit Test Code
+```java
+ @Test
+public void createCommand_fail() {
+    logger.fine("running createCommand_fail()");
+    duplicate_ingredient_catch();
+    duplicate_meal_catch();
+    invalidPriceFormat();
+    logger.info("createCommand_fail() test passed");
+}
+```
+```java
+@Test
+    public void createChecker_fail() {
+        logger.fine("Running createChecker_fail()");
+        checkMissingMname();
+        checkMissingIng();
+        checkInvalidCreateIndex();
+        checkInvalidIngMnameIndex();
+        checkMissingMealName();
+        checkMissingIngredient();
+        checkInvalidIngredientFormat();
+        logger.info("createChecker_fail() passed");
+    }
 ```
 ## Implementation
 
