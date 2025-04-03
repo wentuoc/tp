@@ -100,7 +100,7 @@ public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlan
 
 ##### 1.3 Sequence Diagram
 
-![.\diagrams\MealCommand.png](.\diagrams\MealCommand.png)
+![.\diagrams\MealCommand.png](./diagrams/MealCommand.png)
 
 ##### 1.4 Unit Testing
 
@@ -173,7 +173,7 @@ public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlan
 
 ##### 2.3 Sequence Diagram
 
-![.\diagrams\ListCommand.png](.\diagrams\ListCommand.png)
+![.\diagrams\ListCommand.png](./diagrams/ListCommand.png)
 
 ##### 2.4 Unit Testing
 
@@ -205,6 +205,64 @@ public void testExecute_listCommand_printsMainList() throws EZMealPlanException 
     assertIterableEquals(expectedMeals, testUI.capturedMeals);
 }
 ```
+
+#### 3. DeleteCommand
+
+##### 3.1 Design Overview
+
+###### Function
+DeleteCommand is responsible for removing a specific meal from the main meal list and, if applicable, also removing the same meal from the user's wish list. It ensures consistency between related lists and provides user feedback via the UserInterface.
+
+###### Design Goals
+
+ **Consistency**
+
+- Ensures that if a meal is deleted from the main list, it is also removed from the wish list to prevent dangling references.
+
+**Single Responsibility**
+
+- Focuses purely on deletion logic while relying on MealManager for list access and UserInterface for message display.
+
+**Extensibility**
+
+- Built on top of the shared abstract class RemoveDeleteCommand, which allows common functionality (like index parsing and list access) to be reused across similar commands (e.g., RemoveCommand).
+
+##### 3.2 Implementation Details
+
+###### Component Level: DeleteCommand Class
+
+- Inherits from the abstract `RemoveDeleteCommand` class
+- Implements the `execute(MealManager mealmanager, UserInterface ui)` method
+- Uses logging (via `logger.fine(...)` to indicate successful deletion.
+- Retrieves the main meal list using `mealManager.getMainMeals()` (inherited logic)
+- Removes the meal at the specified index (inherited logic)
+- Retrieves the wish list using `mealManager.getWishList()`
+- Checks if the deleted meal exists in the wish list using `wishlist.contains(...)`
+- If it exists, removes it using `wishList.removeMeal(...)`
+- Calls `ui.printRemovedMessage(...)` to notify the user of removal from the wish list
+
+###### Code Example
+```java
+@Override
+    public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
+        super.execute(mealManager, ui);
+        Meals userMeals = mealManager.getUserMeals();
+        if (userMeals.contains(removedOrDeletedMeal)) {
+            int indexInUserList = userMeals.getIndex(removedOrDeletedMeal);
+            userMeals.removeMeal(indexInUserList);
+            ui.printRemovedMessage(removedOrDeletedMeal, userMeals.size());
+            logger.fine("Command finished executing: Removed \"" + removedOrDeletedMeal.getName() + "\" meal " +
+                    "from user list");
+        }
+        logger.fine("Command finished executing: Deleted \"" + removedOrDeletedMeal.getName() + "\" meal from " +
+                "main list");
+    }
+```
+
+##### 3.3 Sequence Diagram
+![.\diagrams\DeleteCommand.png](./diagrams/DeleteCommand.png)
+
+
 ## Implementation
 
 
