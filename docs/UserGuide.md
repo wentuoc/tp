@@ -37,29 +37,27 @@ command.
 
 In EZMealPlan, there are three main lists you will interact with:
 
-### 🍽 Main Meal List
+### 🍽 Recipes List
 
 This is the primary list where all your meals are stored.
-Whenever you use the `create /m` command, a new meal is added here.
+Whenever you use the `create /mname mealName /ing ing1(ing1_cost), ing2(ing2_cost)` command, a new meal is added here.
 
-- View with: `list`
-- Delete from it: `delete /m INDEX`
-- Meals here can be recommended based on your budget
+- View with: `recipes`
+- Delete from it: `delete INDEX`
 
-### 🧾 User Meal List
+### ⭐ Wishlist
 
-This is a secondary list where you can add custom meals using `create /u`.
-It’s useful for storing meals you don’t want included in the budget recommendation system.
+This is a secondary list where you can add and remove the preferred meals you have chosen from the (filtered) recipes list using `select Index [filter method (optional)]` and `remove index` respectively.
+It's useful for suggesting meal recommendations and to-buy ingredients based on the `recommend` and `buy` commands respectively.
 
-- View with: `view /u INDEX`
+- View with: `wishlist`
 - Not included in `recommend`
 
-### ⭐ Wish List
-The wish list is where you store your favorite or preferred meals that you want to keep track of for future use.
+### 🧾 Inventory List
+This inventory list is where you store and remove the to-buy ingredients which may or may not be part of the meals in the wishlist.
 
-- Add to wish list using: add `/w INDEX` (index refers to the main meal list)
-- View with: `wishlist`
-- Automatically updates if a meal in it is deleted from the main list
+- Add to inventory list using: `buy /ing ing1 (ing1_cost), ing2 (ing2_cost)`
+- View with: `inventory`
 
 ## Features 
 
