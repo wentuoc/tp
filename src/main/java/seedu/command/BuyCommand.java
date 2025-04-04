@@ -35,6 +35,7 @@ public class BuyCommand extends Command {
             logger.severe("Invalid buy command input detected.");
             return;
         }
+
         parseIngredientsForBuy();
 
         Inventory inventory = mealManager.getInventory();
