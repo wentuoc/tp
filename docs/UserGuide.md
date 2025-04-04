@@ -15,8 +15,8 @@ users can also manage their own fridge inventory with the inventory list checkin
 3. Copy the file to the folder you want to use as the _home folder_ for your EZMealPlan.
 4. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar ezmealplan.jar` command
 to run the application. The app will contain some preset meals.
-5. Type the command in the command box and press Enter to execute it. e.g. typing `wishlist` and pressing Enter will open 
-the wishlist window. Some example commands you can try:
+5. Type the command in the command box and press <kbd>Enter</kbd> to execute it. e.g. typing `wishlist` and pressing 
+<kbd>Enter</kbd> will open the wishlist window. Some example commands you can try:
 
 `recipes` : Lists all meals from the recipes list.
 
@@ -39,25 +39,34 @@ In EZMealPlan, there are three main lists you will interact with:
 
 ### 🍽 Recipes List
 
-This is the primary list where all your meals are stored.
-Whenever you use the `create /mname mealName /ing ing1(ing1_cost), ing2(ing2_cost)` command, a new meal is added here.
+This is the primary list where all the meals are stored. It comes pre-populated with 100 meals, but you can also add 
+new meals with the `create` command.
 
-- View with: `recipes`
-- Delete from it: `delete INDEX`
+- Add a meal: `create`
+- View recipes list: `recipes`
+- View a filtered recipes list: `filter`
+- Delete a meal: `delete`
 
 ### ⭐ Wishlist
 
-This is a secondary list where you can add and remove the preferred meals you have chosen from the (filtered) recipes list using `select Index [filter method (optional)]` and `remove index` respectively.
-It's useful for suggesting meal recommendations and to-buy ingredients based on the `recommend` and `buy` commands respectively.
+This is a secondary list where you can add and remove your favourite meals. By using the `select` 
+command, you can select a meal from the recipes list and add it to your wishlist. The app can look through this 
+list to `recommend` you certain meals for you to prepare.
 
-- View with: `wishlist`
-- Not included in `recommend`
+- Add a meal to wishlist: `select`
+- View wishlist: `wishlist`
+- Recommend a meal: `recommend`
+- Remove a meal from wishlist: `remove`
 
 ### 🧾 Inventory List
-This inventory list is where you store and remove the to-buy ingredients which may or may not be part of the meals in the wishlist.
+This inventory list is where you can view te ingredients that you currently own at home, helping you to know what meals
+you can prepare.
 
-- Add to inventory list using: `buy /ing ing1 (ing1_cost), ing2 (ing2_cost)`
-- View with: `inventory`
+- Add an ingredient to inventory: `buy`
+- View inventory: `inventory`
+- Consume an ingredient from inventory: `consume`
+
+The specific features and syntax are elaborated below.
 
 ## Features 
 
