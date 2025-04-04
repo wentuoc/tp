@@ -1,6 +1,5 @@
 package seedu.command;
 
-import seedu.checkers.BuyChecker;
 import seedu.checkers.ConsumeChecker;
 import seedu.exceptions.EZMealPlanException;
 import seedu.logic.MealManager;
@@ -33,7 +32,7 @@ public class ConsumeCommand extends Command {
     public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
 
         if (!checkValidUserInput()) {
-            logger.severe("Invalid buy command input detected.");
+            logger.severe("Invalid consume command input detected.");
             return;
         }
 
