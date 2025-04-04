@@ -21,7 +21,7 @@ import java.util.Scanner;
 public class Storage {
     static File wishListFile;
     static File recipesListFile;
-    static File inventoryFile;
+    static File inventoryListFile;
     private static final String WISH_LIST_FILE_PATH = "data/wishList.txt";
     private static final String RECIPES_LIST_FILE_PATH = "data/recipesList.txt";
     private static final String INVENTORY_LIST_FILE_PATH = "data/inventoryList.txt";
@@ -34,6 +34,10 @@ public class Storage {
         return recipesListFile;
     }
 
+    public static File getInventoryListFile() {
+        return inventoryListFile;
+    }
+
     public static String getWishListFilePath() {
         return WISH_LIST_FILE_PATH;
     }
@@ -42,13 +46,17 @@ public class Storage {
         return RECIPES_LIST_FILE_PATH;
     }
 
+    public static String getInventoryListFilePath() {
+        return INVENTORY_LIST_FILE_PATH;
+    }
+
     public static void createListFiles() throws IOException {
         wishListFile = new File(WISH_LIST_FILE_PATH);
         recipesListFile = new File(RECIPES_LIST_FILE_PATH);
-        inventoryFile = new File(INVENTORY_LIST_FILE_PATH);
+        inventoryListFile = new File(INVENTORY_LIST_FILE_PATH);
         createListFile(recipesListFile);
         createListFile(wishListFile);
-        createListFile(inventoryFile);
+        createListFile(inventoryListFile);
     }
 
     public static void createListFile(File listFile) throws IOException {
@@ -64,8 +72,8 @@ public class Storage {
 
     public static void loadExistingInventory(MealManager mealManager) throws FileNotFoundException {
         Inventory ingredients = mealManager.getInventory();
-        if (inventoryFile.exists()) {
-            Scanner scanner = new Scanner(inventoryFile);
+        if (inventoryListFile.exists()) {
+            Scanner scanner = new Scanner(inventoryListFile);
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine().trim();
                 if (line.isEmpty()) {
