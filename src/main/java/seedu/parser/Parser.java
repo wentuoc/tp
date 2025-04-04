@@ -17,6 +17,7 @@ import seedu.command.SelectCommand;
 import seedu.command.UnknownCommand;
 import seedu.command.ViewCommand;
 import seedu.command.WishlistCommand;
+import seedu.exceptions.EZMealPlanException;
 
 public class Parser {
     static String bye = "bye";
@@ -35,7 +36,7 @@ public class Parser {
     static String buy = "buy";
     static String inventory = "inventory";
 
-    public static Command parse(String userInput) {
+    public static Command parse(String userInput) throws EZMealPlanException {
         String lowerCaseUserInput = userInput.toLowerCase().trim();
         userInput = userInput.trim();
         if (lowerCaseUserInput.startsWith(bye)) {

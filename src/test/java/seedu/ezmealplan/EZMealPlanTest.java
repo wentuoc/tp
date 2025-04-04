@@ -14,6 +14,7 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import org.junit.jupiter.api.Test;
+import seedu.exceptions.EZMealPlanException;
 
 public class EZMealPlanTest {
     private static final Logger logger = Logger.getLogger(EZMealPlanTest.class.getName());
@@ -104,6 +105,8 @@ public class EZMealPlanTest {
             // Execute main program.
             int index = 0;
             EZMealPlan.main(new String[index]);
+        } catch (EZMealPlanException e) {
+            throw new RuntimeException(e);
         } finally {
             // Restore original streams.
             System.setIn(originalIn);

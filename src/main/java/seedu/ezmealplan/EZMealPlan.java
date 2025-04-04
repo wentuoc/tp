@@ -26,7 +26,7 @@ public class EZMealPlan {
     private static final UserInterface ui = new UserInterface();
     private static final MealManager mealManager = new MealManager();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws EZMealPlanException {
         String fileName = "EZMealPlan.log";
         setupLogger(fileName);
         checkConstructedLists(mealManager);
