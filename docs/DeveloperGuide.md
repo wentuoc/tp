@@ -448,7 +448,7 @@ public void createCommand_fail() {
 ##### 4.1 Design Overview
 
 ###### Function
-DeleteCommand is responsible for removing a specific meal from the main meal list and, if applicable, also removing the same meal from the user's wish list. It ensures consistency between related lists and provides user feedback via the UserInterface.
+DeleteCommand is responsible for removing a specific meal from the recipes list and, if applicable, also removing the same meal from the user's wishlist. It ensures consistency between related lists and provides user feedback via the UserInterface.
 
 ###### Design Goals
 

@@ -31,6 +31,34 @@ ingredients with their respective costs: `ingA ($1.00), ingB ($2.00) and ingC ($
 
 Refer to the [Features](https://ay2425s2-cs2113-f14-4.github.io/tp/UserGuide.html#features) below for details of each
 command.
+
+
+## 📋 Lists you will manage
+
+In EZMealPlan, there are three main lists you will interact with:
+
+### 🍽 Recipes List
+
+This is the primary list where all your meals are stored.
+Whenever you use the `create /mname mealName /ing ing1(ing1_cost), ing2(ing2_cost)` command, a new meal is added here.
+
+- View with: `recipes`
+- Delete from it: `delete INDEX`
+
+### ⭐ Wishlist
+
+This is a secondary list where you can add and remove the preferred meals you have chosen from the (filtered) recipes list using `select Index [filter method (optional)]` and `remove index` respectively.
+It's useful for suggesting meal recommendations and to-buy ingredients based on the `recommend` and `buy` commands respectively.
+
+- View with: `wishlist`
+- Not included in `recommend`
+
+### 🧾 Inventory List
+This inventory list is where you store and remove the to-buy ingredients which may or may not be part of the meals in the wishlist.
+
+- Add to inventory list using: `buy /ing ing1 (ing1_cost), ing2 (ing2_cost)`
+- View with: `inventory`
+
 ## Features 
 
 Notes about the command format:
