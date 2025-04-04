@@ -167,23 +167,6 @@ Let A, B and C be ingredients. Let Meal_No. be meal name.
 
 `create /mname Meal_1 /ing B(1), A(2)`
 
-### Exiting the application: `bye`
-
-This command saves the contents of the three lists on to disk and terminates the application gracefully.
-It prints a goodbye message to indicate that the session is closing.
-
-Syntax:
-```
-    bye
-```  
-Example code:
-```
-    bye
-```
-Sample output:
-
-![byeCommandWorkingSample.png](diagrams/byeCommandWorkingSample.png)
-
 ### Displaying the Recipes List: `recipes`
 
 This command prints the list of meals that is in the recipes list (i.e. the global list of meals).
@@ -200,104 +183,9 @@ Sample output:
 
 ![recipesCommandWorkingSample.png](diagrams/recipesCommandWorkingSample.png)
 
-### Displaying the Wishlist: `wishlist`
-
-This command prints the list of meals in the wishlist (i.e. the list of the user's favourite meals).
-
-Syntax:
-```
-    wishlist
-```
-Example code:
-```
-    wishlist
-```
-Sample output:
-
-![wishlistCommandWorkingSample.png](diagrams/wishlistCommandWorkingSample.png)
-
-### Displaying the Inventory: `inventory`
-
-This command prints the list of ingredients currently in the user's inventory (i.e. ingredients in the user's fridge 
-or kitchen)
-
-Syntax:
-```
-    inventory
-```
-Example code:
-```
-    inventory
-```
-Sample output:
-
-![inventoryCommandWorkingSample.png](diagrams/inventoryCommandWorkingSample.png)
-
-### Adding ingredients into the Inventory: `buy`
-
-This command allows the user to add ingredients into the inventory.
-
-Syntax:
-```
-    buy /ing INGRIDIENT_1_NAME (INGRIDIENT_1_PRICE)[, INGRIDIENT_2_NAME (INGREDIENT_2_PRICE), ...]
-```
-Example code:
-```
-    buy /ing Chicken(1),fish(1)
-```
-Sample output:
-
-![updateBuyCommandWorkingSample.png](diagrams/updateBuyCommandWorkingSample.png)
-
-### Removing ingredients from the Inventory: `consume`
-
-This command allows the user to remove ingredients from the inventory.
-
-Syntax:
-```
-    consume /ing INGRIDIENT_NAME
-```
-Example code:
-```
-    consume /ing fish
-```
-Sample output:
-
-![updatedConsumeCommandWorkingSample.png](diagrams/updatedConsumeCommandWorkingSample.png)
-
-### Clearing all meals from the Wishlist: `clear`
-
-This command allows the user to remove all the meals from the wishlist.
-
-Syntax:
-```
-    clear
-```
-Example code:
-```
-    clear
-```
-Sample output:
-
-![clearCommandWorkingSample.png](diagrams/clearCommandWorkingSample.png)
-
-### Adding a meal into to the Wishlist: `select`
-
-This command allows user to select a recipe from the Recipes list and add it to their Wishlist
-
-Syntax:
-```
-    select INDEX_NUMBER
-```
-Example code:
-```
-    select INDEX_NUMBER
-```
-Sample output:
-
 ### Filtering the Recipes List: `filter`
 
-This command allows the user to filter the Recipes List. The filter conditions can be either the meal's name, 
+This command allows the user to filter the Recipes List. The filter conditions can be either the meal's name,
 ingredients, or total cost. This is chosen via the `/mname`, `/ing` or `/mname` tags.
 
 Syntax:
@@ -316,25 +204,7 @@ Sample output:
 
 ![filterCommandWorkingSample.png](diagrams/filterCommandWorkingSample.png)
 
-### Viewing details about a meal: `view`
-
-This command allows the user to view the details of a meal (e.g. name, ingredients, cost breakdown) from the Recipes 
-List or Wishlist. This is chosen via the `/r` or `/w` tag.
-
-Syntax:
-```
-    view /r INDEX_NUMBER
-    view /w INDEX_NUMBER
-```
-Example code:
-```
-    view /r 1
-```
-Sample output:
-
-![UpdatedViewCommandWorkingSample.png](diagrams/UpdatedViewCommandWorkingSample.png)
-
-### Delete a meal from the Recipes List: `delete`
+### Deleting a meal from the Recipes List: `delete`
 
 This command allows the user to delete a meal from the Recipes List.
 
@@ -350,10 +220,58 @@ Sample output:
 
 ![deleteCommandWorkingSample.png](diagrams/deleteCommandWorkingSample.png)
 
-* If the user deletes a meal from the Recipes List that is also in their Wishlist, then the meal is removed from 
-  their Wishlist as well. 
+* If the user deletes a meal from the Recipes List that is also in their Wishlist, then the meal is removed from
+  their Wishlist as well.
 
-### Remove a meal from the Recipes List: `remove`
+### Viewing details about a meal: `view`
+
+This command allows the user to view the details of a meal (e.g. name, ingredients, cost breakdown) from the Recipes
+List or Wishlist. This is chosen via the `/r` or `/w` tag.
+
+Syntax:
+```
+    view /r INDEX_NUMBER
+    view /w INDEX_NUMBER
+```
+Example code:
+```
+    view /r 1
+```
+Sample output:
+
+![UpdatedViewCommandWorkingSample.png](diagrams/UpdatedViewCommandWorkingSample.png)
+
+### Adding a meal into to the Wishlist: `select`
+
+This command allows user to select a recipe from the Recipes list and add it to their Wishlist
+
+Syntax:
+```
+    select INDEX_NUMBER
+```
+Example code:
+```
+    select INDEX_NUMBER
+```
+Sample output:
+
+### Displaying the Wishlist: `wishlist`
+
+This command prints the list of meals in the wishlist (i.e. the list of the user's favourite meals).
+
+Syntax:
+```
+    wishlist
+```
+Example code:
+```
+    wishlist
+```
+Sample output:
+
+![wishlistCommandWorkingSample.png](diagrams/wishlistCommandWorkingSample.png)
+
+### Removing a meal from the Recipes List: `remove`
 
 This command allows user to remove a recipe from their Wishlist.
 
@@ -369,7 +287,72 @@ Sample output:
 
 ![removeCommandWorkingSample.png](diagrams/removeCommandWorkingSample.png)
 
-### Recommend a meal: `recommend`
+### Clearing all meals from the Wishlist: `clear`
+
+This command allows the user to remove all the meals from the wishlist.
+
+Syntax:
+```
+    clear
+```
+Example code:
+```
+    clear
+```
+Sample output:
+
+![clearCommandWorkingSample.png](diagrams/clearCommandWorkingSample.png)
+
+### Adding ingredients into the Inventory: `buy`
+
+This command allows the user to add ingredients into the inventory.
+
+Syntax:
+```
+    buy /ing INGRIDIENT_1_NAME (INGRIDIENT_1_PRICE)[, INGRIDIENT_2_NAME (INGREDIENT_2_PRICE), ...]
+```
+Example code:
+```
+    buy /ing Chicken(1),fish(1)
+```
+Sample output:
+
+![updateBuyCommandWorkingSample.png](diagrams/updateBuyCommandWorkingSample.png)
+
+### Displaying the Inventory: `inventory`
+
+This command prints the list of ingredients currently in the user's inventory (i.e. ingredients in the user's fridge 
+or kitchen)
+
+Syntax:
+```
+    inventory
+```
+Example code:
+```
+    inventory
+```
+Sample output:
+
+![inventoryCommandWorkingSample.png](diagrams/inventoryCommandWorkingSample.png)
+
+### Removing ingredients from the Inventory: `consume`
+
+This command allows the user to remove ingredients from the inventory.
+
+Syntax:
+```
+    consume /ing INGRIDIENT_NAME
+```
+Example code:
+```
+    consume /ing fish
+```
+Sample output:
+
+![updatedConsumeCommandWorkingSample.png](diagrams/updatedConsumeCommandWorkingSample.png)
+
+### Recommending a meal: `recommend`
 
 This command recommends the user with a meal containing the specified ingredient, for the user to prepare. It will 
 also display the missing ingredients that need to be bought.
@@ -389,8 +372,27 @@ Sample output:
 
 ![recommendCommandWorkingSample.png](diagrams/recommendCommandWorkingSample.png)
 
+### Exiting the application: `bye`
+
+This command saves the contents of the three lists on to disk and terminates the application gracefully.
+It prints a goodbye message to indicate that the session is closing.
+
+Syntax:
+```
+    bye
+```  
+Example code:
+```
+    bye
+```
+Sample output:
+
+![byeCommandWorkingSample.png](diagrams/byeCommandWorkingSample.png)
+
+
 ## Command Summary
 
+* Get help `help COMMAND_NAME`
 * Create meal: `create /mname MEAL_NAME /ing INGREDIENT1 (COST1)[, INGREDIENT2 (COST2), ...]`
 * View Recipe List: `recipes`
 * Filter Recipes List: `filter /mcost MEAL_COST` or `filter /ing INGREDIENT1[, INGREDIENT2, ...]` or `filter /mname 
@@ -405,5 +407,4 @@ MEAL_NAME`
 * View Inventory: `inventory`
 * Consume ingredient: `consume /ing INGREDIENT_NAME`
 * Get recommendation: `recommend /ing INGREDIENT_NAME`
-* Get help `help COMMAND_NAME`
 * Exit program `bye`
