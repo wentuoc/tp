@@ -95,7 +95,7 @@ public class RecommendCommand extends Command {
 
         // Determine which ingredients are missing from the inventory.
         List<String> missingIngredients = mealIngredients.stream()
-                .filter(ing -> !inventory.hasIngredient(ing.getName()))
+                .filter(ing -> !inventory.hasIngredient(ing.getName().toLowerCase()))
                 .map(Ingredient::getName)
                 .collect(Collectors.toList());
         if (missingIngredients.isEmpty()) {
