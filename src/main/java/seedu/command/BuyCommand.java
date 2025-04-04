@@ -1,34 +1,42 @@
 package seedu.command;
 
-import seedu.exceptions.InvalidPriceException;
-import seedu.logic.MealManager;
-import seedu.ui.UserInterface;
+import seedu.checkers.BuyChecker;
+import seedu.exceptions.EZMealPlanException;
 import seedu.food.Inventory;
 import seedu.food.Ingredient;
+import seedu.logic.MealManager;
+import seedu.ui.UserInterface;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class BuyCommand extends Command {
-    static final String BUY = "buy";
-    private static final List<Ingredient> ingredients = new ArrayList<>();
-
+    private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private static final String BUY = "buy";
+    private final List<Ingredient> ingredients = new ArrayList<>();
 
     public BuyCommand(String userInput) {
         this.validUserInput = userInput.trim();
+        this.lowerCaseInput = userInput.toLowerCase();
     }
 
     /**
-     * Executes the buy command by adding each specified ingredient into the inventory.
+     * Executes the buy command by validating the input, parsing the ingredients, and
+     * adding each specified ingredient into the inventory.
      *
      * @param mealManager the MealManager providing access to the inventory.
      * @param ui          the UserInterface for printing messages.
+     * @throws EZMealPlanException if the input format is invalid.
      */
     @Override
-    public void execute(MealManager mealManager, UserInterface ui) {
-        int afterBuyIndex = validUserInput.indexOf(BUY) + BUY.length();
-        String args = validUserInput.substring(afterBuyIndex).trim();
-        parseIngredientsForBuy(args);
+    public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
+        if (!checkValidUserInput()) {
+            logger.severe("Invalid buy command input detected.");
+            return;
+        }
+        parseIngredientsForBuy();
+
         Inventory inventory = mealManager.getInventory();
         for (Ingredient ingredient : ingredients) {
             // Add the ingredient (with name and price) into the inventory list.
@@ -38,47 +46,76 @@ public class BuyCommand extends Command {
         ingredients.clear();
     }
 
-    private static void parseIngredientsForBuy(String args) {
-        if (args.isEmpty()) {
-            return;
-        }
-        // Split using "/ing" as the delimiter.
-        String ing = "/ing";
-        int afterIngIndex = args.indexOf(ing) + ing.length();
-        String argsAfterIng = args.substring(afterIngIndex).trim();
-        String[] tokens = argsAfterIng.split(",");
-        for (String token : tokens) {
-            token = token.trim();
-            addValidToken(token);
-        }
-
+    /**
+     * Validates the user input using the BuyChecker.
+     *
+     * @return true if input is valid.
+     * @throws EZMealPlanException if any validation error occurs.
+     */
+    private boolean checkValidUserInput() throws EZMealPlanException {
+        BuyChecker checker = new BuyChecker(validUserInput);
+        checker.check();
+        return checker.isPassed();
     }
 
-    private static void addValidToken(String token) {
-        if (!token.isEmpty()) {
-            // Expected format: "Chicken (1.0)"
-            int openParenIndex = token.lastIndexOf('(');
-            int closeParenIndex = token.lastIndexOf(')');
-            int invalidIndex = -1;
-            if (openParenIndex != invalidIndex && closeParenIndex != invalidIndex &&
-                openParenIndex < closeParenIndex) {
-                int startIndex = 0;
-                int indexAdjustment = 1;
-                String name = token.substring(startIndex, openParenIndex).trim();
-                String priceStr = token.substring(openParenIndex + indexAdjustment, closeParenIndex).trim();
-                addExtractedToken(token, priceStr, name);
-            } else {
-                System.out.println("Invalid format for ingredient: " + token);
+    /**
+     * Parses the ingredients from the user input after the "buy" keyword.
+     */
+    private void parseIngredientsForBuy() {
+        int afterBuyIndex = validUserInput.indexOf(BUY) + BUY.length();
+        String args = validUserInput.substring(afterBuyIndex).trim();
+        if (!args.isEmpty()) {
+            parseIngredients(args);
+        }
+    }
+
+    /**
+     * Splits the input string to extract individual ingredient tokens.
+     *
+     * @param args the argument string containing ingredient information.
+     */
+    private void parseIngredients(String args) {
+        final String ingKeyword = "/ing";
+        int ingIndex = args.indexOf(ingKeyword);
+        if (ingIndex != -1) {
+            String ingredientsStr = args.substring(ingIndex + ingKeyword.length()).trim();
+            String[] tokens = ingredientsStr.split(",");
+            for (String token : tokens) {
+                token = token.trim();
+                processIngredientToken(token);
             }
         }
     }
 
-    private static void addExtractedToken(String token, String priceStr, String name) {
+    /**
+     * Processes a single ingredient token.
+     * Expected token format: "IngredientName (Price)"
+     *
+     * @param token the token to process.
+     */
+    private void processIngredientToken(String token) {
+        if (!token.isEmpty()) {
+            int openParenIndex = token.lastIndexOf('(');
+            int closeParenIndex = token.lastIndexOf(')');
+            String name = token.substring(0, openParenIndex).trim();
+            String priceStr = token.substring(openParenIndex + 1, closeParenIndex).trim();
+            addParsedIngredient(name, priceStr);
+        }
+    }
+
+    /**
+     * Converts the price string to a double and creates an Ingredient.
+     *
+     * @param name the ingredient name.
+     * @param priceStr the price string.
+     */
+    private void addParsedIngredient(String name, String priceStr) {
         try {
             double price = Double.parseDouble(priceStr);
-            ingredients.add(new Ingredient(name, price));
-        } catch (NumberFormatException | InvalidPriceException exception) {
-            System.out.println("Invalid price format for ingredient: " + token);
+            Ingredient ingredient = new Ingredient(name, price);
+            ingredients.add(ingredient);
+        } catch (NumberFormatException | EZMealPlanException e) {
+            logger.severe("Unexpected error while parsing ingredient: " + name);
         }
     }
 }

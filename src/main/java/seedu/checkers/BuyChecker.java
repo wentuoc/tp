@@ -69,7 +69,7 @@ public class BuyChecker extends Checker {
         String splitRegex = "\\s*,\\s*";
         String[] ingredientArray = ingredients.split(splitRegex);
 
-        String matchingRegex = "^([\\w\\s]+)\\s*\\(\\-?[0-9]{1,13}(\\.[0-9]+)?\\)$";
+        String matchingRegex = "^([\\w\\s]+)\\s*\\((\\-?[0-9]{1,13}(\\.[0-9]+)?)\\)$";
         Pattern ingredientPattern = Pattern.compile(matchingRegex);
         for (String ingredient : ingredientArray) {
             ingredient = ingredient.trim();

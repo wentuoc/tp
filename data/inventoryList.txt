@@ -3,3 +3,5 @@ fish | 1.0
 salt | 1.0
 beer | 2.0
 alcohol | 2.0
+a | 1.0
+ab | 1.2

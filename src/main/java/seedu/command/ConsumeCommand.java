@@ -42,7 +42,7 @@ public class ConsumeCommand extends Command {
         ingredients.clear();
     }
 
-    private static void parseIngredients(String args) {
+    static void parseIngredients(String args) {
         if (args.isEmpty()) {
             return;
         }
