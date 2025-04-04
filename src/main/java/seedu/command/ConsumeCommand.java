@@ -1,5 +1,7 @@
 package seedu.command;
 
+import seedu.checkers.ConsumeChecker;
+import seedu.exceptions.EZMealPlanException;
 import seedu.logic.MealManager;
 import seedu.ui.UserInterface;
 import seedu.food.Inventory;
@@ -8,8 +10,10 @@ import seedu.food.Inventory;
 import java.util.ArrayList;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ConsumeCommand extends Command {
+    private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private static final String CONSUME = "consume";
     private static final List<String> ingredients = new ArrayList<>();
 
@@ -25,7 +29,13 @@ public class ConsumeCommand extends Command {
      * @param ui          the UserInterface for printing messages.
      */
     @Override
-    public void execute(MealManager mealManager, UserInterface ui) {
+    public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
+
+        if (!checkValidUserInput()) {
+            logger.severe("Invalid consume command input detected.");
+            return;
+        }
+
         int afterConsumeIndex = validUserInput.indexOf(CONSUME) + CONSUME.length();
         String args = validUserInput.substring(afterConsumeIndex).trim();
         parseIngredients(args);
@@ -42,7 +52,7 @@ public class ConsumeCommand extends Command {
         ingredients.clear();
     }
 
-    private static void parseIngredients(String args) {
+    static void parseIngredients(String args) {
         if (args.isEmpty()) {
             return;
         }
@@ -58,6 +68,10 @@ public class ConsumeCommand extends Command {
             }
         }
     }
+
+    private boolean checkValidUserInput() throws EZMealPlanException {
+        ConsumeChecker checker = new ConsumeChecker(validUserInput);
+        checker.check();
+        return checker.isPassed();
+    }
 }
-
-

@@ -14,6 +14,7 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import org.junit.jupiter.api.Test;
+import seedu.exceptions.EZMealPlanException;
 
 public class EZMealPlanTest {
     private static final Logger logger = Logger.getLogger(EZMealPlanTest.class.getName());
@@ -84,7 +85,7 @@ public class EZMealPlanTest {
                 "delete 98",
                 "buy /ing ingredient1 (1.0)",
                 "consume /ing ingredient2",
-                "recommend",
+                "recommend /ing ingredient1",
                 "bye"
         ) + System.lineSeparator();
         logger.fine("Simulated input: " + simulatedInput);
@@ -104,6 +105,8 @@ public class EZMealPlanTest {
             // Execute main program.
             int index = 0;
             EZMealPlan.main(new String[index]);
+        } catch (EZMealPlanException e) {
+            throw new RuntimeException(e);
         } finally {
             // Restore original streams.
             System.setIn(originalIn);
@@ -175,7 +178,7 @@ public class EZMealPlanTest {
                 "Consume command should confirm that the ingredient was consumed.");
 
         // 13. Verify "recommend" command output.
-        assertTrue(output.contains("recommend") || output.contains("shortfall"),
+        assertTrue(output.contains("recommended meal") || output.contains("no meal"),
                 "Recommend command should output " +
                         "recommendations and indicate ingredient shortfall if any.");
 
