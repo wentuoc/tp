@@ -85,7 +85,7 @@ public class EZMealPlanTest {
                 "delete 98",
                 "buy /ing ingredient1 (1.0)",
                 "consume /ing ingredient2",
-                "recommend",
+                "recommend /ing ingredient1",
                 "bye"
         ) + System.lineSeparator();
         logger.fine("Simulated input: " + simulatedInput);
@@ -178,7 +178,7 @@ public class EZMealPlanTest {
                 "Consume command should confirm that the ingredient was consumed.");
 
         // 13. Verify "recommend" command output.
-        assertTrue(output.contains("recommend") || output.contains("shortfall"),
+        assertTrue(output.contains("recommended meal") || output.contains("no meal"),
                 "Recommend command should output " +
                         "recommendations and indicate ingredient shortfall if any.");
 
