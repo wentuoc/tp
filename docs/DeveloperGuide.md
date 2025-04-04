@@ -225,7 +225,7 @@ SelectCommand allows the user to select a recipe from the filtered list (obtaine
     - By isolating the selection logic from other commands, it becomes easier to maintain and extend without affecting other parts of the system.
 
 - **Testability:**
-    - The design supports unit testing by using a test-specific UserInterface subclass to capture the output, allowing us to verify that the correct recipe is added to the wish list and the appropriate confirmation message is displayed.
+    - The design supports unit testing by using a test-specific ByeCommandTest to check for the matching
 
 ##### 3.2 Implementation Details
 
@@ -310,7 +310,113 @@ public void selectCommand_fail() {
     logger.info("selectCommand_fail() passed");
 }
 ```
+#### 4. ByeCommand
 
+##### 4.1 Design Overview
+
+###### Function
+ByeCommand saves the meals from recipesList and wishList into "recipesList.txt" and "wishList.txt" as well as the ingredients from inventory into "inventory.txt" before exiting the program.
+
+###### Design Goals
+- **Single Responsibility:**
+  - ByeCommand is solely responsible for saving the meals and ingredients into the respective .txt files before shutting down.
+
+- **Decoupling:**
+  - By isolating the selection logic from other commands, it becomes easier to maintain and extend without affecting other parts of the system.
+
+- **Testability:**
+  - The design supports unit testing by using a test-specific class to 
+
+##### 4.2 Implementation Details
+
+###### Component Level: ByeCommand Class
+- Implements the execute(MealManager mealManager, UserInterface ui) method.
+- Uses logging to indicate execution and to record any input validation issues.
+- Interacts with the MealManager and the Inventory class to retrieve the recipesList, wishList and ingredients respectively.
+- Interacts with the Storage Class to write the meals from both recipesList and wishList and to write the ingredients from inventory list into the .txt files recipesList.txt, wishList.txt and inventory.txt respectively. 
+- User interface prints goodbye message before it outputs the isExit = `true` to break out of the `while` loop for EZMealPlan.
+###### Code Example
+```java
+   @Override
+public void execute(MealManager mealManager, UserInterface ui) {
+  updateRecipesListFile(mealManager,ui);
+  updateWishListFile(mealManager, ui);
+  updateInventoryFile(mealManager, ui);
+  ui.printGoodbye();
+}
+```
+
+##### 3.3 Sequence Diagram
+
+![ByeCommand.puml](puml/ByeCommand.puml)
+![UpdateRecipesListFile.puml](puml/UpdateRecipesListFile.puml)
+
+##### 3.4 Unit Testing
+```java
+@Test
+public void byeCommandTest_success() {
+  logger.fine("running byeCommandTest_success()");
+  try {
+    Storage.createListFiles();
+    List<Meal> mealsList = Storage.loadPresetMeals();
+    Storage.loadExistingInventory(mealManager);
+    List<Meal> expectedRecipesList = getExpectedRecipesList(mealsList);
+    List<Meal> expectedWishList = getExpectedWishList(mealsList);
+    List<Ingredient> expectedInventoryList = getExpectedInventoryList();
+    List<File> latestFiles = saveLatestLists();
+    expectedGoodByeMessage_success();
+    compareFileAndExpectedLists_success(expectedRecipesList, expectedWishList,
+            expectedInventoryList,latestFiles);
+    logger.info("byeCommandTest_success() passed");
+  } catch (Exception exception) {
+    ui.printErrorMessage(exception);
+    logger.severe("byeCommandTest_success() should not fail");
+    fail();
+  }
+}
+```
+###### Testing Approach
+- Tests are divided into success and failure scenarios using separate test methods
+- A custom logger is set up to track test execution with both console and file handlers
+- For successful selection tests:
+  - Tests run on both empty and populated meal lists
+  - Multiple selection command formats are tested (/mname, /ing, /mcost)
+- For failure scenarios, tests verify appropriate exceptions are thrown for:
+  - Invalid index formats (non-numeric values)
+  - Out-of-range indices (negative, zero, or beyond list size)
+  - Invalid price formats and negative prices
+  - Duplicate meal selections (attempting to add the same meal twice)
+- The test utilizes preset meals loaded from Storage to populate the meal list
+- Each test verifies expected exception messages match actual exception messages
+-
+###### Unit Test Code
+```java
+@Test
+public void selectCommand_success() {
+    mealManager.getRecipesList().getList().clear();
+    mealManager.getWishList().getList().clear();
+    logger.fine("running selectCommand_success()");
+    String[] validSelectCommands = {"select 2 /mname a", "select 1 /ing b,c", "select 2 /mcost 2"
+            , "select 4 /mname Mname", "select 2 /ing Ing", "select 1 /mcost 5"};
+    runValidSelectCommands(validSelectCommands);
+    addMeals();
+    runValidSelectCommands(validSelectCommands);
+    logger.info("selectCommand_success() passed");
+}
+
+@Test
+public void selectCommand_fail() {
+    logger.fine("running selectCommand_fail()");
+    mealManager.getRecipesList().getList().clear();
+    mealManager.getWishList().getList().clear();
+    addMeals();
+    checkInvalidPrice();
+    checkSelectDuplicateMeal();
+    checkInvalidSelectIndex();
+    checkIndexOutOfRange();
+    logger.info("selectCommand_fail() passed");
+}
+```
 ## Implementation
 
 
