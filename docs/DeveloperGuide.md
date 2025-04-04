@@ -29,6 +29,7 @@ EZMealPlan follows a modular and object-oriented design centered around a comman
 - All user inputs are case-sensitive and normalised to lowercase.
 
 ![BootingUpEZMealPlan.png](diagrams/BootingUpEZMealPlan.png)
+
 This sequence diagram shows the processes that EZMealPlan system has to undergo while it is being booted up before it is ready for usage.
 
 ![ConstructingMainMeals.png](diagrams/ConstructingMainMeals.png)
@@ -65,12 +66,12 @@ The primary objective of these commands is to ensure a clear separation of conce
 ##### 1.1 Design Overview
 
 ###### Function
-MealCommand is responsible for fetching the user meals from the MealManager and displaying them via the UserInterface.
+RecipesCommand is responsible for fetching the recipes list from the MealManager and displaying them via the UserInterface.
 
 ###### Design Goals
 
 **Single Responsibility:**
-- RecipesCommand only deals with retrieving the user-selected meal list and forwarding it to the UI.
+- RecipesCommand only deals with retrieving the recipes list and forwarding it to the UI.
 
 **Decoupling:**
 - By isolating the command logic from both the UI and data management, future changes in either will have minimal impact.
@@ -85,8 +86,8 @@ MealCommand is responsible for fetching the user meals from the MealManager and 
 - Inherits from the abstract Command class
 - Implements the `execute(MealManager mealManager, UserInterface ui)` method
 - Uses logging (via `logger.fine`) to trace execution
-- Retrieves the user meal list using `mealManager.getUserMeals().getList()`
-- Passes the list to the UI's `printMealList` method with the label "user chosen meals"
+- Retrieves the recipes list using `mealManager.getRecipesList().getList()`
+- Passes the list to the UI's `printMealList` method with the recipesListName: "recipesList"
 
 ###### Code Example
 ```java
@@ -107,7 +108,7 @@ public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlan
 
 ###### Testing Approach
 - A test-specific subclass of UserInterface (named TestUserInterface) is defined to capture the parameters passed to the `printMealList` method
-- The unit test populates the MealManager's user meals list with sample meals
+- The unit test populates the MealManager's recipes list with sample meals
 - Executes RecipesCommand
 - Asserts that the UI received the expected label and list of meals
 
@@ -140,7 +141,7 @@ public void testExecute_recipesCommand_printsRecipesList() throws EZMealPlanExce
 ##### 2.1 Design Overview
 
 ###### Function
-WishlistCommand fetches the main meal list from the MealManager and instructs the UI to display it.
+WishlistCommand fetches the wishlist from the MealManager and instructs the UI to display it.
 
 ###### Design Goals
 
@@ -160,8 +161,8 @@ WishlistCommand fetches the main meal list from the MealManager and instructs th
 - Inherits from the abstract Command class
 - Implements the `execute(MealManager mealManager, UserInterface ui)` method
 - Uses logging to indicate execution
-- Retrieves the main meal list using `mealManager.getMainMeals().getList()`
-- Calls `ui.printMealList` with the label "main list"
+- Retrieves the wishlist using `mealManager.getWishList().getList()`
+- Calls `ui.printMealList` with the wishListName: "wishlist"
 
 ###### Code Example
 ```java
@@ -182,7 +183,7 @@ public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlan
 
 ###### Testing Approach
 - Uses a test-specific TestUserInterface subclass to capture the output of `printMealList`
-- Sets up the main meal list in the MealManager
+- Sets up the user wishlist in the MealManager
 - Executes WishlistCommand
 - Verifies that the UI output matches the expected label and meal list
 
@@ -231,7 +232,7 @@ SelectCommand allows the user to select a recipe from the filtered list (obtaine
 
 ###### Component Level: SelectCommand Class
 - Inherits from the abstract FilterSelectCommand class.
-- Implements the execute(MealManager mealManager, UserInterface ui) method.
+- Implements the `execute(MealManager mealManager, UserInterface ui)` method.
 - Uses logging to indicate execution and to record any input validation issues.
 - Validates the user input index using helper methods (getIndexSubstring, checkValidParse, and checkValidInputIndex).
 - Retrieves the filtered meal list via the inherited method getFilteredMealList(mealManager).
@@ -330,7 +331,7 @@ ByeCommand saves the meals from recipesList and wishList into "recipesList.txt" 
 ##### 4.2 Implementation Details
 
 ###### Component Level: ByeCommand Class
-- Implements the execute(MealManager mealManager, UserInterface ui) method.
+- Implements the `execute(MealManager mealManager, UserInterface ui)` method.
 - Uses logging to indicate execution and to record any input validation issues.
 - Interacts with the MealManager and the Inventory class to retrieve the recipesList, wishList and ingredients respectively.
 - Interacts with the Storage Class to write the meals from both recipesList and wishList and to write the ingredients from inventory list into the .txt files recipesList.txt, wishList.txt and inventory.txt respectively. 
@@ -346,77 +347,76 @@ public void execute(MealManager mealManager, UserInterface ui) {
 }
 ```
 
-##### 3.3 Sequence Diagram
+##### 4.3 Sequence Diagram
+This sequence diagram illustrates the general flow of the ByeCommand process and the interactions between the ByeCommand class
+and other relevant classes.
+![ByeCommand.png](diagrams/ByeCommand.png)
 
-![ByeCommand.puml](puml/ByeCommand.puml)
-![UpdateRecipesListFile.puml](puml/UpdateRecipesListFile.puml)
+This sequence diagram illustrates the process of updating the recipes list file based on the current meals that are available in the recipes list.
 
-##### 3.4 Unit Testing
+![UpdateRecipesListFile.png](diagrams/UpdateRecipesListFile.png)
+
+The general flow of updating the wishlist file (`updateWishListFile(mealManager, ui)`) and inventory file (`updateInventoryListFile(mealManager,ui)`) are similar to the flow of updating the recipes file with the only difference being the recipes list file and wishlist file store meals
+whereas the inventory file store ingredients. A code snippet is shown below to address the similarity and difference:
+
 ```java
-@Test
-public void byeCommandTest_success() {
-  logger.fine("running byeCommandTest_success()");
-  try {
-    Storage.createListFiles();
-    List<Meal> mealsList = Storage.loadPresetMeals();
-    Storage.loadExistingInventory(mealManager);
-    List<Meal> expectedRecipesList = getExpectedRecipesList(mealsList);
-    List<Meal> expectedWishList = getExpectedWishList(mealsList);
-    List<Ingredient> expectedInventoryList = getExpectedInventoryList();
-    List<File> latestFiles = saveLatestLists();
-    expectedGoodByeMessage_success();
-    compareFileAndExpectedLists_success(expectedRecipesList, expectedWishList,
-            expectedInventoryList,latestFiles);
-    logger.info("byeCommandTest_success() passed");
-  } catch (Exception exception) {
-    ui.printErrorMessage(exception);
-    logger.severe("byeCommandTest_success() should not fail");
-    fail();
-  }
+private void updateWishListFile(MealManager mealManager, UserInterface ui) {
+    List<Meal> wishList = mealManager.getWishList().getList();
+    String wishListFilePath = Storage.getWishListFilePath();
+    clearAndUpdateFile(wishList, wishListFilePath, ui);
+}
+
+private void updateRecipesListFile(MealManager mealManager, UserInterface ui) {
+    List<Meal> recipesList = mealManager.getRecipesList().getList();
+    String recipesListFilePath = Storage.getRecipesListFilePath();
+    clearAndUpdateFile(recipesList, recipesListFilePath, ui);
+}
+
+private void updateInventoryListFile(MealManager mealManager, UserInterface ui) {
+    // Retrieve the list of ingredients from the inventory.
+    List<Ingredient> ingredientList = mealManager.getInventory().getIngredients();
+    // Get the file path for the inventory list.
+    String inventoryListFilePath = Storage.getInventoryListFilePath();
+    // Clear the existing file and write the new list.
+    clearAndUpdateFileForIngredients(ingredientList, inventoryListFilePath,ui);
 }
 ```
+
+##### 4.4 Unit Testing
+
 ###### Testing Approach
-- Tests are divided into success and failure scenarios using separate test methods
+- Tests are divided into 2 parts for the success run.
 - A custom logger is set up to track test execution with both console and file handlers
-- For successful selection tests:
-  - Tests run on both empty and populated meal lists
-  - Multiple selection command formats are tested (/mname, /ing, /mcost)
-- For failure scenarios, tests verify appropriate exceptions are thrown for:
-  - Invalid index formats (non-numeric values)
-  - Out-of-range indices (negative, zero, or beyond list size)
-  - Invalid price formats and negative prices
-  - Duplicate meal selections (attempting to add the same meal twice)
-- The test utilizes preset meals loaded from Storage to populate the meal list
-- Each test verifies expected exception messages match actual exception messages
--
+- As the ByeCommandTest will overwrite the recipesList.txt, wishList.txt and inventoryList.txt files, the files contents will be transferred over into temporary files before the actual checks take place.
+- The first check is ensuring that the goodbye message is being printed when the program exits.
+- The second check is to compare whether the file contents match the meals/ingredients present in the lists as expected. If both sides have a complete match, it indicates that the ByeCommand works fine and the meals/ingredients are properly saved into the files.
+- Once both checks are completed, the files contents will be transferred back into the recipesList.txt, wishList.txt and inventoryList.txt from the temporary files.
+
 ###### Unit Test Code
 ```java
-@Test
-public void selectCommand_success() {
-    mealManager.getRecipesList().getList().clear();
-    mealManager.getWishList().getList().clear();
-    logger.fine("running selectCommand_success()");
-    String[] validSelectCommands = {"select 2 /mname a", "select 1 /ing b,c", "select 2 /mcost 2"
-            , "select 4 /mname Mname", "select 2 /ing Ing", "select 1 /mcost 5"};
-    runValidSelectCommands(validSelectCommands);
-    addMeals();
-    runValidSelectCommands(validSelectCommands);
-    logger.info("selectCommand_success() passed");
-}
-
-@Test
-public void selectCommand_fail() {
-    logger.fine("running selectCommand_fail()");
-    mealManager.getRecipesList().getList().clear();
-    mealManager.getWishList().getList().clear();
-    addMeals();
-    checkInvalidPrice();
-    checkSelectDuplicateMeal();
-    checkInvalidSelectIndex();
-    checkIndexOutOfRange();
-    logger.info("selectCommand_fail() passed");
+  @Test
+public void byeCommandTest_success() {
+    logger.fine("running byeCommandTest_success()");
+    try {
+        Storage.createListFiles();
+        List<Meal> mealsList = Storage.loadPresetMeals();
+        Storage.loadExistingInventory(mealManager);
+        List<Meal> expectedRecipesList = getExpectedRecipesList(mealsList);
+        List<Meal> expectedWishList = getExpectedWishList(mealsList);
+        List<Ingredient> expectedInventoryList = getExpectedInventoryList();
+        List<File> latestFiles = saveLatestLists();
+        expectedGoodByeMessage_success();
+        compareFileAndExpectedLists_success(expectedRecipesList, expectedWishList,
+                expectedInventoryList,latestFiles);
+        logger.info("byeCommandTest_success() passed");
+    } catch (Exception exception) {
+        ui.printErrorMessage(exception);
+        logger.severe("byeCommandTest_success() should not fail");
+        fail();
+    }
 }
 ```
+
 ## Implementation
 
 
