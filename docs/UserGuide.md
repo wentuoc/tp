@@ -243,17 +243,33 @@ Sample output:
 
 ### Adding a meal into to the Wishlist: `select`
 
-This command allows user to select a recipe from the Recipes list and add it to their Wishlist
+This command allows user to select a recipe from the Recipes list and add it to their Wishlist. This command has 
+two modes: 
+* **Normal mode**: Select by a meal's index in the Recipes List.
+  * This is done using `select INDEX_NUMBER`
+* **Filtered mode**: Select by a meal's index as it appears in a filtered section of the Recipes List.
+  * This is done by inserting the filter condition tag (`/mname`, `/ing`, or `/mcost`), e.g. `select INDEX_NUMBER 
+    /ing INGREDIENT_1_NAME[, INGREDIENT_2_NAME, ...]`.
+  * For example, `select 1 /ing Chicken` means to filter Recipes List by all meals with the Chicken ingredient, and 
+    then selecting the first meal.
 
 Syntax:
 ```
     select INDEX_NUMBER
+    select INDEX_NUMBER /mname MEAL_NAME
+    select INDEX_NUMBER /ing INGREDIENT_1_NAME[, INGREDIENT_2_NAME, ...]
+    select INDEX_NUMBER /mcost MEAL_COST
 ```
 Example code:
 ```
-    select INDEX_NUMBER
+    select 20
+    select 1 /ing Chicken
 ```
 Sample output:
+
+![selectCommandWorkingSample.png](diagrams/selectCommandWorkingSample.png)
+
+* To view the filter section before selecting, use the `filter` command with the same filtering conditions.
 
 ### Displaying the Wishlist: `wishlist`
 
