@@ -1,6 +1,5 @@
 package seedu.command;
 
-import seedu.checkers.BuyChecker;
 import seedu.checkers.ConsumeChecker;
 import seedu.exceptions.EZMealPlanException;
 import seedu.logic.MealManager;
