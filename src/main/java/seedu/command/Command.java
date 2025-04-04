@@ -5,7 +5,7 @@ import seedu.logic.MealManager;
 import seedu.ui.UserInterface;
 
 public abstract class Command {
-    protected String validUserInput;
+    protected static String validUserInput;
     protected String lowerCaseInput;
 
     public boolean isExit() {
