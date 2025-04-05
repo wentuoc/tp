@@ -188,25 +188,27 @@ Sample output:
 
 ### Filtering the Recipes List: `filter`
 
-This command allows the user to filter the Recipes List. The filter conditions can be either the meal's name, ingredients, or total cost. This is chosen via the `/mname`, `/ing` or `/mname` tags.
+This command allows the user to filter the Recipes List. The filter conditions can be either the meal's name, ingredients, or total cost. This is chosen via the `/mname`, `/ing` or `/mname` tags. To filter with more than 1 ingredient using `/ing`, `,` is needed to separate each ingredient.
 
 **Take Note:**
 The filter conditions for the meal's name/ingredient(s) find the meals with the respective meal's name/ingredient(s) that **CONTAINS ALL user input(s)** regardless of:
 1. the casing (<ins>for</ins> `/mname` <ins>and</ins> `/ing` <ins>filtering methods</ins>)
 2. the number of duplicate inputs (<ins>for</ins> `/ing` <ins>filtering method only</ins>)
 3. the input sequence (<ins>for</ins> `/ing` <ins>filtering method only</ins>).
+4. whether the input(s) matches exactly to the meal name or ingredient name(s)
 
 Example:
-```filter /mname rice``` &rarr; outputs all meals with meal names that have the word `rice` regardless of the casing.
+```filter /mname burger``` &rarr; outputs all meals with meal names that have the word `burger` such as `hamburger`, `deluxe BuRGer`, `mini-burger` etc.  
 
 ```filter /ing chicken, chicken``` &rarr; outputs all meals that have the word `chicken` appearing in at least 1 of the ingredients 
 
-```filter /ing chicken, b``` &rarr; outputs all meals which have the words `chicken` **and** `b` <ins>appearing at least **ONCE** in the same or different ingredients</ins> regardless of the ingredients input sequence and casing.
+```filter /ing chicken, b``` &rarr; outputs all meals which have the words `chicken` **and** `b` <ins>appearing **at least ONCE** in the same or different ingredients</ins> regardless of the ingredients input sequence and casing.
 
 Examples:
-* Meals that contain `chicken breast` and other ingredients that does not have `chicken` and `b` in their names.
-* Meals that contain `ChicKEN`, `pork rIBs` and other ingredients that does not have `chicken` and `b` in their names.
-* Other possible ingredients: `bLAck CHICKEN`, `BBQ chicken`, `de-Boned chicken` etc. 
+* Meals that contain `chicken breast` with/without other ingredient(s) that have/does not have `chicken` and `b` in their names.
+* Meals that contain `ChicKEN`, `pork rIBs` with/without other ingredients that have/does not have `chicken` and `b` in their names.
+* Meals that contain `BIGMcChicken` with/without other ingredients that have/does not have `chicken` and `b` in their names.
+* ETC. 
 
 General Syntax:
 ```
