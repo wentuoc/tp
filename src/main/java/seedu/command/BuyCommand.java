@@ -17,7 +17,7 @@ public class BuyCommand extends Command {
     private final List<Ingredient> ingredients = new ArrayList<>();
 
     public BuyCommand(String userInput) {
-        this.validUserInput = userInput.trim();
+        validUserInput = userInput.trim();
         this.lowerCaseInput = userInput.toLowerCase();
     }
 
