@@ -131,6 +131,9 @@ public class MealManager {
         List<Meal> recipesList = this.recipesList.getList();
         List<Meal> wishList = this.wishList.getList();
         List<Meal> wishListCopy = new ArrayList<>(wishList);
+        if(wishList.isEmpty()){
+            return;
+        }
         for (Meal meal : wishListCopy) {
             if (!recipesList.contains(meal)) {
                 wishList.remove(meal);
