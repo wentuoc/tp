@@ -20,7 +20,7 @@ to run the application. The app will contain some preset meals.
 
 `recipes` : Lists all meals from the recipes list.
 
-`create /mname meal test /ing ingA(1), ingB(2), ingC(3)` : Creates a meal called `meal test` with the following 
+`create /mname meal test /ing ingA (1.00), ingB (2.00), ingC (3.00)` : Creates a meal called `meal test` with the following 
 ingredients with their respective costs: `ingA ($1.00), ingB ($2.00) and ingC ($3.00)`
 
 `remove 3` : Removes the 3rd meal shown in the user's wishlist.
@@ -115,11 +115,11 @@ This command creates a new meal with the relevant ingredients and adds the meal 
 
 Syntax:
 ```
-    create /mname MEAL_NAME /ing INGREDIENT_1_NAME (INGREDIENT_1_COST)[, INGREDIENT_2_NAME (INGREDIENT_2_COST), ...]
+    create /mname MEAL_NAME /ing INGREDIENT_1_NAME(INGREDIENT_1_COST)[, INGREDIENT_2_NAME(INGREDIENT_2_COST), ...]
 ```  
 Example code:
 ```
-    create /mname A_test_Meal /ing A(1.5), B(1.5)
+    create /mname A_test_Meal /ing A(1.50), B(1.50)
 ```
 Sample Output
 
@@ -188,7 +188,10 @@ Sample output:
 
 ### Filtering the Recipes List: `filter`
 
-This command allows the user to filter the Recipes List. The filter conditions can be either the meal's name, ingredients, or total cost. This is chosen via the `/mname`, `/ing` or `/mname` tags. To filter with more than 1 ingredient using `/ing`, `,` is needed to separate each ingredient.
+This command allows the user to filter the Recipes List. The filter conditions can be either the meal's name, ingredients, or total cost. This is chosen via the `/mname`, `/ing` or `/mname` tags. 
+* To filter with more than 1 ingredient using `/ing`, `,` is needed to separate each ingredient. 
+* The input price for the meal cost `/mcost` **MUST BE IN 2 DECIMAL PLACES** and can only **range from `0.00` to `DOUBLE.MAX_VALUE` (both inclusive)**. Example: `0.00`, `1.00`, `0.50`, `10.05`
+
 
 **Take Note:**
 The filter conditions for the meal's name/ingredient(s) find the meals with the respective meal's name/ingredient(s) that **CONTAINS ALL user input(s)** regardless of:
@@ -271,8 +274,9 @@ two modes:
 * **Filtered mode**: Select by a meal's index as it appears in a filtered section of the Recipes List.
   * This is done by inserting the filter condition tag (`/mname`, `/ing`, or `/mcost`), e.g. `select INDEX_NUMBER 
     /ing INGREDIENT_1_NAME[, INGREDIENT_2_NAME, ...]`.
-  * For example, `select 1 /ing Chicken` means to filter Recipes List by all meals with the Chicken ingredient, and 
-    then selecting the first meal.
+  * To filter with more than 1 ingredient using `/ing`, `,` is needed to separate each ingredient.
+  * The input price for the meal cost `/mcost` **MUST BE IN 2 DECIMAL PLACES** and can only **range from `0.00` to `DOUBLE.MAX_VALUE` (both inclusive)**. Example: `0.00`, `1.00`, `0.50`, `10.05`
+  * For example, `select 1 /ing Chicken` means to filter out all the meals with at least 1 ingredient that has the word `Chicken` regardless of the casing from the Recipes List, and then selecting the first meal from the filtered list.
 
 The filtered mode has the same user input format conditions as the `filter` command simply by replacing `filter` with `select INDEX_NUMBER`. Refer to the **Take Note** section of the [filter](https://ay2425s2-cs2113-f14-4.github.io/tp/UserGuide.html#filtering-the-recipes-list-filter) command for more information.
 
@@ -345,14 +349,16 @@ Sample output:
 ### Adding ingredients into the Inventory: `buy`
 
 This command allows the user to add ingredients into the inventory.
-
+* To buy more than 1 ingredient, `,` is needed to separate each ingredient.
+  The input price for the ingredients **MUST BE IN 2 DECIMAL PLACES**. Example: `0.00`, `1.00`, `0.50`, `10.05`
+* The price of every ingredient can only **range from `0.00` to `DOUBLE.MAX_VALUE` (both inclusive)**. 
 Syntax:
 ```
-    buy /ing INGRIDIENT_1_NAME (INGRIDIENT_1_PRICE)[, INGRIDIENT_2_NAME (INGREDIENT_2_PRICE), ...]
+    buy /ing INGRIDIENT_1_NAME(INGRIDIENT_1_PRICE)[, INGRIDIENT_2_NAME(INGREDIENT_2_PRICE), ...]
 ```
 Example code:
 ```
-    buy /ing Chicken(1),fish(1)
+    buy /ing Chicken(1.00), fish(1.00)
 ```
 Sample output:
 
@@ -378,8 +384,9 @@ Sample output:
 ### Removing ingredients from the Inventory: `consume`
 
 This command allows the user to remove ingredients from the inventory.
+* To consume more than 1 ingredient, `,` is needed to separate each ingredient. 
 
-Syntax:
+   Syntax:
 ```
     consume /ing INGREDIENT_NAME
 ```
@@ -432,7 +439,7 @@ Sample output:
 ## Command Summary
 
 * Get help `help COMMAND_NAME`
-* Create meal: `create /mname MEAL_NAME /ing INGREDIENT1 (COST1)[, INGREDIENT2 (COST2), ...]`
+* Create meal: `create /mname MEAL_NAME /ing INGREDIENT1(COST1)[, INGREDIENT2(COST2), ...]`
 * View Recipe List: `recipes`
 * Filter Recipes List: `filter /mcost MEAL_COST` or `filter /ing INGREDIENT1[, INGREDIENT2, ...]` or `filter /mname 
 MEAL_NAME`
@@ -442,7 +449,7 @@ MEAL_NAME`
 * View Wishlist: `wishlist`
 * Remove from Wishlist: `remove INDEX`
 * Clear Wishlist: `clear`
-* Buy ingredient: `buy /ing INGREDIENT_1_NAME (INGREDIENT_1_COST)[, INGREDIENT_2_NAME (INGREDIENT_2_COST), ...]`
+* Buy ingredient: `buy /ing INGREDIENT_1_NAME(INGREDIENT_1_COST)[, INGREDIENT_2_NAME(INGREDIENT_2_COST), ...]`
 * View Inventory: `inventory`
 * Consume ingredient: `consume /ing INGREDIENT_NAME`
 * Get recommendation: `recommend /ing INGREDIENT_NAME`
