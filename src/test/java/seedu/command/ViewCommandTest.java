@@ -17,7 +17,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import seedu.exceptions.EZMealPlanException;
-import seedu.exceptions.ViewEmptyListException;
+import seedu.exceptions.EmptyListException;
 import seedu.exceptions.ViewIndexOutOfRangeException;
 import seedu.food.Ingredient;
 import seedu.food.Meal;
@@ -111,7 +111,7 @@ public class ViewCommandTest {
         MealManager mealManager = new MealManager();
         TestUserInterface testUI = new TestUserInterface();
         ViewCommand command = new ViewCommand("view /r 1");
-        assertThrows(ViewEmptyListException.class, () -> command.execute(mealManager, testUI));
+        assertThrows(EmptyListException.class, () -> command.execute(mealManager, testUI));
 
         logger.info("testExecute_viewRecipesMeal_emptyList passed");
     }
@@ -122,7 +122,7 @@ public class ViewCommandTest {
         MealManager mealManager = new MealManager();
         TestUserInterface testUI = new TestUserInterface();
         ViewCommand command = new ViewCommand("view /w 5");
-        assertThrows(ViewEmptyListException.class, () -> command.execute(mealManager, testUI));
+        assertThrows(EmptyListException.class, () -> command.execute(mealManager, testUI));
 
         logger.info("testExecute_viewWishlistMeal_emptyList passed");
     }
