@@ -20,7 +20,7 @@ to run the application. The app will contain some preset meals.
 
 `recipes` : Lists all meals from the recipes list.
 
-`create /mname meal test /ing ingA (1.00), ingB (2.00), ingC (3.00)` : Creates a meal called `meal test` with the following 
+`create /mname meal test /ing ingA(1.00), ingB(2.00), ingC(3.00)` : Creates a meal called `meal test` with the following 
 ingredients with their respective costs: `ingA ($1.00), ingB ($2.00) and ingC ($3.00)`
 
 `remove 3` : Removes the 3rd meal shown in the user's wishlist.
