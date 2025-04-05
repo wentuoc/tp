@@ -152,7 +152,7 @@ public class IngredientTest {
     public void setPrice_invalidPriceFormat() {
         logger.fine("Running setPrice_invalidPriceFormat()");
         String ingredientName = "salt";
-        String[] invalidIngredientPrices = {"1.005", ".01", "1", ".", "1.2"};
+        String[] invalidIngredientPrices = {"1.005", ".01", "1", ".", "1.2", ".1"};
         for( String invalidIngredientPrice : invalidIngredientPrices ) {
             try{
                 new Ingredient(ingredientName,invalidIngredientPrice);
