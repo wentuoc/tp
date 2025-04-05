@@ -64,8 +64,8 @@ public class ViewCommandTest {
 
         MealManager mealManager = new MealManager();
         Meal meal1 = new Meal("Recipes Meal 1");
-        Ingredient firstIngredient = new Ingredient("egg", 0.50);
-        Ingredient secondIngredient = new Ingredient("rice", 1.0);
+        Ingredient firstIngredient = new Ingredient("egg", "0.50");
+        Ingredient secondIngredient = new Ingredient("rice", "1.00");
         meal1.addIngredient(firstIngredient);
         meal1.addIngredient(secondIngredient);
 
@@ -90,8 +90,8 @@ public class ViewCommandTest {
         logger.fine("Running testExecute_viewWishlistMeal_success()");
         MealManager mealManager = new MealManager();
         Meal meal = new Meal("Wishlist Meal 1");
-        Ingredient firstIngredient = new Ingredient("tofu", 1.20);
-        Ingredient secondIngredient = new Ingredient("noodles", 1.80);
+        Ingredient firstIngredient = new Ingredient("tofu", "1.20");
+        Ingredient secondIngredient = new Ingredient("noodles", "1.80");
         meal.addIngredient(firstIngredient);
         meal.addIngredient(secondIngredient);
         mealManager.getWishList().getList().add(meal);
@@ -132,8 +132,8 @@ public class ViewCommandTest {
         logger.fine("Running testExecute_viewRecipesMeal_outOfRange()");
         MealManager mealManager = new MealManager();
         Meal meal = new Meal("Recipes Meal 1");
-        Ingredient firstIngredient = new Ingredient("tofu", 1.20);
-        Ingredient secondIngredient = new Ingredient("noodles", 1.80);
+        Ingredient firstIngredient = new Ingredient("tofu", "1.20");
+        Ingredient secondIngredient = new Ingredient("noodles", "1.80");
         meal.addIngredient(firstIngredient);
         meal.addIngredient(secondIngredient);
         mealManager.getRecipesList().getList().add(meal);
@@ -151,8 +151,8 @@ public class ViewCommandTest {
         logger.fine("Running testExecute_viewWishlistMeal_outOfRange()");
         MealManager mealManager = new MealManager();
         Meal meal = new Meal("Wishlist Meal 1");
-        Ingredient firstIngredient = new Ingredient("tofu", 1.20);
-        Ingredient secondIngredient = new Ingredient("noodles", 1.80);
+        Ingredient firstIngredient = new Ingredient("tofu", "1.20");
+        Ingredient secondIngredient = new Ingredient("noodles", "1.80");
         meal.addIngredient(firstIngredient);
         meal.addIngredient(secondIngredient);
         mealManager.getWishList().getList().add(meal);

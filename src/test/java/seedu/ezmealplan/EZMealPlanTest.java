@@ -20,7 +20,6 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import org.junit.jupiter.api.Test;
-import seedu.exceptions.EZMealPlanException;
 import seedu.storage.Storage;
 
 public class EZMealPlanTest {
@@ -82,7 +81,7 @@ public class EZMealPlanTest {
         String simulatedInput = String.join(System.lineSeparator(),
                 "recipes",
                 "wishlist",
-                "create /mname testMeal /ing ingredient1 (1.0), ingredient2 (2.0)",
+                "create /mname testMeal /ing ingredient1 (1.00), ingredient2 (2.00)",
                 "filter /mname testmeal",
                 "select 98",
                 "clear",
@@ -90,7 +89,7 @@ public class EZMealPlanTest {
                 "remove 1",
                 "view /r 1",
                 "delete 98",
-                "buy /ing ingredient1 (1.0)",
+                "buy /ing ingredient1 (1.00)",
                 "consume /ing ingredient2",
                 "recommend /ing ingredient1",
                 "bye"
@@ -117,8 +116,8 @@ public class EZMealPlanTest {
 
             Storage.createListFiles();
             restoreLatestLists(latestFiles);
-        } catch (EZMealPlanException | IOException exception) {
-            throw new RuntimeException(exception);
+        } catch (IOException ioException) {
+            throw new RuntimeException(ioException);
         } finally {
             // Restore original streams.
             System.setIn(originalIn);
