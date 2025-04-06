@@ -179,11 +179,6 @@ public class Storage {
         }
     }
 
-    public static String getInventoryListFilePath() {
-        return INVENTORY_LIST_FILE_PATH;
-    }
-
-
     private static void checkValidIngredients(String line, Inventory ingredients) {
         try {
             Ingredient newIngredient = Ingredient.fromData(line);
