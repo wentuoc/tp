@@ -1,8 +1,6 @@
 package seedu.storage;
 
-import seedu.exceptions.DuplicateIngredientException;
 import seedu.exceptions.EZMealPlanException;
-import seedu.exceptions.InvalidPriceException;
 import seedu.food.Ingredient;
 import seedu.food.Inventory;
 import seedu.food.Meal;
@@ -125,13 +123,13 @@ public class Storage {
         //Throw error message if detected an ingredient with invalid price and skips to the next meal.
         try {
             checkMealsBeforeAdd(parts, meals);
-        } catch (InvalidPriceException | DuplicateIngredientException exception) {
+        } catch (Exception exception) {
             System.err.println(exception.getMessage());
         }
     }
 
     private static void checkMealsBeforeAdd(String[] parts, List<Meal> meals)
-            throws InvalidPriceException, DuplicateIngredientException {
+            throws Exception {
         // The first part is the meal name.
         int mealNameIndex = 0;
         String mealName = parts[mealNameIndex];
@@ -141,7 +139,7 @@ public class Storage {
     }
 
     private static Meal addIngredientsToMeal(String mealName, String[] parts)
-            throws InvalidPriceException, DuplicateIngredientException {
+            throws Exception {
         Meal meal = new Meal(mealName);
         // For each remaining part, extract ingredient name and its actual price.
         for (int i = 1; i < parts.length; i++) {
@@ -151,7 +149,7 @@ public class Storage {
         return meal;
     }
 
-    private static Ingredient getIngredient(String parts) throws InvalidPriceException {
+    private static Ingredient getIngredient(String parts) throws Exception {
         String ingredientStr = parts.trim();
         int openBracketIndex = ingredientStr.indexOf("(");
         int closeBracketIndex = ingredientStr.indexOf(")");
@@ -165,8 +163,7 @@ public class Storage {
         int afterOpenBracketIndex = openBracketIndex + indexAdjustment;
         String ingredientName = ingredientStr.substring(startIndex, openBracketIndex).trim();
         String priceStr = ingredientStr.substring(afterOpenBracketIndex, closeBracketIndex).trim();
-        double ingredientPrice = Double.parseDouble(priceStr);
-        return new Ingredient(ingredientName, ingredientPrice);
+        return new Ingredient(ingredientName, priceStr);
     }
 
     public static void writeToFile(String input, String filePath) throws IOException {
@@ -181,11 +178,6 @@ public class Storage {
             ui.printMessage(ioException.getMessage());
         }
     }
-
-    public static String getInventoryFilePath() {
-        return INVENTORY_LIST_FILE_PATH;
-    }
-
 
     private static void checkValidIngredients(String line, Inventory ingredients) {
         try {
