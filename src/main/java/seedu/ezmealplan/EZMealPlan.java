@@ -30,9 +30,9 @@ public class EZMealPlan {
         String fileName = "EZMealPlan.log";
         setupLogger(fileName);
         checkConstructedLists();
-        // Check for valid meals that are present in the user list but not in the main list
-        // and add these meals to the main list.
-        mealManager.compareLists();
+        // Check for valid meals that are present in the wishlist but not in the recipes list
+        // and remove these meals from the recipes list.
+        mealManager.removeIllegalMeals();
         logger.fine("running EZMealPlan");
         ui.printGreetingMessage();
         String userInput;

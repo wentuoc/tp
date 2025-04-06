@@ -127,7 +127,7 @@ public class MealManager {
         return chosenMealList.removeMeal(index);
     }
 
-    public void compareLists() {
+    public void removeIllegalMeals() {
         List<Meal> recipesList = this.recipesList.getList();
         List<Meal> wishList = this.wishList.getList();
         List<Meal> wishListCopy = new ArrayList<>(wishList);
