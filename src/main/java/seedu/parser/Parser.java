@@ -20,54 +20,54 @@ import seedu.command.WishlistCommand;
 import seedu.exceptions.EZMealPlanException;
 
 public class Parser {
-    static String bye = "bye";
-    static String create = "create";
-    static String filter = "filter";
-    static String select = "select";
-    static String wishlist = "wishlist";
-    static String recipes = "recipes";
-    static String clear = "clear";
-    static String help = "help";
-    static String remove = "remove";
-    static String view = "view";
-    static String delete = "delete";
-    static String recommend = "recommend";
-    static String consume = "consume";
-    static String buy = "buy";
-    static String inventory = "inventory";
+    private static final String BYE = "bye";
+    private static final String CREATE = "create";
+    private static final String FILTER = "filter";
+    private static final String SELECT = "select";
+    private static final String WISHLIST = "wishlist";
+    private static final String RECIPES = "recipes";
+    private static final String CLEAR = "clear";
+    private static final String HELP = "help";
+    private static final String REMOVE = "remove";
+    private static final String VIEW = "view";
+    private static final String DELETE = "delete";
+    private static final String RECOMMEND = "recommend";
+    private static final String CONSUME = "consume";
+    private static final String BUY = "buy";
+    private static final String INVENTORY = "inventory";
 
     public static Command parse(String userInput) throws EZMealPlanException {
         String lowerCaseUserInput = userInput.toLowerCase().trim();
         userInput = userInput.trim();
-        if (lowerCaseUserInput.startsWith(bye)) {
+        if (lowerCaseUserInput.startsWith(BYE)) {
             return new ByeCommand();
-        } else if (lowerCaseUserInput.startsWith(create)) {
+        } else if (lowerCaseUserInput.startsWith(CREATE)) {
             return new CreateCommand(userInput);
-        } else if (lowerCaseUserInput.startsWith(filter)) {
+        } else if (lowerCaseUserInput.startsWith(FILTER)) {
             return new FilterCommand(userInput);
-        } else if (lowerCaseUserInput.startsWith(select)) {
+        } else if (lowerCaseUserInput.startsWith(SELECT)) {
             return new SelectCommand(userInput);
-        } else if (lowerCaseUserInput.startsWith(recipes)) {
+        } else if (lowerCaseUserInput.startsWith(RECIPES)) {
             return new RecipesCommand();
-        } else if (lowerCaseUserInput.startsWith(wishlist)) {
+        } else if (lowerCaseUserInput.startsWith(WISHLIST)) {
             return new WishlistCommand();
-        } else if (lowerCaseUserInput.startsWith(clear)) {
+        } else if (lowerCaseUserInput.startsWith(CLEAR)) {
             return new ClearCommand();
-        } else if (lowerCaseUserInput.startsWith(help)) {
+        } else if (lowerCaseUserInput.startsWith(HELP)) {
             return new HelpCommand(userInput);
-        } else if (lowerCaseUserInput.startsWith(remove)) {
+        } else if (lowerCaseUserInput.startsWith(REMOVE)) {
             return new RemoveCommand(userInput);
-        } else if (lowerCaseUserInput.startsWith(view)) {
+        } else if (lowerCaseUserInput.startsWith(VIEW)) {
             return new ViewCommand(userInput);
-        } else if (lowerCaseUserInput.startsWith(delete)) {
+        } else if (lowerCaseUserInput.startsWith(DELETE)) {
             return new DeleteCommand(userInput);
-        } else if (lowerCaseUserInput.startsWith(recommend)) {
+        } else if (lowerCaseUserInput.startsWith(RECOMMEND)) {
             return new RecommendCommand(userInput);
-        } else if (lowerCaseUserInput.startsWith(consume)) {
+        } else if (lowerCaseUserInput.startsWith(CONSUME)) {
             return new ConsumeCommand(userInput);
-        } else if (lowerCaseUserInput.startsWith(buy)) {
+        } else if (lowerCaseUserInput.startsWith(BUY)) {
             return new BuyCommand(userInput);
-        } else if (lowerCaseUserInput.startsWith(inventory)) {
+        } else if (lowerCaseUserInput.startsWith(INVENTORY)) {
             return new InventoryCommand();
         } else {
             return new UnknownCommand(userInput);

@@ -36,12 +36,18 @@ the associations:
 ![EZMealPlanClass.png](diagrams/EZMealPlanClass.png)
 
 This sequence diagram shows the processes that EZMealPlan system has to undergo while it is being booted up before it 
-is ready for usage.
+is ready for usage. **Take Note** Meals that are found in the wishlist but are not found in the recipes list will be deemed as **illegal meals** and removed from the wishlist.
+
+This fundamental rule should not be violated:
+* **Meals found in the wishlist implies that the meals _MUST_ also be in the recipes list.**
+
 ![BootingUpEZMealPlan.png](diagrams/BootingUpEZMealPlan.png)
 
 This sequence diagram shows the procedures of extracting meals from the `recipesListFile` (`recipesList.txt`). A similar 
 procedure follows for extracting meals from the `wishListFile` (`wishList.txt`).
-![ConstructingMainMeals.png](diagrams/ConstructingMainMeals.png)
+![ConstructingRecipesList.png](diagrams/ConstructingRecipesList.png)
+
+The inventory list will be loaded from the `inventoryListFile.txt` via `Storage.loadExistingInventory(mealManager)` method.
 
 ### `ui`
 
@@ -64,7 +70,7 @@ The `food` package contains the abstract class `Product`, as well as `Ingredient
 The `Ingredient` class,
 * Represents an ingredient, which has a `name` and `price`
 * Contains the `setPrice` method, as well as private methods to check that 
-the price provided is non-negative and able to be parsed as a `Double`
+the price provided is non-negative, must be in 2 decimal places with at least 1 digit before `.` and able to be parsed as a `Double`
 
 The `Meal` class,
 * Represents a meal, which has a `name`, `price`, and `ingredientList` of type `List<Ingredient>`.
@@ -511,9 +517,9 @@ public void check() throws EZMealPlanException {
     }
 ```
 ##### 5.3 Sequence Diagrams
-Here are Sequence Diagrams depicting the flow of the proceesing of user inputs into a new meal:
-![CreateCommand.puml](puml/CreateCommand.puml)
-![CreateChecker.puml](puml/CreateChecker.puml)
+Here are Sequence Diagrams depicting the flow of the processing of user inputs into a new meal:
+![CreateCommand.png](diagrams/CreateCommand.png)
+![CreateChecker.png](diagrams/CreateChecker.png)
 
 ##### 5.4 Unit Testing
 

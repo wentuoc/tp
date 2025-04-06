@@ -3,6 +3,7 @@ package seedu.food;
 
 import seedu.exceptions.EZMealPlanException;
 import seedu.exceptions.IngredientPriceFormatException;
+import seedu.exceptions.InvalidPriceException;
 
 import org.junit.jupiter.api.Test;
 
@@ -131,7 +132,7 @@ public class IngredientTest {
             logger.warning("Expected exception but none was thrown");
             fail();
         } catch (EZMealPlanException ezMealPlanException) {
-            assertEquals(new IngredientPriceFormatException(ingredientName).getMessage(),
+            assertEquals(new InvalidPriceException(ingredientName).getMessage(),
                     ezMealPlanException.getMessage());
             logger.info("Exception thrown with correct message");
         }
@@ -152,7 +153,7 @@ public class IngredientTest {
     public void setPrice_invalidPriceFormat() {
         logger.fine("Running setPrice_invalidPriceFormat()");
         String ingredientName = "salt";
-        String[] invalidIngredientPrices = {"1.005", ".01", "1", ".", "1.2", ".1"};
+        String[] invalidIngredientPrices = {"1.005", ".01", "1", ".", "1.2", ".1", "-0.1","-.1","-0.0001","-10."};
         for( String invalidIngredientPrice : invalidIngredientPrices ) {
             try{
                 new Ingredient(ingredientName,invalidIngredientPrice);

@@ -5,6 +5,7 @@ import seedu.exceptions.DuplicateMealException;
 import seedu.exceptions.EZMealPlanException;
 import seedu.exceptions.IngredientPriceFormatException;
 import seedu.exceptions.InvalidIngredientFormatException;
+import seedu.exceptions.InvalidPriceException;
 import seedu.food.Ingredient;
 import seedu.food.Meal;
 import seedu.logic.MealManager;
@@ -78,18 +79,37 @@ public class CreateCommandTest {
     private void invalidPriceFormat() {
         checkPrices_cannotParsed_intoInteger();
         check_negative_prices();
+        check_invalidIngredientPriceFormat();
+    }
+
+    private void check_invalidIngredientPriceFormat() {
+        String[] invalidPrices = {"create /mname test /ing ing(-1.000)", "create /mname test /ing ing(2.000)"
+                , "create /mname test /ing ing(-0.5)"
+                ,"create /mname test /ing ing(0.5)", "create /mname test /ing ing(1.5)"
+                , "create /mname test /ing ing(-0.)", "create /mname test /ing ing(9.)"};
+        for (String invalidPrice : invalidPrices) {
+            Command command = new CreateCommand(invalidPrice);
+            try {
+                command.execute(mealManager, ui);
+            } catch (EZMealPlanException ezMealPlanException) {
+                String ingName = "ing";
+                assertEquals(new IngredientPriceFormatException(ingName).getMessage(),
+                        ezMealPlanException.getMessage());
+                logger.info("Matching exception caught for check_invalidIngredientPriceFormat()");
+            }
+        }
     }
 
     private void check_negative_prices() {
-        String[] negativePrices = {"create /mname test /ing ing(-1.00)", "create /mname test /ing ing(-2.00)"
-                , "create /mname test /ing ing(-0.5000)"};
+        String[] negativePrices = {"create /mname test /ing ing(-1.00)", "create /mname test /ing ing(-0.01)"
+                , "create /mname test /ing ing(-0.52)"};
         for (String negativePrice : negativePrices) {
             Command command = new CreateCommand(negativePrice);
             try {
                 command.execute(mealManager, ui);
             } catch (EZMealPlanException ezMealPlanException) {
                 String ingName = "ing";
-                assertEquals(new IngredientPriceFormatException(ingName).getMessage(),
+                assertEquals(new InvalidPriceException(ingName).getMessage(),
                         ezMealPlanException.getMessage());
                 logger.info("Matching exception caught for check_negative_prices()");
             }
@@ -158,21 +178,21 @@ public class CreateCommandTest {
     }
 
     private static String[] formDuplicateMealsList() {
-        String firstInput = "create /mname chicken rice /ing chicken breast (3.50)," +
-                            " rice (1.00), egg (0.60), cucumber (1.50)";
-        String secondInput = "create /mname chicken rice /ing chicken breast (2.50)," +
-                             " rice (1.50), egg (0.50), cucumber (1.00)";
-        String thirdInput = "create /mname chicken rice /ing chicken breast (2.00)," +
-                            " rice (2.00), egg (0.40), cucumber (1.10)";
-        String fourthInput = "create /mname chicken rice /ing chicken breast (2.00)," +
-                             " rice (2.00), egg (0.40), cucumber (1.10), tomato (2.00)";
-        String fifthInput = "create /mname hainanese chicken rice /ing chicken breast (2.00)," +
-                            " rice (2.00), egg (0.40), cucumber (1.10), tomato (2.00)";
+        String firstInput = "create /mname chicken rice /ing chicken breast(3.50)," +
+                            " rice(1.00), egg(0.60), cucumber(1.50)";
+        String secondInput = "create /mname chicken rice /ing chicken breast(2.50)," +
+                             " rice(1.50), egg(0.50), cucumber(1.00)";
+        String thirdInput = "create /mname chicken rice /ing chicken breast(2.00)," +
+                            " rice(2.00), egg(0.40), cucumber(1.10)";
+        String fourthInput = "create /mname chicken rice /ing chicken breast(2.00)," +
+                             " rice(2.00), egg(0.40), cucumber(1.10), tomato(2.00)";
+        String fifthInput = "create /mname hainanese chicken rice /ing chicken breast(2.00)," +
+                            " rice(2.00), egg(0.40), cucumber(1.10), tomato(2.00)";
         return new String[]{firstInput, secondInput, thirdInput, fourthInput, fifthInput};
     }
 
     private void duplicate_ingredient_catch() {
-        String userInput = "create /mname chicken breast /ing chicken breast (2.50)," +
+        String userInput = "create /mname chicken breast /ing chicken breast(2.50)," +
                            " chicken breast(1.50)";
         Command command = new CreateCommand(userInput);
         String fineMsg = "Running duplicate_ingredient_catch().";

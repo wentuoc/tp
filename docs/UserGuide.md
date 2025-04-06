@@ -125,7 +125,7 @@ Sample Output
 
 ![creatCommandWorkingSample.png](diagrams/creatCommandWorkingSample.png)
 
-* The ingredient cost such as `INGREDIENT_1_COST` must be enclosed within `()` and parsable into a `double`.
+* The ingredient cost such as `INGREDIENT_1_COST` must be enclosed within `()`, at least 1 digit must be present before the `.` (example: 0.05 instead of .05) and parsable into a `double`.
 * The order of the ingredients does not matter. For example, the following code has the same effect:
 
 ```
@@ -349,6 +349,7 @@ Sample output:
 ### Adding ingredients into the Inventory: `buy`
 
 This command allows the user to add ingredients into the inventory.
+* The ingredient cost such as `INGREDIENT_1_COST` must be enclosed within `()`, at least 1 digit must be present before the `.` (example: 0.05 instead of .05) and parsable into a `double`.
 * To buy more than 1 ingredient, `,` is needed to separate each ingredient.
   The input price for the ingredients **MUST BE IN 2 DECIMAL PLACES**. Example: `0.00`, `1.00`, `0.50`, `10.05`
 * The price of every ingredient can only **range from `0.00` to `DOUBLE.MAX_VALUE` (both inclusive)**. 

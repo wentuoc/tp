@@ -43,7 +43,7 @@ public class SelectCommand extends FilterSelectCommand {
     private String getIndexSubstring() {
         int afterSelectIndex = this.lowerCaseInput.indexOf(filterOrSelect) + filterOrSelect.length();
         int inputMethodIndex;
-        String inputMethod = getString(mcost, ing, mname);
+        String inputMethod = getString(MCOST, ING, MNAME);
         if (inputMethod.isEmpty()) {
             return validUserInput.substring(afterSelectIndex).trim();
         }

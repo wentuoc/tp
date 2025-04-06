@@ -102,8 +102,8 @@ public class ByeCommandTest {
 
     private List<Ingredient> getExpectedInventoryList() throws EZMealPlanException {
         Inventory inventory = mealManager.getInventory();
-        Ingredient firstIngredient = new Ingredient("firstIngredient","1.5");
-        Ingredient secondIngredient = new Ingredient("secondIngredient","2.5");
+        Ingredient firstIngredient = new Ingredient("firstIngredient","1.50");
+        Ingredient secondIngredient = new Ingredient("secondIngredient","2.50");
         inventory.addIngredient(firstIngredient);
         inventory.addIngredient(secondIngredient);
         return inventory.getIngredients();
