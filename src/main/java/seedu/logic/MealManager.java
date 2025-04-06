@@ -142,7 +142,7 @@ public class MealManager {
                                                   " from " + this.wishList.getMealListName() +
                                                   " because it is not found in the "
                                                   + this.recipesList.getMealListName() + ".";
-                System.out.println(removeIllegalMealMessage);
+                System.err.println(removeIllegalMealMessage);
             }
         }
         System.out.println();
