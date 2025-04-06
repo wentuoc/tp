@@ -36,8 +36,8 @@ public class Parser {
     private static final String CONSUME = "consume";
     private static final String BUY = "buy";
     private static final String INVENTORY = "inventory";
-    private static final String[] allCommands = {BYE, CREATE, FILTER, SELECT, WISHLIST, RECIPES, CLEAR, HELP, REMOVE,
-        VIEW, DELETE, RECOMMEND, CONSUME, BUY, INVENTORY};
+    private static final String[] allCommandStrings = {BYE, CREATE, FILTER, SELECT, WISHLIST, RECIPES, CLEAR, HELP,
+        REMOVE, VIEW, DELETE, RECOMMEND, CONSUME, BUY, INVENTORY};
 
     public static Command parse(String userInput) throws EZMealPlanException {
         String firstWordLowerCase = getFirstWord(userInput).toLowerCase();
@@ -87,7 +87,7 @@ public class Parser {
     }
 
     private static Command parseUnknownInput(String firstWordLowerCase) {
-        for (String commandString : allCommands) {
+        for (String commandString : allCommandStrings) {
             if (firstWordLowerCase.startsWith(commandString)) {
                 return new MistypedCommand(firstWordLowerCase, commandString);
             }
