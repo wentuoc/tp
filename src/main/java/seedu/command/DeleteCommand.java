@@ -25,9 +25,9 @@ public class DeleteCommand extends RemoveDeleteCommand {
             wishList.removeMeal(indexInWishList);
             ui.printRemovedMessage(removedOrDeletedMeal, wishList.size());
             logger.fine("Command finished executing: Removed \"" + removedOrDeletedMeal.getName() + "\" meal " +
-                    "from user list");
+                    "from wishlist");
         }
         logger.fine("Command finished executing: Deleted \"" + removedOrDeletedMeal.getName() + "\" meal from " +
-                "main list");
+                "recipes list");
     }
 }

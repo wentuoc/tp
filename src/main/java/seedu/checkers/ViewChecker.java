@@ -6,8 +6,9 @@ import seedu.exceptions.InvalidViewIndexException;
 import seedu.exceptions.MissingMealIndexException;
 
 public class ViewChecker extends Checker {
+    private static final String VIEW = "view";
     String recipeOrWishlist;
-    String view = "view";
+
 
     public ViewChecker(String userInputText, String recipeOrWishlist) {
         this.userInput = userInputText.trim();
@@ -34,7 +35,7 @@ public class ViewChecker extends Checker {
     }
 
     private void checkValidKeywordIndex() throws EZMealPlanException {
-        int commandIndex = lowerCaseInput.indexOf(view);
+        int commandIndex = lowerCaseInput.indexOf(VIEW);
         int keywordIndex = lowerCaseInput.indexOf(recipeOrWishlist);
         if (commandIndex >= keywordIndex) {
             throw new InvalidKeywordIndexException(recipeOrWishlist);
@@ -45,7 +46,7 @@ public class ViewChecker extends Checker {
         int afterKeywordIndex = lowerCaseInput.indexOf(recipeOrWishlist) + recipeOrWishlist.length();
         String afterKeyword = userInput.substring(afterKeywordIndex).trim();
         if (afterKeyword.isEmpty()) {
-            throw new MissingMealIndexException(view);
+            throw new MissingMealIndexException(VIEW);
         }
     }
 

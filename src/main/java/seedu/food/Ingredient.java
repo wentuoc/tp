@@ -49,7 +49,7 @@ public class Ingredient extends Product {
     }
 
     private void checkTwoDecimalPlace(String ingredientPrice) throws IngredientPriceFormatException {
-        String twoDecimalPlaceRegex = "^\\d+\\.\\d{2}$";
+        String twoDecimalPlaceRegex = "^-?\\d+\\.\\d{2}$";
         if (!ingredientPrice.matches(twoDecimalPlaceRegex)) {
             throw new IngredientPriceFormatException(getName());
         }

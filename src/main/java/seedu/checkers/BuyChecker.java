@@ -3,7 +3,6 @@ package seedu.checkers;
 
 import seedu.exceptions.EZMealPlanException;
 import seedu.exceptions.InvalidIngredientFormatException;
-import seedu.exceptions.InvalidPriceException;
 import seedu.exceptions.MissingIngKeywordException;
 import seedu.exceptions.MissingIngredientException;
 
@@ -61,15 +60,14 @@ public class BuyChecker extends Checker {
      * Validates the format of each ingredient token.
      * Expected format: "IngredientName (Price)"
      * @throws InvalidIngredientFormatException if any ingredient does not match the expected format.
-     * @throws InvalidPriceException if the price part is not a valid number.
      */
-    private void checkIngredientFormat() throws InvalidIngredientFormatException, InvalidPriceException {
+    private void checkIngredientFormat() throws InvalidIngredientFormatException {
         int afterIngIndex = lowerCaseInput.indexOf(ING) + ING.length();
         String ingredients = userInput.substring(afterIngIndex).trim();
         String splitRegex = "\\s*,\\s*";
         String[] ingredientArray = ingredients.split(splitRegex);
 
-        String matchingRegex = "^([\\w\\s]+)\\s*\\((\\-?[0-9]{1,13}(\\.[0-9]+)?)\\)$";
+        String matchingRegex = "^([\\S\\s]+)\\s*\\((-?\\d+(\\.\\d*)?)\\)$";
         Pattern ingredientPattern = Pattern.compile(matchingRegex);
         for (String ingredient : ingredientArray) {
             ingredient = ingredient.trim();
@@ -78,15 +76,6 @@ public class BuyChecker extends Checker {
                 String message = "Triggers InvalidIngredientFormatException() for token: " + ingredient;
                 logger.warning(message);
                 throw new InvalidIngredientFormatException();
-            }
-
-            String priceStr = ingredientMatcher.group(2);
-            try {
-                Double.parseDouble(priceStr);
-            } catch (NumberFormatException e) {
-                String message = "Triggers InvalidPriceException() for ingredient: " + ingredient;
-                logger.warning(message);
-                throw new InvalidPriceException(ingredient);
             }
         }
     }

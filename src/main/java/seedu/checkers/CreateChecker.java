@@ -15,9 +15,9 @@ import java.util.regex.Pattern;
 
 public class CreateChecker extends Checker {
     private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    String ing = "/ing";
-    String mname = "/mname";
-    String create = "create";
+    private static final String ING = "/ing";
+    private static final String MNAME = "/mname";
+    private static final String CREATE = "create";
 
     public CreateChecker(String userInputText) {
         this.userInput = userInputText.trim();
@@ -37,9 +37,9 @@ public class CreateChecker extends Checker {
     }
 
     private void checkMnameIngIndexes() throws EZMealPlanException {
-        int mnameIndex = lowerCaseInput.indexOf(mname);
-        int createIndex = lowerCaseInput.indexOf(create);
-        int ingIndex = lowerCaseInput.indexOf(ing);
+        int mnameIndex = lowerCaseInput.indexOf(MNAME);
+        int createIndex = lowerCaseInput.indexOf(CREATE);
+        int ingIndex = lowerCaseInput.indexOf(ING);
         boolean isValidCreateIndex = createIndex < mnameIndex && createIndex < ingIndex;
         if (!isValidCreateIndex) {
             String message = "Triggers InvalidCreateIndexException()!";
@@ -55,7 +55,7 @@ public class CreateChecker extends Checker {
     }
 
     private void checkIngExists() throws MissingIngKeywordException {
-        boolean isIngPresent = lowerCaseInput.contains(ing);
+        boolean isIngPresent = lowerCaseInput.contains(ING);
         if (!isIngPresent) {
             String message = "Triggers MissingIngKeywordException()!";
             logger.warning(message);
@@ -64,7 +64,7 @@ public class CreateChecker extends Checker {
     }
 
     private void checkMnameExists() throws MissingMnameKeywordException {
-        boolean isMnamePresent = lowerCaseInput.contains(mname);
+        boolean isMnamePresent = lowerCaseInput.contains(MNAME);
         if (!isMnamePresent) {
             String message = "Triggers MissingMnameKeywordException()!";
             logger.warning(message);
@@ -73,32 +73,32 @@ public class CreateChecker extends Checker {
     }
 
     private void checkMealNameExists() throws MissingMealNameException {
-        int afterMnameIndex = lowerCaseInput.indexOf(mname) + mname.length();
-        int ingIndex = lowerCaseInput.indexOf(ing);
+        int afterMnameIndex = lowerCaseInput.indexOf(MNAME) + MNAME.length();
+        int ingIndex = lowerCaseInput.indexOf(ING);
         String mealName = userInput.substring(afterMnameIndex, ingIndex).trim();
         if (mealName.isEmpty()) {
             String message = "Triggers MissingMealNameException()!";
             logger.warning(message);
-            throw new MissingMealNameException(create);
+            throw new MissingMealNameException(CREATE);
         }
     }
 
     private void checkIngredientExists() throws MissingIngredientException {
-        int afterIngIndex = lowerCaseInput.indexOf(ing) + ing.length();
+        int afterIngIndex = lowerCaseInput.indexOf(ING) + ING.length();
         String ingredients = userInput.substring(afterIngIndex).trim();
         if (ingredients.isEmpty()) {
             String message = "Triggers MissingIngredientException()!";
             logger.warning(message);
-            throw new MissingIngredientException(create);
+            throw new MissingIngredientException(CREATE);
         }
     }
 
     private void checkIngredientFormat() throws InvalidIngredientFormatException {
-        int afterIngIndex = lowerCaseInput.indexOf(ing) + ing.length();
+        int afterIngIndex = lowerCaseInput.indexOf(ING) + ING.length();
         String ingredients = userInput.substring(afterIngIndex).trim();
         String splitRegex = "\\s*,\\s*";
         String[] ingredientArray = ingredients.split(splitRegex);
-        String matchingRegex = "^([\\w\\s]+)\\s*\\(-?[0-9]{1,13}(\\.[0-9]*)?\\)$";
+        String matchingRegex = "^([\\S\\s]+)\\s*\\((-?\\d+(\\.\\d*)?)\\)$";
         Pattern ingredientPattern = Pattern.compile(matchingRegex);
         for (String ingredient : ingredientArray) {
             Matcher ingredientMatcher = ingredientPattern.matcher(ingredient);
