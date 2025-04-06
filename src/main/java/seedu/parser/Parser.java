@@ -42,39 +42,24 @@ public class Parser {
     public static Command parse(String userInput) throws EZMealPlanException {
         String firstWordLowerCase = getFirstWord(userInput).toLowerCase();
         userInput = userInput.trim();
-        if (firstWordLowerCase.equals(BYE)) {
-            return new ByeCommand();
-        } else if (firstWordLowerCase.equals(CREATE)) {
-            return new CreateCommand(userInput);
-        } else if (firstWordLowerCase.equals(FILTER)) {
-            return new FilterCommand(userInput);
-        } else if (firstWordLowerCase.equals(SELECT)) {
-            return new SelectCommand(userInput);
-        } else if (firstWordLowerCase.equals(RECIPES)) {
-            return new RecipesCommand();
-        } else if (firstWordLowerCase.equals(WISHLIST)) {
-            return new WishlistCommand();
-        } else if (firstWordLowerCase.equals(CLEAR)) {
-            return new ClearCommand();
-        } else if (firstWordLowerCase.equals(HELP)) {
-            return new HelpCommand(userInput);
-        } else if (firstWordLowerCase.equals(REMOVE)) {
-            return new RemoveCommand(userInput);
-        } else if (firstWordLowerCase.equals(VIEW)) {
-            return new ViewCommand(userInput);
-        } else if (firstWordLowerCase.equals(DELETE)) {
-            return new DeleteCommand(userInput);
-        } else if (firstWordLowerCase.equals(RECOMMEND)) {
-            return new RecommendCommand(userInput);
-        } else if (firstWordLowerCase.equals(CONSUME)) {
-            return new ConsumeCommand(userInput);
-        } else if (firstWordLowerCase.equals(BUY)) {
-            return new BuyCommand(userInput);
-        } else if (firstWordLowerCase.equals(INVENTORY)) {
-            return new InventoryCommand();
-        } else {
-            return parseUnknownInput(firstWordLowerCase);
-        }
+        return switch (firstWordLowerCase) {
+        case BYE -> new ByeCommand();
+        case CREATE -> new CreateCommand(userInput);
+        case FILTER -> new FilterCommand(userInput);
+        case SELECT -> new SelectCommand(userInput);
+        case RECIPES -> new RecipesCommand();
+        case WISHLIST -> new WishlistCommand();
+        case CLEAR -> new ClearCommand();
+        case HELP -> new HelpCommand(userInput);
+        case REMOVE -> new RemoveCommand(userInput);
+        case VIEW -> new ViewCommand(userInput);
+        case DELETE -> new DeleteCommand(userInput);
+        case RECOMMEND -> new RecommendCommand(userInput);
+        case CONSUME -> new ConsumeCommand(userInput);
+        case BUY -> new BuyCommand(userInput);
+        case INVENTORY -> new InventoryCommand();
+        default -> parseUnknownInput(firstWordLowerCase);
+        };
     }
 
     private static String getFirstWord(String userInput) {
@@ -87,9 +72,9 @@ public class Parser {
     }
 
     private static Command parseUnknownInput(String firstWordLowerCase) {
-        for (String commandString : allCommandStrings) {
-            if (firstWordLowerCase.startsWith(commandString)) {
-                return new MistypedCommand(firstWordLowerCase, commandString);
+        for (String actualCommandString : allCommandStrings) {
+            if (firstWordLowerCase.startsWith(actualCommandString)) {
+                return new MistypedCommand(firstWordLowerCase, actualCommandString);
             }
         }
         return new UnknownCommand(firstWordLowerCase);
