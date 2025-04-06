@@ -54,8 +54,8 @@ public class CreateCheckerTest {
     @Test
     public void createChecker_success() throws EZMealPlanException {
         logger.fine("Running createChecker_success()");
-        String validUserInput = "create /mname chicken rice /ing chicken breast (2.5)," +
-                                " rice (1.5), egg (0.5), cucumber (1)";
+        String validUserInput = "create /mname chicken rice /ing chicken breast (2.50)," +
+                                " rice (1.50), egg (0.50), cucumber (1.00)";
         CreateChecker checker = new CreateChecker(validUserInput);
         checker.check();
         assertTrue(checker.isPassed());
@@ -77,7 +77,8 @@ public class CreateCheckerTest {
 
     private void checkInvalidIngredientFormat() {
         String[] invalidIngredientFormat = {"create /mname test /ing ing123", "create /mname test /ing 123"
-                , "create /mname test /ing ing()", "create /mname test /ing (1)"};
+                , "create /mname test /ing ing()", "create /mname test /ing (1.00)", "create /mname test /ing ing(.01)"
+                , "create /mname test /ing ing(-.1)"};
         String testName = "checkInvalidIngredientFormat()";
         logger.fine("running " + testName);
         checkMatchingException(invalidIngredientFormat, new InvalidIngredientFormatException().getMessage(), testName);
@@ -91,7 +92,7 @@ public class CreateCheckerTest {
     }
 
     private static void checkMissingMealName() {
-        String[] missingMealName = {"create /mname /ing ing(1)", "create /mname /ing ing123"};
+        String[] missingMealName = {"create /mname /ing ing(1.00)", "create /mname /ing ing123"};
         String testName = "checkMissingMealName()";
         logger.fine("running " + testName);
         checkMatchingException(missingMealName, new MissingMealNameException("create").getMessage(), testName);
@@ -101,15 +102,15 @@ public class CreateCheckerTest {
         String[] invalidIngMname = {"create /ing test /mname ing(1)", "create /ing /mname test create ing(1)"
                 , "create test ing(1) /ing /mname", "create /ing /mname"};
         String testName = "checkInvalidIngMnameIndex()";
-        logger.fine("running "+ testName);
+        logger.fine("running " + testName);
         checkMatchingException(invalidIngMname, new InvalidIngMnameException().getMessage(), testName);
     }
 
     private static void checkMissingIng() {
-        String[] missingIng = {"create /mname test ing(1)", "create /mname", "create /mname test "
+        String[] missingIng = {"create /mname test ing(1.00)", "create /mname", "create /mname test "
                 , "create ing(1) /mname"};
         String testName = "checkMissingIng()";
-        logger.fine("running "+ testName);
+        logger.fine("running " + testName);
         checkMatchingException(missingIng, new MissingIngKeywordException().getMessage(), testName);
     }
 
@@ -124,8 +125,8 @@ public class CreateCheckerTest {
         String[] invalidCreateIndex = {"/mname test create /ing ing(1)", "/mname test /ing create ing(1)"
                 , "/ing test create /mname ing(1)", "/ing test /mname ing(1) create"};
         String testName = "checkInvalidCreateIndex()";
-        logger.fine("running "+ testName);
-        checkMatchingException(invalidCreateIndex, new InvalidCreateIndexException().getMessage(),testName);
+        logger.fine("running " + testName);
+        checkMatchingException(invalidCreateIndex, new InvalidCreateIndexException().getMessage(), testName);
     }
 
     private static void checkMatchingException(String[] invalidUserInputs, String expectedOutput, String testName) {
