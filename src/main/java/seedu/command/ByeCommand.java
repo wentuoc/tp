@@ -19,7 +19,7 @@ public class ByeCommand extends Command {
     public void execute(MealManager mealManager, UserInterface ui) {
         updateRecipesListFile(mealManager,ui);
         updateWishListFile(mealManager, ui);
-        updateInventoryFile(mealManager, ui);
+        updateInventoryListFile(mealManager, ui);
         ui.printGoodbye();
     }
 
@@ -66,12 +66,12 @@ public class ByeCommand extends Command {
         writeIngredientsToFile(ingredientList, filePath, ui);
     }
 
-    private void updateInventoryFile(MealManager mealManager, UserInterface ui) {
+    private void updateInventoryListFile(MealManager mealManager, UserInterface ui) {
         // Retrieve the list of ingredients from the inventory.
         List<Ingredient> ingredientList = mealManager.getInventory().getIngredients();
         // Get the file path for the inventory list.
-        String inventoryFilePath = Storage.getInventoryListFilePath();
+        String inventoryListFilePath = Storage.getInventoryListFilePath();
         // Clear the existing file and write the new list.
-        clearAndUpdateFileForIngredients(ingredientList, inventoryFilePath,ui);
+        clearAndUpdateFileForIngredients(ingredientList, inventoryListFilePath,ui);
     }
 }

@@ -44,6 +44,10 @@ public class Storage {
         return RECIPES_LIST_FILE_PATH;
     }
 
+    public static String getInventoryListFilePath() {
+        return INVENTORY_LIST_FILE_PATH;
+    }
+
     public static void createListFiles() throws IOException {
         wishListFile = new File(WISH_LIST_FILE_PATH);
         recipesListFile = new File(RECIPES_LIST_FILE_PATH);
