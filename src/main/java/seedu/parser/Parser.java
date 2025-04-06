@@ -10,6 +10,7 @@ import seedu.command.DeleteCommand;
 import seedu.command.FilterCommand;
 import seedu.command.HelpCommand;
 import seedu.command.InventoryCommand;
+import seedu.command.MistypedCommand;
 import seedu.command.RecipesCommand;
 import seedu.command.RecommendCommand;
 import seedu.command.RemoveCommand;
@@ -35,43 +36,63 @@ public class Parser {
     private static final String CONSUME = "consume";
     private static final String BUY = "buy";
     private static final String INVENTORY = "inventory";
+    private static final String[] allCommands = {BYE, CREATE, FILTER, SELECT, WISHLIST, RECIPES, CLEAR, HELP, REMOVE,
+        VIEW, DELETE, RECOMMEND, CONSUME, BUY, INVENTORY};
 
     public static Command parse(String userInput) throws EZMealPlanException {
-        String lowerCaseUserInput = userInput.toLowerCase().trim();
+        String firstWordLowerCase = getFirstWord(userInput).toLowerCase();
         userInput = userInput.trim();
-        if (lowerCaseUserInput.startsWith(BYE)) {
+        if (firstWordLowerCase.equals(BYE)) {
             return new ByeCommand();
-        } else if (lowerCaseUserInput.startsWith(CREATE)) {
+        } else if (firstWordLowerCase.equals(CREATE)) {
             return new CreateCommand(userInput);
-        } else if (lowerCaseUserInput.startsWith(FILTER)) {
+        } else if (firstWordLowerCase.equals(FILTER)) {
             return new FilterCommand(userInput);
-        } else if (lowerCaseUserInput.startsWith(SELECT)) {
+        } else if (firstWordLowerCase.equals(SELECT)) {
             return new SelectCommand(userInput);
-        } else if (lowerCaseUserInput.startsWith(RECIPES)) {
+        } else if (firstWordLowerCase.equals(RECIPES)) {
             return new RecipesCommand();
-        } else if (lowerCaseUserInput.startsWith(WISHLIST)) {
+        } else if (firstWordLowerCase.equals(WISHLIST)) {
             return new WishlistCommand();
-        } else if (lowerCaseUserInput.startsWith(CLEAR)) {
+        } else if (firstWordLowerCase.equals(CLEAR)) {
             return new ClearCommand();
-        } else if (lowerCaseUserInput.startsWith(HELP)) {
+        } else if (firstWordLowerCase.equals(HELP)) {
             return new HelpCommand(userInput);
-        } else if (lowerCaseUserInput.startsWith(REMOVE)) {
+        } else if (firstWordLowerCase.equals(REMOVE)) {
             return new RemoveCommand(userInput);
-        } else if (lowerCaseUserInput.startsWith(VIEW)) {
+        } else if (firstWordLowerCase.equals(VIEW)) {
             return new ViewCommand(userInput);
-        } else if (lowerCaseUserInput.startsWith(DELETE)) {
+        } else if (firstWordLowerCase.equals(DELETE)) {
             return new DeleteCommand(userInput);
-        } else if (lowerCaseUserInput.startsWith(RECOMMEND)) {
+        } else if (firstWordLowerCase.equals(RECOMMEND)) {
             return new RecommendCommand(userInput);
-        } else if (lowerCaseUserInput.startsWith(CONSUME)) {
+        } else if (firstWordLowerCase.equals(CONSUME)) {
             return new ConsumeCommand(userInput);
-        } else if (lowerCaseUserInput.startsWith(BUY)) {
+        } else if (firstWordLowerCase.equals(BUY)) {
             return new BuyCommand(userInput);
-        } else if (lowerCaseUserInput.startsWith(INVENTORY)) {
+        } else if (firstWordLowerCase.equals(INVENTORY)) {
             return new InventoryCommand();
         } else {
-            return new UnknownCommand(userInput);
+            return parseUnknownInput(firstWordLowerCase);
         }
+    }
+
+    private static String getFirstWord(String userInput) {
+        int firstSpaceIndex = userInput.indexOf(' ');
+        if (firstSpaceIndex == -1) {
+            //userInput does not contain a space
+            return userInput;
+        }
+        return userInput.substring(0, firstSpaceIndex);
+    }
+
+    private static Command parseUnknownInput(String firstWordLowerCase) {
+        for (String commandString : allCommands) {
+            if (firstWordLowerCase.startsWith(commandString)) {
+                return new MistypedCommand(firstWordLowerCase, commandString);
+            }
+        }
+        return new UnknownCommand(firstWordLowerCase);
     }
 }
 
