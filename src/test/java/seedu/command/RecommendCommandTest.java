@@ -144,7 +144,7 @@ public class RecommendCommandTest {
     }
 
     @Test
-    public void recommendCommand_missingIngredientAfterKeyword_throwsRecommendFormatException() throws EZMealPlanException {
+    public void recommendCommand_missingIngAfterKeyword_throwsRecommendFormatException() throws EZMealPlanException {
         logger.fine("Running recommendCommand_missingIngredientAfterKeyword_throwsRecommendFormatException()");
         RecommendCommand command = new RecommendCommand("recommend /ing");
         assertThrows(MissingIngredientException.class,
