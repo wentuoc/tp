@@ -60,7 +60,7 @@ public class Inventory {
     private ArrayList<Ingredient> findIngredientsFromString(String ingredientString) {
         ArrayList<Ingredient> ingredientsFound = new ArrayList<>();
         for (Ingredient uniqueIngredient : uniqueSortedIngredients) {
-            if (uniqueIngredient.getName().equals(ingredientString)) {
+            if (uniqueIngredient.getName().equalsIgnoreCase(ingredientString)) {
                 ingredientsFound.add(uniqueIngredient);
             }
         }
