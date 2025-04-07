@@ -3,3 +3,9 @@ fish | 1.0
 salt | 1.0
 beer | 2.0
 alcohol | 2.0
+ingredient1 | 1.0
+ingredient1 | 1.0
+ingredient1 | 1.0
+ingredient1 | 1.0
+ingredient1 | 1.0
+ingredient1 | 1.0
