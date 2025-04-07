@@ -40,8 +40,11 @@ In EZMealPlan, there are three main lists you will interact with:
 ### 🍽 Recipes List
 
 This is the primary list where all the meals are stored. It comes pre-populated with 100 meals, but you can also add 
-new meals with the `create` command.
+new meals with the `create` command. 
 
+The meal(s) will be <ins>sorted alphabetically by their names irrespective of the letter casings followed by their prices if the meal names are identical</ins> in the recipes list. The ingredient(s) in each meal will <ins>**ONLY** be sorted alphabetically</ins> by their names irrespective of the letter casings.
+
+Relevant commands:
 - Add a meal: `create`
 - View recipes list: `recipes`
 - View a filtered recipes list: `filter`
@@ -49,19 +52,25 @@ new meals with the `create` command.
 
 ### ⭐ Wishlist
 
-This is a secondary list where you can add and remove your favourite meals. By using the `select` 
-command, you can select a meal from the recipes list and add it to your wishlist. The app can look through this 
+This is a secondary list where you can add and remove your favourite meals. By using the `select` command, you can select a meal from the recipes list and add it to your wishlist. The app can look through this 
 list to `recommend` you certain meals for you to prepare.
 
+The meal(s) will be <ins>sorted alphabetically by their names irrespective of the letter casings followed by their prices if the meal names are identical</ins> in the wishlist. The ingredient(s) in each meal will <ins>**ONLY** be sorted alphabetically</ins> by their names irrespective of the letter casings.
+
+**Take Note:** Any meals in the wishlist that are not found in the recipes list will be deemed **illegal** and be <ins>removed from the wishlist</ins>. Before adding the respective meals into the wishlist, those meals **must be present in the recipes list**.
+
+Relevant commands:
 - Add a meal to wishlist: `select`
 - View wishlist: `wishlist`
 - Recommend a meal: `recommend`
 - Remove a meal from wishlist: `remove`
 
 ### 🧾 Inventory List
-This inventory list is where you can view te ingredients that you currently own at home, helping you to know what meals
-you can prepare.
+This inventory list is where you can view te ingredients that you currently own at home, helping you to know what meals you can prepare. It can contain multiple ingredients with the same name and price.
 
+The ingredient(s) will be <ins>sorted alphabetically by their names irrespective of the letter casings followed by their prices if their names are identical</ins> in the inventory list.
+
+Relevant commands:
 - Add an ingredient to inventory: `buy`
 - View inventory: `inventory`
 - Consume an ingredient from inventory: `consume`
@@ -83,11 +92,15 @@ e.g. `select 1 [/mcost 3]` can be used as `select 1 /mcost 3` or as `select 1`.
 * Extraneous parameters for commands that do not take in parameters (such as `wishlist`, `recipes`, `bye` and `clear`) will be ignored.
 e.g. if the command specifies `bye 123`, it will be interpreted as `bye`.
 
-* The command inputs are case-insensitive. The meal(s) will be sorted alphabetically by the meal name irrespective of the letter casings in both recipes list and the user's wishlist. The ingredient(s) in each meal will also be sorted in the same
-manner.
+* The command inputs are **case-insensitive**. 
 
-* Whitespaces around parentheses and commas, as well as trailing whitespaces, are ignored, but spaces in meal and 
-  ingredient names are preserved.  
+* Whitespaces around the commas and **exterior** part of parentheses for the ingredient cost (provided that the order of the parentheses is correct): &larr; `()` &rarr;, as well as trailing whitespaces, are ignored, but spaces in meal and ingredient names are preserved.
+
+* Please **do not** include whitespaces:
+  1. within the command keywords
+  2. within keywords with `/`
+  3. within the **interior part** of the parentheses for the ingredient cost (provided that the order of the parentheses is correct): `(`&rarr; &larr;`)`
+  4. within the input cost for `/mcost` filter method and the input ingredient cost enclosed within the parentheses.
 
 ### Viewing help: `help`
 
@@ -123,7 +136,7 @@ Example code:
 ```
 Sample Output
 
-![creatCommandWorkingSample.png](diagrams/creatCommandWorkingSample.png)
+![createCommandWorkingSample.png](diagrams/createCommandWorkingSample.png)
 
 * The ingredient cost such as `INGREDIENT_1_COST` must be enclosed within `()`, at least 1 digit must be present before the `.` (example: 0.05 instead of .05) and parsable into a `double`.
 * The order of the ingredients does not matter. For example, the following code has the same effect:
@@ -136,7 +149,7 @@ create /mname A_test_Meal /ing B(1.50), A(1.50)
 
 * Specifications of creating a meal:
   1. The input price for the ingredients **MUST BE IN 2 DECIMAL PLACES**. Example: `0.00`, `1.00`, `0.50`, `10.05` 
-  2. The price of every ingredient/meal can only **range from `0.00` to `DOUBLE.MAX_VALUE` (both inclusive)**. 
+  2. The price of every ingredient/meal can only **range from `0.00` to `9999999999999.99` (both inclusive) for accuracy purpose**. 
   3. Each meal must **have at least 1 ingredient**.
   4. **Each meal should not have multiple ingredients with the same ingredient name.**
   5. **Duplicate meals are not allowed.** 
@@ -190,7 +203,7 @@ Sample output:
 
 This command allows the user to filter the Recipes List. The filter conditions can be either the meal's name, ingredients, or total cost. This is chosen via the `/mname`, `/ing` or `/mname` tags. 
 * To filter with more than 1 ingredient using `/ing`, `,` is needed to separate each ingredient. 
-* The input price for the meal cost `/mcost` **MUST BE IN 2 DECIMAL PLACES** and can only **range from `0.00` to `DOUBLE.MAX_VALUE` (both inclusive)**. Example: `0.00`, `1.00`, `0.50`, `10.05`
+* The input price for the meal cost `/mcost` **MUST BE IN 2 DECIMAL PLACES** and can only **range from `0.00` to `9999999999999.99` (both inclusive) for accuracy purpose**. Example: `0.00`, `1.00`, `0.50`, `10.05`
 
 
 **Take Note:**
@@ -275,7 +288,7 @@ two modes:
   * This is done by inserting the filter condition tag (`/mname`, `/ing`, or `/mcost`), e.g. `select INDEX_NUMBER 
     /ing INGREDIENT_1_NAME[, INGREDIENT_2_NAME, ...]`.
   * To filter with more than 1 ingredient using `/ing`, `,` is needed to separate each ingredient.
-  * The input price for the meal cost `/mcost` **MUST BE IN 2 DECIMAL PLACES** and can only **range from `0.00` to `DOUBLE.MAX_VALUE` (both inclusive)**. Example: `0.00`, `1.00`, `0.50`, `10.05`
+  * The input price for the meal cost `/mcost` **MUST BE IN 2 DECIMAL PLACES** and can only **range from `0.00` to `9999999999999.99` (both inclusive) for accuracy purpose**. Example: `0.00`, `1.00`, `0.50`, `10.05`
   * For example, `select 1 /ing Chicken` means to filter out all the meals with at least 1 ingredient that has the word `Chicken` regardless of the casing from the Recipes List, and then selecting the first meal from the filtered list.
 
 The filtered mode has the same user input format conditions as the `filter` command simply by replacing `filter` with `select INDEX_NUMBER`. Refer to the **Take Note** section of the [filter](https://ay2425s2-cs2113-f14-4.github.io/tp/UserGuide.html#filtering-the-recipes-list-filter) command for more information.
@@ -352,7 +365,9 @@ This command allows the user to add ingredients into the inventory.
 * The ingredient cost such as `INGREDIENT_1_COST` must be enclosed within `()`, at least 1 digit must be present before the `.` (example: 0.05 instead of .05) and parsable into a `double`.
 * To buy more than 1 ingredient, `,` is needed to separate each ingredient.
   The input price for the ingredients **MUST BE IN 2 DECIMAL PLACES**. Example: `0.00`, `1.00`, `0.50`, `10.05`
-* The price of every ingredient can only **range from `0.00` to `DOUBLE.MAX_VALUE` (both inclusive)**. 
+* The price of every ingredient can only **range from `0.00` to `9999999999999.99` (both inclusive) for accuracy purpose**. 
+* Multiple ingredients are allowed to have the same name and price.
+
 Syntax:
 ```
     buy /ing INGRIDIENT_1_NAME(INGRIDIENT_1_PRICE)[, INGRIDIENT_2_NAME(INGREDIENT_2_PRICE), ...]
