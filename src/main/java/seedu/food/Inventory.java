@@ -68,7 +68,8 @@ public class Inventory {
 
     public String toString() {
         ArrayList<Ingredient> ingredientsArrayList = new ArrayList<>(ingredients.keySet());
-        ingredientsArrayList.sort(Comparator.comparing(Ingredient::getName)); //TODO: might have issues with this
+        ingredientsArrayList.sort(Comparator.comparing(Ingredient::getName,
+                String.CASE_INSENSITIVE_ORDER).thenComparing(Ingredient::getPrice));
         int count = 0;
         StringBuilder outputString = new StringBuilder();
         for (Ingredient ingredient : ingredientsArrayList) {

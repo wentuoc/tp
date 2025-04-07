@@ -24,14 +24,15 @@ public abstract class Product {
     }
 
     /**
-     * Sets the price of a product, which must be greater than or equals to 0.
+     * Sets the price of a product, which must be between 0.00 to 9999999999999.99
      *
-     * @throws InvalidPriceException If specified price is less than 0.
+     * @throws InvalidPriceException If specified price is out of range.
      */
     public void setPrice(double price) throws InvalidPriceException {
         double zeroDollars = 0.00;
+        double maxPrice = 9999999999999.99;
         String name = getName();
-        if (price < zeroDollars || price > Double.MAX_VALUE) {
+        if (price < zeroDollars || price > maxPrice) {
             logger.severe("Trigger InvalidPriceException()!");
             throw new InvalidPriceException(name);
         }

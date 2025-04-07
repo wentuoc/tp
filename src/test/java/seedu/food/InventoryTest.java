@@ -60,14 +60,13 @@ class InventoryTest {
         inventory.addIngredient(ingredient2);
         inventory.addIngredient(ingredient3);
         inventory.addIngredient(ingredient4);
-        /*String expectedOutput = """
+        String expectedOutput = """
                     1. Apple ($1.00): 1
                     2. Apple ($2.00): 1
                     3. Banana ($3.00): 1
                     4. Chocolate ($4.00): 1
                 """;
-        assertEquals(expectedOutput, inventory.toString());*/
-        //TODO: comparator for ingredients
+        assertEquals(expectedOutput, inventory.toString());
     }
 
     @Test

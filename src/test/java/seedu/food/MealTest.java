@@ -115,8 +115,8 @@ class MealTest {
         meal1.addIngredient(chicken);
         meal1.addIngredient(rice);
         meal1.addIngredient(cucumber);
-        assertEquals(1.8, meal1.getPrice());
-        assertEquals("[Chicken ($1.00), Rice ($0.50), Cucumber ($0.30)]", meal1.getIngredientList().toString());
+        assertEquals(1.80, meal1.getPrice());
+        assertEquals("[Chicken ($1.00), Cucumber ($0.30), Rice ($0.50)]", meal1.getIngredientList().toString());
         logger.info("Ingredient list and price is correct");
     }
 

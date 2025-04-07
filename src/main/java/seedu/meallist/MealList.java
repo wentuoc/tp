@@ -26,7 +26,7 @@ public abstract class MealList {
     public void addMeal(Meal newMeal) throws EZMealPlanException {
         checkDuplicateMeal(newMeal);
         mealList.add(newMeal);
-        mealList.sort(Comparator.comparing(meal -> meal.getName().toLowerCase()));
+        mealList.sort(Comparator.comparing(Meal::getName,String.CASE_INSENSITIVE_ORDER).thenComparing(Meal::getPrice));
     }
 
     /**
@@ -77,3 +77,5 @@ public abstract class MealList {
         return mealList.contains(meal);
     }
 }
+
+
