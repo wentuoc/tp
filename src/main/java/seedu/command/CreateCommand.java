@@ -4,13 +4,10 @@ import seedu.checkers.CreateChecker;
 import seedu.exceptions.EZMealPlanException;
 import seedu.food.Ingredient;
 import seedu.food.Meal;
-import seedu.food.Product;
 import seedu.logic.MealManager;
 import seedu.meallist.MealList;
 import seedu.ui.UserInterface;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.logging.Logger;
 
 public class CreateCommand extends Command {
@@ -65,8 +62,6 @@ public class CreateCommand extends Command {
             Ingredient newIngredient = new Ingredient(ingredientName, ingredientPrice);
             newMeal.addIngredient(newIngredient);
         }
-        ArrayList<Ingredient> mealIngredients = (ArrayList<Ingredient>) newMeal.getIngredientList();
-        mealIngredients.sort(Comparator.comparing(Product::getName));
     }
 
     private static String[] getNamePrice(String ingredient) {
