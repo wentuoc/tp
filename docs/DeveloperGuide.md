@@ -325,7 +325,7 @@ SelectChecker Class check():
     }
 ```
 ##### 3.3 Sequence Diagram
-Below is the UML sequence diagram for the SelectCommand and SelectChecker, illustrating their interactions with the system components:
+Below are the UML sequence diagrams for the SelectCommand and SelectChecker, illustrating their interactions with the system components:
 
 ![SelectCommand.png](diagrams/SelectCommand.png)
 ![SelectChecker.png](diagrams/SelectChecker.png)
@@ -585,7 +585,8 @@ public void createCommand_fail() {
     }
 ```
 
-#### 6. DeleteCommand
+#### 6. DeleteCommand 
+* RemoveDeleteChecker will be explained with RemoveCommand.
 
 ##### 6.1 Design Overview
 
@@ -610,15 +611,15 @@ DeleteCommand is responsible for removing a specific meal from the recipes list 
 
 ###### Component Level: DeleteCommand Class
 
-- Inherits from the abstract `RemoveDeleteCommand` class
-- Implements the `execute(MealManager mealmanager, UserInterface ui)` method
+- Inherits from the abstract `RemoveDeleteCommand` class, which in turn inherits from the abstract `Command` class.
+- Implements the `execute(MealManager mealmanager, UserInterface ui)` method.
 - Uses logging (via `logger.fine(...)` to indicate successful deletion.
-- Retrieves the main meal list using `mealManager.getMainMeals()` (inherited logic)
-- Removes the meal at the specified index (inherited logic)
-- Retrieves the wish list using `mealManager.getWishList()`
-- Checks if the deleted meal exists in the wish list using `wishlist.contains(...)`
-- If it exists, removes it using `wishList.removeMeal(...)`
-- Calls `ui.printRemovedMessage(...)` to notify the user of removal from the wish list
+- Retrieves the main meal list using `mealManager.getMainMeals()` (inherited logic).
+- Removes the meal at the specified index (inherited logic).
+- Retrieves the wish list using `mealManager.getWishList()`.
+- Checks if the deleted meal exists in the wish list using `wishlist.contains(...)`.
+- If it exists, removes it using `wishList.removeMeal(...)`.
+- Calls `ui.printRemovedMessage(...)` to notify the user of removal from the wish list.
 
 ###### Code Example
 ```java
@@ -642,7 +643,7 @@ DeleteCommand is responsible for removing a specific meal from the recipes list 
 Here is the sequence diagram for illustrating the interactions between different classes while processing the user input:
 ![.\diagrams\DeleteCommand.png](./diagrams/DeleteCommand.png)
 
-### 7. Filter Command and FilterChecker
+### 7. FilterCommand and FilterChecker
 
 ##### 7.1 Design Overview
 
@@ -652,7 +653,7 @@ FilterChecker checks if the user input is valid before passing to the FilterComm
 ###### Design Goals
 
 **Single Responsibility:**
-- FilterCommand solely handles the filtering of the recipes list according to the user input while FilterChecker solely handles the checking of the Filter command input by the user.
+- FilterCommand solely handles the filtering of the recipes list according to the user input while FilterChecker solely handles the checking of the Filter command inputted by the user.
 
 **Decoupling:**
 - By segregating responsibilities, it makes the code easier to maintain and extend.
@@ -710,7 +711,8 @@ public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlan
 }
 ```
 ##### 7.3 Sequence Diagrams
-Here are Sequence Diagrams depicting the interactions between the classes:
+Here are Sequence Diagrams depicting the interactions between the FilterCommand, FilterChecker and other system component classes:
+
 ![FilterCommand.png](diagrams/FilterCommand.png)
 ![FilterChecker.png](diagrams/FilterChecker.png)
 
@@ -765,7 +767,87 @@ public void filterCommand_success() {
   logger.info("filterCommand_success() passed");
 }
 ```
+### 7. RemoveCommand and RemoveDeleteChecker
 
+##### 7.1 Design Overview
+
+###### Function
+RemoveDeleteChecker checks if the user input is valid before passing to the RemoveCommand to remove a meal from the wishlist (when it is not empty) based on the user input.
+
+###### Design Goals
+
+**Single Responsibility:**
+- RemoveCommand solely handles the removing of meal from the wishlist according to the user input while RemoveDeleteChecker solely handles the checking of the Remove command inputted by the user.
+
+**Decoupling:**
+- By segregating responsibilities, it makes the code easier to maintain and extend.
+
+##### 7.2 Implementation Details
+
+###### Component Level: RemoveDeleteChecker Class
+- Inherits from the abstract Checker Class.
+- Implements the `check()` method.
+- Uses logging to indicate execution.
+- `isPassed` is set to `true` once the user input passes all the required checks.
+- Passes the valid user input back into the RemoveCommand class for removing a meal from the wishlist.
+- 
+###### Component Level: RemoveCommand Class
+- Inherits from the abstract RemoveDeleteCommand Class, which in turn inherits from the abstract Command class.
+- Implements the `execute(MealManager mealManager, UserInterface ui)` method.
+- Uses logging to indicate execution.
+- Removes a meal from the wishlist according to the user input.
+
+###### Code Example
+
+```java 
+@Override
+    public void check() throws EZMealPlanException {
+        logger.fine("Checking '" + userInput + "' for errors.");
+        String indexString = extractIndex(userInput);
+        parseIndex(indexString);
+        setPassed(true);
+    }
+```
+RemoveDeleteCommand execute() method:
+```java
+@Override
+    public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
+        MealList wishList = mealManager.getWishList();
+        MealList recipesList = mealManager.getRecipesList();
+        int indexOfIndex = 1;
+
+        boolean isValidUserInput = checkValidUserInput();
+        if (!isValidUserInput) {
+            logger.severe("Huge issue detected! The user input format remains invalid despite " +
+                    "passing all the checks for input formatting error.");
+        }
+        assert isValidUserInput;
+        String regexPattern = "\\s+";
+        int indexAdjustment = 1;
+        int index = Integer.parseInt(validUserInput.split(regexPattern)[indexOfIndex]) - indexAdjustment;
+        if (removeOrDelete.equals(remove)) {
+            removedOrDeletedMeal = mealManager.removeMeal(index, wishList);
+            ui.printRemovedMessage(removedOrDeletedMeal, wishList.size());
+        } else if (removeOrDelete.equals(delete)) {
+            removedOrDeletedMeal = mealManager.removeMeal(index, recipesList);
+            ui.printDeletedMessage(removedOrDeletedMeal, recipesList.size());
+        }
+    }
+```
+
+RemoveCommand execute() method:
+```java
+ @Override
+    public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
+        super.execute(mealManager, ui);
+        logger.fine("Command finished executing: Removed \"" + removedOrDeletedMeal.getName() + "\" meal");
+    }
+```
+##### 7.3 Sequence Diagrams
+Here are Sequence Diagrams depicting the interactions between the RemoveCommand, RemoveDeleteChecker and other system component classes:
+
+![RemoveCommand.png](diagrams/RemoveCommand.png)
+![RemoveDeleteChecker.png](diagrams/RemoveDeleteChecker.png)
 
 ## Implementation
 
