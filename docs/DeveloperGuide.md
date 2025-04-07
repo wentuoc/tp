@@ -147,6 +147,7 @@ public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlan
 - Asserts that the UI received the expected label and list of meals
 
 ###### Unit Test Code
+Here is a snippet of the unit test code:
 ```java
 @Test
 public void testExecute_recipesCommand_printsRecipesList() throws EZMealPlanException {
@@ -222,6 +223,7 @@ public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlan
 - Verifies that the UI output matches the expected label and meal list
 
 ###### Unit Test Code
+Here is a snippet of the unit test code:
 ```java
 @Test
 public void testExecute_wishlistCommand_printsUserChosenMeals() throws EZMealPlanException {
@@ -346,6 +348,7 @@ Below are the UML sequence diagrams for the SelectCommand and SelectChecker, ill
 - Each test verifies expected exception messages match actual exception messages
 -
 ###### Unit Test Code
+Here is a snippet of the unit test code:
 ```java
 @Test
 public void selectCommand_success() {
@@ -455,6 +458,7 @@ private void updateInventoryListFile(MealManager mealManager, UserInterface ui) 
 - Once both checks are completed, the files contents will be transferred back into the recipesList.txt, wishList.txt and inventoryList.txt from the temporary files.
 
 ###### Unit Test Code
+Here is a snippet of the unit test code:
 ```java
   @Test
 public void byeCommandTest_success() {
@@ -559,6 +563,7 @@ Here are Sequence Diagrams depicting the flow of the processing of user inputs i
 - Verifies that the exceptions are thrown according to the user inputs.
 
 ###### Unit Test Code
+Here are some snippets of the unit test code:
 ```java
  @Test
 public void createCommand_fail() {
@@ -736,6 +741,7 @@ For the `/mcost` filtering method, simply replace:
 - Verifies that the exceptions are thrown according to the user inputs.
 
 ###### Unit Test Code
+Here are some snippets of the unit test code:
 ```java
  @Test
 public void filterChecker_success() throws EZMealPlanException {
@@ -849,6 +855,84 @@ Here are Sequence Diagrams depicting the interactions between the RemoveCommand,
 ![RemoveCommand.png](diagrams/RemoveCommand.png)
 ![RemoveDeleteChecker.png](diagrams/RemoveDeleteChecker.png)
 
+### 9. ClearCommand 
+
+##### 9.1 Design Overview
+
+###### Function
+ClearCommand clears the wishlist.
+
+###### Design Goals
+
+**Single Responsibility:**
+- ClearCommand solely handles the clearing of the wishlist according to the user input.
+
+**Decoupling:**
+- By segregating responsibilities, it makes the code easier to maintain and extend.
+
+**Testability:**
+- The design supports unit testing by allowing test-specific ClearCommandTest to capture and verify the output.
+
+##### 9.2 Implementation Details
+
+###### Component Level: RemoveCommand Class
+- Inherits from the abstract Command class.
+- Implements the `execute(MealManager mealManager, UserInterface ui)` method.
+- Uses logging to indicate execution.
+- Clears the wishlist according to the user input.
+
+###### Code Example
+
+```java
+  @Override
+    public void execute(MealManager mealManager, UserInterface ui) {
+        List<Meal> wishList = mealManager.getWishList().getList();
+        wishList.clear();
+        ui.printClearedList();
+    }
+```
+##### 9.3 Sequence Diagram
+Here are Sequence Diagrams depicting the interactions between ClearCommand and other system component classes:
+
+![ClearCommand.png](diagrams/ClearCommand.png)
+
+##### 9.4 Unit Testing
+
+###### Testing Approach
+- Uses a test-specific ClearCommandTest to ensure that the ClearCommand account for different types of user inputs and proceed as normal.
+- Test by adding the wishlist with some meals.
+- Executes ClearCommand.
+- Checks that the wishlist is empty after running the ClearCommand and the expected message about the wishlist being cleared is being printed normally.
+
+###### Unit Test Code
+Here is a snippet of the unit test code:
+```java
+  @Test
+    void clearsWishList_noInputs_printsMessage() throws EZMealPlanException {
+        logger.fine("running execute_clearsWishList_printsMessage()");
+
+        // Prepare wishlist with some meals
+        MealList wishList = mealManager.getWishList();
+        wishList.addMeal(new Meal("Chicken Rice"));
+        wishList.addMeal(new Meal("Pasta"));
+
+        // Ensure wishList is not empty before clearing
+        assertEquals(2, wishList.getList().size(), "Wishlist should contain 2 meals before clearing.");
+
+        // Execute ClearCommand
+        ClearCommand clearCommand = new ClearCommand();
+        clearCommand.execute(mealManager, ui);
+
+        // Verify wishList is now empty
+        assertTrue(wishList.getList().isEmpty(), "Wishlist should be empty after ClearCommand.");
+
+        // Verify output
+        String expectedOutput = "All meals cleared from your wishlist!" + ls;
+        assertEquals(expectedOutput, outContent.toString(), "Command output does not match expected message.");
+
+        logger.info("execute_clearsWishList_printsMessage() passed");
+    }
+```
 ## Implementation
 
 
