@@ -1053,6 +1053,94 @@ public void testExecute_viewRecipeMeal_success() throws EZMealPlanException {
   logger.info("testExecute_viewRecipeMeal_success passed");
 }
 ```
+### 11. HelpCommand 
+
+##### 11.1 Design Overview
+
+###### Function
+HelpCommand redirects the UI to print the messages of the command that the user has doubt with. The messages will briefly state what the command does, the respective input and the expected output.
+
+###### Design Goals
+**Single Responsibility:**
+- HelpCommand solely handles the directing of the help messages to be printed by the user interface according to the command that the user has doubt with or is being inputted.
+
+**Decoupling:**
+- By segregating responsibilities, it makes the code easier to maintain and extend.
+
+##### 11.2 Implementation Details
+
+###### Component Level: HelpCommand Class
+- Inherits from the abstract Command Class.
+- Implements the `execute(MealManager mealManager, UserInterface ui)` method.
+- Uses logging to indicate execution.
+- Choose the respective help message to be printed by the user interface based on the command that the user inputted.
+
+###### Code Example
+```java
+@Override
+    public void execute(MealManager mealManager, UserInterface ui) {
+        if (commandDescription.isEmpty()) {
+            ui.printGeneralHelp();
+            return;
+        }
+        switch(commandDescription) {
+        case RECIPES:
+            ui.printRecipesCommandHelp();
+            break;
+        case WISHLIST:
+            ui.printWishlistCommandHelp();
+            break;
+        case FILTER:
+            ui.printFilterCommandHelp();
+            break;
+        case SELECT:
+            ui.printSelectCommandHelp();
+            break;
+        case REMOVE:
+            ui.printRemoveCommandHelp();
+            break;
+        case CREATE:
+            ui.printCreateCommandHelp();
+            break;
+        case DELETE:
+            ui.printDeleteCommandHelp();
+            break;
+        case VIEW:
+            ui.printViewCommandHelp();
+            break;
+        case CLEAR:
+            ui.printClearCommandHelp();
+            break;
+        case BYE:
+            ui.printByeCommandHelp();
+            break;
+        case HELP:
+            ui.printHelpCommandHelp();
+            break;
+        case RECOMMEND:
+            ui.printRecommendCommandHelp();
+            break;
+        case CONSUME:
+            ui.printConsumeCommandHelp();
+            break;
+        case BUY:
+            ui.printBuyCommandHelp();
+            break;
+        case INVENTORY:
+            ui.printInventoryCommandHelp();
+            break;
+        default:
+            ui.printUnknownCommand(commandDescription);
+            break;
+        }
+    }
+```
+
+##### 10.3 Sequence Diagram
+Here is the sequence diagrams depicting the interactions between HelpCommand and other system component classes:
+![HelpCommand.png](diagrams/HelpCommand.png)
+
+For simplicity sake, only the command that matches the one in user input is shown in the sequence diagram. The full `execute(mealManager,ui)` method actually consists of multiple options with each option representing a command keyword and its respective help message to be printed by the user interface.
 
 ## Implementation
 
