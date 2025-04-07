@@ -34,8 +34,8 @@ public class ViewCheckerTest {
             FileHandler fileHandler = new FileHandler("ViewCheckerTest.log", true);
             fileHandler.setLevel(Level.FINE);
             logger.addHandler(fileHandler);
-        } catch (IOException e) {
-            logger.log(Level.SEVERE, "Failed to set up file logger", e);
+        } catch (IOException ioException) {
+            logger.log(Level.SEVERE, "Failed to set up file logger", ioException);
         }
     }
 
