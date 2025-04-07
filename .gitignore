@@ -20,4 +20,5 @@ text-ui-test/EXPECTED-UNIX.TXT
 *.log.lck
 *.puml
 *.1
-*lck
+*.2
+*.lck
