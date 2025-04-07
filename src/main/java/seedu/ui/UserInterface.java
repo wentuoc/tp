@@ -42,6 +42,11 @@ public class UserInterface {
         System.out.println("me no understand what you talking.");
     }
 
+    public void printMistypedCommand(String userInput, String actualCommand) {
+        System.out.println("Invalid command: " + userInput);
+        System.out.println("Did you mean: " + actualCommand + "?");
+    }
+
     public void printErrorMessage(Exception exception) {
         System.out.println(exception.getMessage());
     }
