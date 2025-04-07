@@ -25,8 +25,17 @@ public class Inventory {
         } else {
             ingredients.put(ingredient, 1);
             uniqueSortedIngredients.add(ingredient);
-            uniqueSortedIngredients.sort(Comparator.comparing(Ingredient::getName).thenComparing(Ingredient::getPrice));
+            uniqueSortedIngredients.sort(Comparator.comparing(Ingredient::getName,String.CASE_INSENSITIVE_ORDER).
+                    thenComparing(Ingredient::getPrice));
         }
+    }
+
+    public void addIngredient(Ingredient ingredient, int quantity) {
+        ingredients.put(ingredient, quantity);
+        uniqueSortedIngredients.add(ingredient);
+        uniqueSortedIngredients.sort(Comparator.comparing(Ingredient::getName,String.CASE_INSENSITIVE_ORDER).
+                thenComparing(Ingredient::getPrice));
+
     }
 
     private boolean isIngredientInInventory(Ingredient ingredient) {
@@ -98,22 +107,13 @@ public class Inventory {
     public ArrayList<String> toDataArray() {
         ArrayList<String> outputDataArray = new ArrayList<>();
         for (Ingredient ingredient : uniqueSortedIngredients) {
-            outputDataArray.add(ingredient + " | " + getIngredientAmount(ingredient));
+            outputDataArray.add(ingredient.toDataString() + " | " + getIngredientAmount(ingredient));
         }
         return outputDataArray;
     }
 
-    //Remove
     public List<Ingredient> getIngredients() {
-        return new ArrayList<>(ingredients.keySet());
-    }
-
-    public HashMap<Ingredient, Integer> getIngredientsAsHashMap() {
-        return ingredients;
-    }
-
-    public int numberOfUniqueIngredients() {
-        return ingredients.size();
+        return uniqueSortedIngredients;
     }
 
     public boolean hasIngredient(String ingredientName) {

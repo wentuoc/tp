@@ -68,7 +68,7 @@ public class Storage {
     }
 
     public static void loadExistingInventory(MealManager mealManager) throws FileNotFoundException {
-        Inventory ingredients = mealManager.getInventory();
+        Inventory inventory = mealManager.getInventory();
         if (inventoryListFile.exists()) {
             Scanner scanner = new Scanner(inventoryListFile);
             while (scanner.hasNextLine()) {
@@ -76,7 +76,7 @@ public class Storage {
                 if (line.isEmpty()) {
                     continue;
                 }
-                checkValidIngredients(line, ingredients);
+                checkValidIngredients(line, inventory);
             }
             scanner.close();
         }
@@ -182,12 +182,29 @@ public class Storage {
         }
     }
 
-    private static void checkValidIngredients(String line, Inventory ingredients) {
+    private static void checkValidIngredients(String line, Inventory inventory) {
+        String[] parts = line.split("\\s*\\|\\s*");
+        int validLength = 3;
+        if (parts.length < validLength) {
+            throw new IllegalArgumentException("Invalid ingredient data: " + line);
+        }
+        addIngredientToInventory(parts, inventory);
+    }
+
+    private static void addIngredientToInventory(String[] parts, Inventory inventory) {
+        int nameIndex = 0;
+        int costIndex = 1;
+        int quantityIndex = 2;
+        String name = parts[nameIndex];
+        String price = parts[costIndex];
+        int quantity = Integer.parseInt(parts[quantityIndex]);
+
         try {
-            Ingredient newIngredient = Ingredient.fromData(line);
-            ingredients.addIngredient(newIngredient);
+            Ingredient newIngredient = new Ingredient(name, price);
+            inventory.addIngredient(newIngredient, quantity);
         } catch (EZMealPlanException ezMealPlanException) {
             System.err.println(ezMealPlanException.getMessage());
+            System.err.println("The current meal will be skipped.\n");
         }
     }
 }
