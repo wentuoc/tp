@@ -767,9 +767,9 @@ public void filterCommand_success() {
   logger.info("filterCommand_success() passed");
 }
 ```
-### 7. RemoveCommand and RemoveDeleteChecker
+### 8. RemoveCommand and RemoveDeleteChecker
 
-##### 7.1 Design Overview
+##### 8.1 Design Overview
 
 ###### Function
 RemoveDeleteChecker checks if the user input is valid before passing to the RemoveCommand to remove a meal from the wishlist (when it is not empty) based on the user input.
@@ -782,7 +782,7 @@ RemoveDeleteChecker checks if the user input is valid before passing to the Remo
 **Decoupling:**
 - By segregating responsibilities, it makes the code easier to maintain and extend.
 
-##### 7.2 Implementation Details
+##### 8.2 Implementation Details
 
 ###### Component Level: RemoveDeleteChecker Class
 - Inherits from the abstract Checker Class.
@@ -843,7 +843,7 @@ RemoveCommand execute() method:
         logger.fine("Command finished executing: Removed \"" + removedOrDeletedMeal.getName() + "\" meal");
     }
 ```
-##### 7.3 Sequence Diagrams
+##### 8.3 Sequence Diagrams
 Here are Sequence Diagrams depicting the interactions between the RemoveCommand, RemoveDeleteChecker and other system component classes:
 
 ![RemoveCommand.png](diagrams/RemoveCommand.png)
