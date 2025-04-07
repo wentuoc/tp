@@ -57,7 +57,7 @@ list to `recommend` you certain meals for you to prepare.
 
 The meal(s) will be <ins>sorted alphabetically by their names irrespective of the letter casings followed by their prices if the meal names are identical</ins> in the wishlist. The ingredient(s) in each meal will <ins>**ONLY** be sorted alphabetically</ins> by their names irrespective of the letter casings.
 
-**Take Note:** Any meals in the wishlist that are not found in the recipes list will be deemed **illegal** and be <ins>removed from the wishlist</ins>. Before adding the respective meals into the wishlist, those meals **must be present in the recipes list**.
+**Take Note:** Any meals in the wishlist that are not found in the recipes list will be deemed **illegal** and be <ins>removed from the wishlist</ins>. Before adding the respective meals into the wishlist, those meals **must be present in the recipes list**. The same meal cannot be added more than once into the wishlist.
 
 Relevant commands:
 - Add a meal to wishlist: `select`
@@ -66,7 +66,7 @@ Relevant commands:
 - Remove a meal from wishlist: `remove`
 
 ### 🧾 Inventory List
-This inventory list is where you can view te ingredients that you currently own at home, helping you to know what meals you can prepare. It can contain multiple ingredients with the same name and price.
+This inventory list is where you can view the ingredients that you currently own at home, helping you to know what meals you can prepare. It can contain multiple ingredients with the same name and price.
 
 The ingredient(s) will be <ins>sorted alphabetically by their names irrespective of the letter casings followed by their prices if their names are identical</ins> in the inventory list.
 
