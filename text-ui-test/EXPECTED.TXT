@@ -4,8 +4,7 @@ How may I help you?
 Invalid command: excusemeee
 me no understand what you talking.
 How may I help you?
-"/mname" keyword cannot be missing from the "create" command.
-
+Missing arguments for create command.
 How may I help you?
 "/ing" keyword cannot be missing from the "create" command.
 
@@ -29,10 +28,11 @@ It must be present after the '/mname' keyword and before '/ing' keyword.
 
 How may I help you?
 Ingredient: cheesecake already exists in the meal: cheesecake.
+To avoid confusion between the ingredients in the same meal, please use a different ingredient name.
 
 How may I help you?
-You have successfully added a meal: cheesecake ($9.00) into main meal list.
-Here are the meals in main meal list:
+You have successfully added a meal: cheesecake ($9.00) into recipes list.
+Here are the meals in recipes list:
     1. Bak Chang ($3.90)
     2. Bak Chor Mee ($3.60)
     3. Bak Kut Teh ($4.10)
@@ -135,10 +135,10 @@ Here are the meals in main meal list:
     100. Wanton Noodle ($4.00)
     101. Yong Tau Foo ($3.50)
 
-Currently, you have 101 meals in main meal list.
+Currently, you have 101 meals in recipes list.
 How may I help you?
-You have successfully added a meal: cheesecake ($10.00) into main meal list.
-Here are the meals in main meal list:
+You have successfully added a meal: cheesecake ($10.00) into recipes list.
+Here are the meals in recipes list:
     1. Bak Chang ($3.90)
     2. Bak Chor Mee ($3.60)
     3. Bak Kut Teh ($4.10)
@@ -242,6 +242,12 @@ Here are the meals in main meal list:
     101. Wanton Noodle ($4.00)
     102. Yong Tau Foo ($3.50)
 
-Currently, you have 102 meals in main meal list.
+Currently, you have 102 meals in recipes list.
+How may I help you?
+cheesecake ($9.00) has been removed from the recipes list!
+There are now 101 meals in the recipes list.
+How may I help you?
+cheesecake ($10.00) has been removed from the recipes list!
+There are now 100 meals in the recipes list.
 How may I help you?
 Bye. Hope to see you again soon!
