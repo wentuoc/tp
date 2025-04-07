@@ -47,7 +47,7 @@ public class Inventory {
         return uniqueSortedIngredients.get(index);
     }
 
-    public void removeIngredient(String ingredientNameToBeRemoved) throws InventoryMultipleIngredientsException,
+    public Ingredient removeIngredient(String ingredientNameToBeRemoved) throws InventoryMultipleIngredientsException,
             InventoryIngredientNotFound {
         ArrayList<Ingredient> ingredientsToRemove = findIngredientsFromString(ingredientNameToBeRemoved);
         if (hasMultipleIngredientsWithSameName(ingredientsToRemove)) {
@@ -61,8 +61,25 @@ public class Inventory {
                 ingredients.remove(ingredientToBeRemoved);
                 uniqueSortedIngredients.remove(ingredientToBeRemoved);
             }
-        } else if (hasNoIngredients(ingredientsToRemove)) {
+            return ingredientToBeRemoved;
+        } else {
             throw new InventoryIngredientNotFound(ingredientNameToBeRemoved);
+        }
+    }
+
+    public void removeIngredient(Ingredient ingredient) throws InventoryIngredientNotFound {
+        if (uniqueSortedIngredients.contains(ingredient)) {
+            int indexOfIngredient = uniqueSortedIngredients.indexOf(ingredient);
+            Ingredient ingredientToBeRemoved = uniqueSortedIngredients.get(indexOfIngredient);
+            int ingredientQuantity = ingredients.get(ingredientToBeRemoved);
+            if (ingredientQuantity > 1) {
+                ingredients.put(ingredientToBeRemoved, ingredientQuantity - 1);
+            } else {
+                ingredients.remove(ingredientToBeRemoved);
+                uniqueSortedIngredients.remove(ingredientToBeRemoved);
+            }
+        } else {
+            throw new InventoryIngredientNotFound(ingredient.toString());
         }
     }
 
@@ -74,10 +91,6 @@ public class Inventory {
             }
         }
         return ingredientsFound;
-    }
-
-    private boolean hasNoIngredients(ArrayList<Ingredient> ingredients) {
-        return ingredients.isEmpty();
     }
 
     private boolean hasMultipleIngredientsWithSameName(ArrayList<Ingredient> ingredients) {
