@@ -15,6 +15,7 @@ public class SelectChecker extends FilterSelectChecker {
     @Override
     public void check() throws EZMealPlanException {
         super.check();
+        setPassed(false);
         indexStringCheck();
         setPassed(true);
     }
@@ -22,7 +23,6 @@ public class SelectChecker extends FilterSelectChecker {
     private void indexStringCheck() throws EZMealPlanException {
         String indexString = getIndexString().trim();
         if (indexString.isEmpty()) {
-            setPassed(false);
             throw new MissingMealIndexException(filterOrSelect);
         }
     }
