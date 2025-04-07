@@ -1,0 +1,18 @@
+<<<<<<< HEAD
+=======
+Bak Chang | Glutinous Rice (1.50) | Mushrooms (0.70) | Pork (1.50) | Salt (0.20)
+Bak Chor Mee | Minced Pork (1.50) | Noodles (1.00) | Pork Fat (0.80) | Vinegar (0.30)
+Bak Kut Teh | Garlic (0.30) | Herbs (0.80) | Pork Ribs (2.50) | Soy Sauce (0.50)
+>>>>>>> b8ab1cb98973f179c73833c17b5529789a1fa86f
+<<<<<<< HEAD
+=======
+Bak Chang | Glutinous Rice (1.50) | Mushrooms (0.70) | Pork (1.50) | Salt (0.20)
+Bak Chor Mee | Minced Pork (1.50) | Noodles (1.00) | Pork Fat (0.80) | Vinegar (0.30)
+Bak Kut Teh | Garlic (0.30) | Herbs (0.80) | Pork Ribs (2.50) | Soy Sauce (0.50)
+>>>>>>> b8ab1cb98973f179c73833c17b5529789a1fa86f
+<<<<<<< HEAD
+=======
+Bak Chang | Glutinous Rice (1.50) | Mushrooms (0.70) | Pork (1.50) | Salt (0.20)
+Bak Chor Mee | Minced Pork (1.50) | Noodles (1.00) | Pork Fat (0.80) | Vinegar (0.30)
+Bak Kut Teh | Garlic (0.30) | Herbs (0.80) | Pork Ribs (2.50) | Soy Sauce (0.50)
+>>>>>>> b8ab1cb98973f179c73833c17b5529789a1fa86f
