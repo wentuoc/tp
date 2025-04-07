@@ -71,7 +71,7 @@ public class IngredientTest {
     }
 
     @Test
-    public void equals_sameNameDifferentPrice_true() throws EZMealPlanException {
+    public void equals_sameNameDifferentPrice_false() throws EZMealPlanException {
         logger.fine("Running equals_sameNameDifferentPrice_true()");
         String ingredient1Name = "salt";
         String ingredient1Price = "2.50";
@@ -79,8 +79,8 @@ public class IngredientTest {
         String ingredient2Price = "2.00";
         Ingredient newIngredient1 = new Ingredient(ingredient1Name, ingredient1Price);
         Ingredient newIngredient2 = new Ingredient(ingredient2Name, ingredient2Price);
-        assertEquals(newIngredient1, newIngredient2);
-        logger.info("Equality is true");
+        assertNotEquals(newIngredient1, newIngredient2);
+        logger.info("Equality is false");
     }
 
     @Test

@@ -125,7 +125,7 @@ class BuyCommandTest {
         logger.fine("Running testExecute_invalidIngredientFormat_exceptionThrown()");
         MealManager mealManager = new MealManager();
         String[] userInput = {"buy /ing ing1", "buy /ing ing1 ing2", "buy /ing ing1, ing2", "buy /ing ing1 ()",
-                "buy /ing ing1 1.00", "buy /ing ing1 (abc)"};
+            "buy /ing ing1 1.00", "buy /ing ing1 (abc)"};
         for (String invalidInput : userInput) {
             Command command = new BuyCommand(invalidInput);
             assertThrows(InvalidIngredientFormatException.class, () -> command.execute(mealManager, ui));

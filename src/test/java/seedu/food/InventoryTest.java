@@ -1,14 +1,14 @@
 package seedu.food;
 
-import org.junit.jupiter.api.Test;
 import seedu.exceptions.IngredientPriceFormatException;
 import seedu.exceptions.InvalidPriceException;
 import seedu.exceptions.InventoryIngredientNotFound;
 import seedu.exceptions.InventoryMultipleIngredientsException;
 
-import java.util.HashMap;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class InventoryTest {
     private final Ingredient ingredient1;

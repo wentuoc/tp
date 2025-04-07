@@ -26,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CreateCommandTest {
     private static final Logger logger = Logger.getLogger(CreateCommandTest.class.getName());
-    final MealManager mealManager = new MealManager();
     final UserInterface ui = new UserInterface();
 
     public CreateCommandTest() {
@@ -55,20 +54,42 @@ public class CreateCommandTest {
 
     @Test
     public void createCommand_success() throws EZMealPlanException {
+        MealManager mealManager = new MealManager();
         logger.fine("running createCommand_success()");
         String validUserInput = "create /mname chicken rice /ing chicken breast (2.50)," +
-                                " rice (1.50), egg (0.50), cucumber (1.00)";
+                                " rice (1.50), egg(0.50), cucumber(1.00)";
         Command command = new CreateCommand(validUserInput);
         command.execute(mealManager, ui);
         int mealListSize = mealManager.getRecipesList().size();
         int expectedMealListSize = 1;
         assertEquals(expectedMealListSize, mealListSize);
-        checkExpectedStrings();
+        checkExpectedStrings(mealManager);
         logger.info("create_success() test passed");
     }
 
     @Test
-    public void createCommand_fail() {
+    public void createCommand_notDuplicateMeal_success() throws EZMealPlanException {
+        MealManager mealManager = new MealManager();
+        String firstInput = "create /mname chicken rice /ing chicken breast (2.50)," +
+                " rice (1.50), egg (0.50), cucumber (1.00)";
+        String secondInput = "create /mname chicken rice /ing chicken breast(2.50)," +
+                " rice(1.50), egg(0.50), cucumber(1.01)";
+        String thirdInput = "create /mname chicken rice /ing chicken breast(2.00)," +
+                " rice(2.00), egg(0.40), cucumber(1.10)";
+        String fourthInput = "create /mname chicken rice /ing chicken breast(2.50)," +
+                " rice(1.50), egg(0.50), cucumber(1.00), tomato(2.00)";
+        String fifthInput = "create /mname hainanese chicken rice /ing chicken breast(2.00)," +
+                " rice(2.00), egg(0.40), cucumber(1.10), tomato(2.00)";
+        String[] userInputs = {firstInput, secondInput, thirdInput, fourthInput, fifthInput};
+        for (String userInput : userInputs) {
+            Command command = new CreateCommand(userInput);
+            command.execute(mealManager, ui);
+        }
+        assertEquals(5, mealManager.getRecipesList().size());
+    }
+
+    @Test
+    public void createCommand_fail() throws EZMealPlanException {
         logger.fine("running createCommand_fail()");
         duplicate_ingredient_catch();
         duplicate_meal_catch();
@@ -83,6 +104,7 @@ public class CreateCommandTest {
     }
 
     private void check_invalidIngredientPriceFormat() {
+        MealManager mealManager = new MealManager();
         String[] invalidPrices = {"create /mname test /ing ing(-1.000)", "create /mname test /ing ing(2.000)"
                 , "create /mname test /ing ing(-0.5)"
                 ,"create /mname test /ing ing(0.5)", "create /mname test /ing ing(1.5)"
@@ -101,6 +123,7 @@ public class CreateCommandTest {
     }
 
     private void check_negative_prices() {
+        MealManager mealManager = new MealManager();
         String[] negativePrices = {"create /mname test /ing ing(-1.00)", "create /mname test /ing ing(-0.01)"
                 , "create /mname test /ing ing(-0.52)"};
         for (String negativePrice : negativePrices) {
@@ -117,6 +140,7 @@ public class CreateCommandTest {
     }
 
     private void checkPrices_cannotParsed_intoInteger() {
+        MealManager mealManager = new MealManager();
         String[] invalidPrices = {"create /mname test /ing ing(jj)", "create /mname test /ing ing(.d)"
                 , "create /mname test /ing ing(s)"};
         for (String invalidPrice : invalidPrices) {
@@ -130,7 +154,7 @@ public class CreateCommandTest {
         }
     }
 
-    private void checkExpectedStrings() {
+    private void checkExpectedStrings(MealManager mealManager) {
         int zeroIndex = 0;
         Meal meal = mealManager.getRecipesList().getList().get(zeroIndex);
         String expectedMealString = "chicken rice ($5.50)";
@@ -147,54 +171,34 @@ public class CreateCommandTest {
         }
     }
 
-    private void duplicate_meal_catch() {
-        String[] validUserInputs = formDuplicateMealsList();
-        for (String userInput : validUserInputs) {
-            try {
-                String fineMsg = "Running duplicate_meal_catch().";
-                logger.fine(fineMsg);
-                Command command = new CreateCommand(userInput);
-                command.execute(mealManager, ui);
-            } catch (EZMealPlanException ezMealPlanException) {
-                String chickenRice = "chicken rice";
-                String listName = mealManager.getRecipesList().getMealListName();
-                assertEquals(new DuplicateMealException(chickenRice, listName).getMessage()
-                        , ezMealPlanException.getMessage());
-                String dupMealMsg = "Duplicate meal caught!";
-                logger.info(dupMealMsg);
-            }
-        }
-        checkExpectedListSize();
-    }
+    private void duplicate_meal_catch() throws EZMealPlanException {
+        MealManager mealManager = new MealManager();
+        String userInput = "create /mname chicken rice /ing chicken breast(2.50)," +
+                " rice(1.50), egg(0.50), cucumber(1.00)";
+        Command command1 = new CreateCommand(userInput);
+        command1.execute(mealManager, ui);
 
-    private void checkExpectedListSize() {
-        int actualSize = mealManager.getRecipesList().getList().size();
-        int expectedSize = 3;
-        assertEquals(expectedSize, actualSize);
-        System.out.println();
-        for (Meal meal : mealManager.getRecipesList().getList()) {
-            System.out.println(meal.toString());
+        String fineMsg = "Running duplicate_meal_catch().";
+        logger.fine(fineMsg);
+        try {
+            Command command2 = new CreateCommand(userInput);
+            command2.execute(mealManager, ui);
+        } catch (EZMealPlanException ezMealPlanException) {
+            String chickenRice = "chicken rice";
+            String listName = mealManager.getRecipesList().getMealListName();
+            assertEquals(new DuplicateMealException(chickenRice, listName).getMessage()
+                    , ezMealPlanException.getMessage());
+            String dupMealMsg = "Duplicate meal caught!";
+            logger.info(dupMealMsg);
         }
-    }
-
-    private static String[] formDuplicateMealsList() {
-        String firstInput = "create /mname chicken rice /ing chicken breast(3.50)," +
-                            " rice(1.00), egg(0.60), cucumber(1.50)";
-        String secondInput = "create /mname chicken rice /ing chicken breast(2.50)," +
-                             " rice(1.50), egg(0.50), cucumber(1.00)";
-        String thirdInput = "create /mname chicken rice /ing chicken breast(2.00)," +
-                            " rice(2.00), egg(0.40), cucumber(1.10)";
-        String fourthInput = "create /mname chicken rice /ing chicken breast(2.00)," +
-                             " rice(2.00), egg(0.40), cucumber(1.10), tomato(2.00)";
-        String fifthInput = "create /mname hainanese chicken rice /ing chicken breast(2.00)," +
-                            " rice(2.00), egg(0.40), cucumber(1.10), tomato(2.00)";
-        return new String[]{firstInput, secondInput, thirdInput, fourthInput, fifthInput};
     }
 
     private void duplicate_ingredient_catch() {
+        MealManager mealManager = new MealManager();
         String userInput = "create /mname chicken breast /ing chicken breast(2.50)," +
                            " chicken breast(1.50)";
         Command command = new CreateCommand(userInput);
+
         String fineMsg = "Running duplicate_ingredient_catch().";
         logger.fine(fineMsg);
         try {
