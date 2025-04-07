@@ -4,20 +4,18 @@ import seedu.checkers.CreateChecker;
 import seedu.exceptions.EZMealPlanException;
 import seedu.food.Ingredient;
 import seedu.food.Meal;
-import seedu.food.Product;
 import seedu.logic.MealManager;
 import seedu.meallist.MealList;
 import seedu.ui.UserInterface;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.logging.Logger;
 
 public class CreateCommand extends Command {
     private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
+    private static final String MNAME = "/mname";
+    private static final String ING = "/ing";
     public CreateCommand(String userInputText) {
-        this.validUserInput = userInputText.trim();
+        validUserInput = userInputText.trim();
         lowerCaseInput = userInputText.toLowerCase();
     }
 
@@ -37,27 +35,24 @@ public class CreateCommand extends Command {
     }
 
     private Meal createNewMeal() throws EZMealPlanException {
-        String mname = "/mname";
-        String ing = "/ing";
-        int afterMnameIndex = lowerCaseInput.indexOf(mname) + mname.length();
-        int ingIndex = lowerCaseInput.indexOf(ing);
+        int afterMnameIndex = lowerCaseInput.indexOf(MNAME) + MNAME.length();
+        int ingIndex = lowerCaseInput.indexOf(ING);
         String mealName = validUserInput.substring(afterMnameIndex, ingIndex).trim();
         logger.fine("The user is now creating a new meal: " + mealName + ".");
         Meal newMeal = new Meal(mealName);
-        addAllIngredients(ing, newMeal);
+        addAllIngredients(newMeal);
         return newMeal;
     }
 
-    private String[] extractIngredients(String ing) {
-        ing = ing.toLowerCase();
-        int afterIngIndex = lowerCaseInput.indexOf(ing) + ing.length();
+    private String[] extractIngredients() {
+        int afterIngIndex = lowerCaseInput.indexOf(ING) + ING.length();
         String ingredients = validUserInput.substring(afterIngIndex).trim();
         String splitRegex = "\\s*,\\s*";
         return ingredients.split(splitRegex);
     }
 
-    private void addAllIngredients(String ing, Meal newMeal) throws EZMealPlanException {
-        String[] ingredientArray = extractIngredients(ing);
+    private void addAllIngredients(Meal newMeal) throws EZMealPlanException {
+        String[] ingredientArray = extractIngredients();
         for (String ingredientString : ingredientArray) {
             String[] ingredientNamePrice = getNamePrice(ingredientString);
             int nameIndex = 0;
@@ -67,8 +62,6 @@ public class CreateCommand extends Command {
             Ingredient newIngredient = new Ingredient(ingredientName, ingredientPrice);
             newMeal.addIngredient(newIngredient);
         }
-        ArrayList<Ingredient> mealIngredients = (ArrayList<Ingredient>) newMeal.getIngredientList();
-        mealIngredients.sort(Comparator.comparing(Product::getName));
     }
 
     private static String[] getNamePrice(String ingredient) {

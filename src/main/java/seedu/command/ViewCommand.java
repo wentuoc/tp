@@ -3,7 +3,7 @@ package seedu.command;
 import seedu.checkers.ViewChecker;
 import seedu.exceptions.EZMealPlanException;
 import seedu.exceptions.InvalidViewKeywordException;
-import seedu.exceptions.ViewEmptyListException;
+import seedu.exceptions.EmptyListException;
 import seedu.exceptions.ViewIndexOutOfRangeException;
 import seedu.food.Meal;
 import seedu.logic.MealManager;
@@ -15,13 +15,14 @@ import java.util.logging.Logger;
 
 public class ViewCommand extends Command {
     private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private static final String RECIPES_SYMBOL = "/r";
+    private static final String WISH_LIST_SYMBOL = "/w";
     String recipesOrWishlist;
-    final String recipesSymbol = "/r";
-    final String wishListSymbol = "/w";
+
 
     public ViewCommand(String userInput) {
-        this.validUserInput = userInput.trim();
-        this.lowerCaseInput = this.validUserInput.toLowerCase();
+        validUserInput = userInput.trim();
+        this.lowerCaseInput = validUserInput.toLowerCase();
     }
 
     @Override
@@ -38,10 +39,10 @@ public class ViewCommand extends Command {
 
     private void viewMeal(String recipesOrWishlist, MealManager mealManager, UserInterface ui)
             throws EZMealPlanException {
-        MealList mealList = recipesOrWishlist.equals(recipesSymbol) ? mealManager.getRecipesList()
+        MealList mealList = recipesOrWishlist.equals(RECIPES_SYMBOL) ? mealManager.getRecipesList()
                 : mealManager.getWishList();
         if (mealList.getList().isEmpty()) {
-            throw new ViewEmptyListException(mealList.getMealListName());
+            throw new EmptyListException(mealList.getMealListName());
         }
         int afterKeywordIndex = lowerCaseInput.indexOf(recipesOrWishlist) + recipesOrWishlist.length();
         String afterKeyword = lowerCaseInput.substring(afterKeywordIndex).trim();
@@ -61,14 +62,14 @@ public class ViewCommand extends Command {
     }
 
     public void setRecipesOrWishlist() throws EZMealPlanException {
-        boolean isContainsRecipesSymbol = this.lowerCaseInput.contains(recipesSymbol) &&
-                                          !this.lowerCaseInput.contains(wishListSymbol);
-        boolean isContainsWishlistSymbol = this.lowerCaseInput.contains(wishListSymbol) &&
-                                           !this.lowerCaseInput.contains(recipesSymbol);
+        boolean isContainsRecipesSymbol = this.lowerCaseInput.contains(RECIPES_SYMBOL) &&
+                                          !this.lowerCaseInput.contains(WISH_LIST_SYMBOL);
+        boolean isContainsWishlistSymbol = this.lowerCaseInput.contains(WISH_LIST_SYMBOL) &&
+                                           !this.lowerCaseInput.contains(RECIPES_SYMBOL);
         if (isContainsRecipesSymbol) {
-            recipesOrWishlist = recipesSymbol;
+            recipesOrWishlist = RECIPES_SYMBOL;
         } else if (isContainsWishlistSymbol) {
-            recipesOrWishlist = wishListSymbol;
+            recipesOrWishlist = WISH_LIST_SYMBOL;
         } else {
             throw new InvalidViewKeywordException();
         }

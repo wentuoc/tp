@@ -1,8 +1,6 @@
 package seedu.storage;
 
-import seedu.exceptions.DuplicateIngredientException;
 import seedu.exceptions.EZMealPlanException;
-import seedu.exceptions.InvalidPriceException;
 import seedu.food.Ingredient;
 import seedu.food.Inventory;
 import seedu.food.Meal;
@@ -21,7 +19,7 @@ import java.util.Scanner;
 public class Storage {
     static File wishListFile;
     static File recipesListFile;
-    static File inventoryFile;
+    static File inventoryListFile;
     private static final String WISH_LIST_FILE_PATH = "data/wishList.txt";
     private static final String RECIPES_LIST_FILE_PATH = "data/recipesList.txt";
     private static final String INVENTORY_LIST_FILE_PATH = "data/inventoryList.txt";
@@ -34,6 +32,10 @@ public class Storage {
         return recipesListFile;
     }
 
+    public static File getInventoryListFile() {
+        return inventoryListFile;
+    }
+
     public static String getWishListFilePath() {
         return WISH_LIST_FILE_PATH;
     }
@@ -42,13 +44,17 @@ public class Storage {
         return RECIPES_LIST_FILE_PATH;
     }
 
+    public static String getInventoryListFilePath() {
+        return INVENTORY_LIST_FILE_PATH;
+    }
+
     public static void createListFiles() throws IOException {
         wishListFile = new File(WISH_LIST_FILE_PATH);
         recipesListFile = new File(RECIPES_LIST_FILE_PATH);
-        inventoryFile = new File(INVENTORY_LIST_FILE_PATH);
+        inventoryListFile = new File(INVENTORY_LIST_FILE_PATH);
         createListFile(recipesListFile);
         createListFile(wishListFile);
-        createListFile(inventoryFile);
+        createListFile(inventoryListFile);
     }
 
     public static void createListFile(File listFile) throws IOException {
@@ -64,8 +70,8 @@ public class Storage {
 
     public static void loadExistingInventory(MealManager mealManager) throws FileNotFoundException {
         Inventory ingredients = mealManager.getInventory();
-        if (inventoryFile.exists()) {
-            Scanner scanner = new Scanner(inventoryFile);
+        if (inventoryListFile.exists()) {
+            Scanner scanner = new Scanner(inventoryListFile);
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine().trim();
                 if (line.isEmpty()) {
@@ -117,13 +123,13 @@ public class Storage {
         //Throw error message if detected an ingredient with invalid price and skips to the next meal.
         try {
             checkMealsBeforeAdd(parts, meals);
-        } catch (InvalidPriceException | DuplicateIngredientException exception) {
+        } catch (Exception exception) {
             System.err.println(exception.getMessage());
         }
     }
 
     private static void checkMealsBeforeAdd(String[] parts, List<Meal> meals)
-            throws InvalidPriceException, DuplicateIngredientException {
+            throws Exception {
         // The first part is the meal name.
         int mealNameIndex = 0;
         String mealName = parts[mealNameIndex];
@@ -133,17 +139,21 @@ public class Storage {
     }
 
     private static Meal addIngredientsToMeal(String mealName, String[] parts)
-            throws InvalidPriceException, DuplicateIngredientException {
+            throws Exception {
         Meal meal = new Meal(mealName);
         // For each remaining part, extract ingredient name and its actual price.
         for (int i = 1; i < parts.length; i++) {
-            Ingredient ingredient = getIngredient(parts[i]);
-            meal.addIngredient(ingredient);
+            try {
+                Ingredient ingredient = getIngredient(parts[i]);
+                meal.addIngredient(ingredient);
+            } catch (Exception exception) {
+                System.err.println(exception.getMessage());
+            }
         }
         return meal;
     }
 
-    private static Ingredient getIngredient(String parts) throws InvalidPriceException {
+    private static Ingredient getIngredient(String parts) throws Exception {
         String ingredientStr = parts.trim();
         int openBracketIndex = ingredientStr.indexOf("(");
         int closeBracketIndex = ingredientStr.indexOf(")");
@@ -157,8 +167,7 @@ public class Storage {
         int afterOpenBracketIndex = openBracketIndex + indexAdjustment;
         String ingredientName = ingredientStr.substring(startIndex, openBracketIndex).trim();
         String priceStr = ingredientStr.substring(afterOpenBracketIndex, closeBracketIndex).trim();
-        double ingredientPrice = Double.parseDouble(priceStr);
-        return new Ingredient(ingredientName, ingredientPrice);
+        return new Ingredient(ingredientName, priceStr);
     }
 
     public static void writeToFile(String input, String filePath) throws IOException {
@@ -173,11 +182,6 @@ public class Storage {
             ui.printMessage(ioException.getMessage());
         }
     }
-
-    public static String getInventoryFilePath() {
-        return INVENTORY_LIST_FILE_PATH;
-    }
-
 
     private static void checkValidIngredients(String line, Inventory ingredients) {
         try {

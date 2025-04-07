@@ -17,7 +17,7 @@ public class BuyCommand extends Command {
     private final List<Ingredient> ingredients = new ArrayList<>();
 
     public BuyCommand(String userInput) {
-        this.validUserInput = userInput.trim();
+        validUserInput = userInput.trim();
         this.lowerCaseInput = userInput.toLowerCase();
     }
 
@@ -78,7 +78,8 @@ public class BuyCommand extends Command {
     private void parseIngredients(String args) {
         final String ingKeyword = "/ing";
         int ingIndex = args.indexOf(ingKeyword);
-        if (ingIndex != -1) {
+        int invalidIngIndex = -1;
+        if (ingIndex != invalidIngIndex) {
             String ingredientsStr = args.substring(ingIndex + ingKeyword.length()).trim();
             String[] tokens = ingredientsStr.split(",");
             for (String token : tokens) {
@@ -98,8 +99,10 @@ public class BuyCommand extends Command {
         if (!token.isEmpty()) {
             int openParenIndex = token.lastIndexOf('(');
             int closeParenIndex = token.lastIndexOf(')');
-            String name = token.substring(0, openParenIndex).trim();
-            String priceStr = token.substring(openParenIndex + 1, closeParenIndex).trim();
+            int startIndex = 0;
+            int indexAdjustment = 1;
+            String name = token.substring(startIndex, openParenIndex).trim();
+            String priceStr = token.substring(openParenIndex + indexAdjustment, closeParenIndex).trim();
             addParsedIngredient(name, priceStr);
         }
     }
@@ -112,10 +115,11 @@ public class BuyCommand extends Command {
      */
     private void addParsedIngredient(String name, String priceStr) {
         try {
-            double price = Double.parseDouble(priceStr);
-            Ingredient ingredient = new Ingredient(name, price);
+
+            Ingredient ingredient = new Ingredient(name, priceStr);
             ingredients.add(ingredient);
-        } catch (NumberFormatException | EZMealPlanException e) {
+        } catch (NumberFormatException | EZMealPlanException exception) {
+            System.out.println(exception.getMessage());
             logger.severe("Unexpected error while parsing ingredient: " + name);
         }
     }

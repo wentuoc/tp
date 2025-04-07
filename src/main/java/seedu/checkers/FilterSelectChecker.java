@@ -11,15 +11,16 @@ import seedu.exceptions.MissingMealNameException;
 import java.util.logging.Logger;
 
 public abstract class FilterSelectChecker extends Checker {
+    protected static final String ING = "/ing";
+    protected static final String MNAME = "/mname";
+    protected static final String MCOST = "/mcost";
+    protected static final String BY_ING = "byIng";
+    protected static final String BY_MNAME = "byMname";
+    protected static final String BY_MCOST = "byMcost";
     private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    String ing = "/ing";
-    String mname = "/mname";
-    String mcost = "/mcost";
     String filterOrSelect;
     String filterMethod;
-    final String byIng = "byIng";
-    final String byMname = "byMname";
-    final String byMcost = "byMcost";
+
 
     @Override
     public void check() throws EZMealPlanException {
@@ -30,15 +31,15 @@ public abstract class FilterSelectChecker extends Checker {
 
     private void checkFilterMethodFormat() throws EZMealPlanException {
         switch (filterMethod) {
-        case byIng:
+        case BY_ING:
             checkIngIndex();
             checkIngFormat();
             break;
-        case byMname:
+        case BY_MNAME:
             checkMnameIndex();
             checkMnameFormat();
             break;
-        case byMcost:
+        case BY_MCOST:
             checkMcostIndex();
             checkMcostFormat();
             break;
@@ -49,7 +50,7 @@ public abstract class FilterSelectChecker extends Checker {
 
     private void checkMnameIndex() throws EZMealPlanException {
         int commandIndex = lowerCaseInput.indexOf(filterOrSelect);
-        int mnameIndex = lowerCaseInput.indexOf(mname);
+        int mnameIndex = lowerCaseInput.indexOf(MNAME);
         if (commandIndex >= mnameIndex) {
             throw new InvalidMnameIndexException(filterOrSelect);
         }
@@ -57,7 +58,7 @@ public abstract class FilterSelectChecker extends Checker {
 
     private void checkIngIndex() throws EZMealPlanException {
         int commandIndex = lowerCaseInput.indexOf(filterOrSelect);
-        int ingIndex = lowerCaseInput.indexOf(ing);
+        int ingIndex = lowerCaseInput.indexOf(ING);
         if (commandIndex >= ingIndex) {
             throw new InvalidIngIndexException(filterOrSelect);
         }
@@ -65,14 +66,14 @@ public abstract class FilterSelectChecker extends Checker {
 
     private void checkMcostIndex() throws EZMealPlanException {
         int commandIndex = lowerCaseInput.indexOf(filterOrSelect);
-        int mcostIndex = lowerCaseInput.indexOf(mcost);
+        int mcostIndex = lowerCaseInput.indexOf(MCOST);
         if (commandIndex >= mcostIndex) {
             throw new InvalidMcostIndexException(filterOrSelect);
         }
     }
 
     private void checkMcostFormat() throws EZMealPlanException {
-        int afterMcostIndex = lowerCaseInput.indexOf(mcost) + mcost.length();
+        int afterMcostIndex = lowerCaseInput.indexOf(MCOST) + MCOST.length();
         String afterMcost = this.userInput.substring(afterMcostIndex);
         if (afterMcost.isEmpty()) {
             throw new MissingMealCostException(filterOrSelect);
@@ -80,7 +81,7 @@ public abstract class FilterSelectChecker extends Checker {
     }
 
     private void checkMnameFormat() throws EZMealPlanException {
-        int afterMnameIndex = lowerCaseInput.indexOf(mname) + mname.length();
+        int afterMnameIndex = lowerCaseInput.indexOf(MNAME) + MNAME.length();
         String afterMname = this.userInput.substring(afterMnameIndex);
         if (afterMname.isEmpty()) {
             throw new MissingMealNameException(filterOrSelect);
@@ -88,7 +89,7 @@ public abstract class FilterSelectChecker extends Checker {
     }
 
     private void checkIngFormat() throws EZMealPlanException {
-        int afterIngIndex = lowerCaseInput.indexOf(ing) + ing.length();
+        int afterIngIndex = lowerCaseInput.indexOf(ING) + ING.length();
         String afterIng = this.userInput.substring(afterIngIndex);
         if (afterIng.isEmpty()) {
             throw new MissingIngredientException(filterOrSelect);

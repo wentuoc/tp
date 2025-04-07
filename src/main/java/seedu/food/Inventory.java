@@ -2,6 +2,7 @@ package seedu.food;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Inventory {
@@ -13,6 +14,8 @@ public class Inventory {
 
     public void addIngredient(Ingredient ingredient) {
         ingredients.add(ingredient);
+        ingredients.sort(Comparator.comparing(Ingredient::getName,
+                String.CASE_INSENSITIVE_ORDER).thenComparing(Ingredient::getPrice));
     }
 
     public boolean removeIngredient(String ingredientName) {

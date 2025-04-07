@@ -1,3 +1,5 @@
+# Cheng Zhiyuan - Project Portfolio Page
+
 ## Overview
 EZMealPlan is a CLI-based system that helps users to plan their meals. Users can view a list of pre-created meals in the main
 recipes list, filter them by meal name, ingredients and cost according to their personal preferences, and add them
