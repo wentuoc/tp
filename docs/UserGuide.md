@@ -5,7 +5,7 @@
 EZMealPlan is a CLI-based system that helps users to plan their meals. Users can view a list of pre-created meals in the main
 recipes list, filter them by meal name, ingredients and cost according to their personal preferences, and add them 
 into their personal wishlist. Users can also create their own meals which will be added into the recipes list and remove meals from their personal wishlist and the main recipes list.
-users can also manage their own fridge inventory with the inventory list checking what are the missing ingredients for their meals.
+Users can also manage their own fridge inventory with the inventory list checking what are the missing ingredients for their meals.
 
 ## Quick Start
 
@@ -57,7 +57,7 @@ list to `recommend` you certain meals for you to prepare.
 
 The meal(s) will be <ins>sorted alphabetically by their names irrespective of the letter casings followed by their prices if the meal names are identical</ins> in the wishlist. The ingredient(s) in each meal will <ins>**ONLY** be sorted alphabetically</ins> by their names irrespective of the letter casings.
 
-**Take Note:** Any meals in the wishlist that are not found in the recipes list will be deemed **illegal** and be <ins>removed from the wishlist</ins>. Before adding the respective meals into the wishlist, those meals **must be present in the recipes list**. The same meal cannot be added more than once into the wishlist.
+**Note:** Any meals in the wishlist that are not found in the recipes list will be deemed **illegal** and be <ins>removed from the wishlist</ins>. Before adding the respective meals into the wishlist, those meals **must be present in the recipes list**. The same meal cannot be added more than once into the wishlist.
 
 Relevant commands:
 - Add a meal to wishlist: `select`
@@ -201,7 +201,7 @@ Sample output:
 
 ### Filtering the Recipes List: `filter`
 
-This command allows the user to filter the Recipes List. The filter conditions can be either the meal's name, ingredients, or total cost. This is chosen via the `/mname`, `/ing` or `/mname` tags. 
+This command allows the user to filter the Recipes List. The filter conditions can be either the meal's name, ingredients, or total cost. This is chosen via the `/mname`, `/ing` or `/mcost` tags. 
 * To filter with more than 1 ingredient using `/ing`, `,` is needed to separate each ingredient. 
 * The input price for the meal cost `/mcost` **MUST BE IN 2 DECIMAL PLACES** and can only **range from `0.00` to `9999999999999.99` (both inclusive) for accuracy purpose**. Example: `0.00`, `1.00`, `0.50`, `10.05`
 
@@ -327,7 +327,7 @@ Sample output:
 
 ![wishlistCommandWorkingSample.png](diagrams/wishlistCommandWorkingSample.png)
 
-### Removing a meal from the Recipes List: `remove`
+### Removing a meal from the Wishlist: `remove`
 
 This command allows user to remove a recipe from their Wishlist.
 
@@ -370,7 +370,7 @@ This command allows the user to add ingredients into the inventory.
 
 Syntax:
 ```
-    buy /ing INGRIDIENT_1_NAME(INGRIDIENT_1_PRICE)[, INGRIDIENT_2_NAME(INGREDIENT_2_PRICE), ...]
+    buy /ing INGREDIENT_1_NAME(INGREDIENT_1_PRICE)[, INGREDIENT_2_NAME(INGREDIENT_2_PRICE), ...]
 ```
 Example code:
 ```
@@ -404,7 +404,7 @@ This command allows the user to remove ingredients from the inventory.
 
    Syntax:
 ```
-    consume /ing INGREDIENT_NAME
+    consume /ing INGREDIENT_1_NAME[, INGREDIENT_2_NAME, ...]
 ```
 Example code:
 ```
@@ -467,6 +467,6 @@ MEAL_NAME`
 * Clear Wishlist: `clear`
 * Buy ingredient: `buy /ing INGREDIENT_1_NAME(INGREDIENT_1_COST)[, INGREDIENT_2_NAME(INGREDIENT_2_COST), ...]`
 * View Inventory: `inventory`
-* Consume ingredient: `consume /ing INGREDIENT_NAME`
+* Consume ingredient: `consume /ing INGREDIENT_1_NAME[, INGREDIENT_2_NAME, ...]`
 * Get recommendation: `recommend /ing INGREDIENT_NAME`
 * Exit program `bye`
