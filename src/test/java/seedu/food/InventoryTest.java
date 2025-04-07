@@ -6,22 +6,23 @@ import seedu.exceptions.InvalidPriceException;
 import seedu.exceptions.InventoryIngredientNotFound;
 import seedu.exceptions.InventoryMultipleIngredientsException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
+import java.util.HashMap;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class InventoryTest {
-
     private final Ingredient ingredient1;
     private final Ingredient ingredient2;
     private final Ingredient ingredient3;
     private final Ingredient ingredient4;
+    private final Ingredient ingredient5;
 
     public InventoryTest() throws InvalidPriceException, IngredientPriceFormatException {
         ingredient1 = new Ingredient("Apple", "1.00");
         ingredient2 = new Ingredient("Apple", "2.00");
         ingredient3 = new Ingredient("Banana", "3.00");
         ingredient4 = new Ingredient("Chocolate", "4.00");
+        ingredient5 = new Ingredient("Apple", "1.00");
     }
 
     @Test
@@ -42,7 +43,7 @@ class InventoryTest {
     void addIngredient_repeatedIngredientsSamePrice_repetitionCaptured() {
         Inventory inventory = new Inventory();
         inventory.addIngredient(ingredient1);
-        inventory.addIngredient(ingredient1);
+        inventory.addIngredient(ingredient5);
         inventory.addIngredient(ingredient3);
         inventory.addIngredient(ingredient4);
         String expectedOutput = """
@@ -89,7 +90,7 @@ class InventoryTest {
             InventoryIngredientNotFound {
         Inventory inventory = new Inventory();
         inventory.addIngredient(ingredient1);
-        inventory.addIngredient(ingredient1);
+        inventory.addIngredient(ingredient5);
         inventory.addIngredient(ingredient3);
         inventory.addIngredient(ingredient4);
         inventory.removeIngredient("Apple");

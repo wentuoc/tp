@@ -8,21 +8,34 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 public class Inventory {
     private final HashMap<Ingredient, Integer> ingredients;
+    private final ArrayList<Ingredient> uniqueSortedIngredients;
 
     public Inventory() {
         ingredients = new HashMap<>();
+        uniqueSortedIngredients = new ArrayList<>();
     }
 
     public void addIngredient(Ingredient ingredient) {
-        if (ingredients.containsKey(ingredient)) {
-            ingredients.put(ingredient, ingredients.get(ingredient) + 1);
+        if (isIngredientInInventory(ingredient)) {
+            Ingredient ingredientInInventory = getIngredientInInventory(ingredient);
+            ingredients.put(ingredientInInventory, ingredients.get(ingredientInInventory) + 1);
         } else {
             ingredients.put(ingredient, 1);
+            uniqueSortedIngredients.add(ingredient);
+            uniqueSortedIngredients.sort(Comparator.comparing(Ingredient::getName).thenComparing(Ingredient::getPrice));
         }
+    }
+
+    private boolean isIngredientInInventory(Ingredient ingredient) {
+        return uniqueSortedIngredients.contains(ingredient);
+    }
+
+    private Ingredient getIngredientInInventory(Ingredient ingredient) {
+        int index = uniqueSortedIngredients.indexOf(ingredient);
+        return uniqueSortedIngredients.get(index);
     }
 
     public void removeIngredient(String ingredientNameToBeRemoved) throws InventoryMultipleIngredientsException,
@@ -36,7 +49,8 @@ public class Inventory {
             if (ingredientQuantity > 1) {
                 ingredients.put(ingredientToBeRemoved, ingredientQuantity - 1);
             } else {
-                ingredients.remove(ingredientsToRemove.get(0));
+                ingredients.remove(ingredientToBeRemoved);
+                uniqueSortedIngredients.remove(ingredientToBeRemoved);
             }
         } else if (hasNoIngredients(ingredientsToRemove)) {
             throw new InventoryIngredientNotFound(ingredientNameToBeRemoved);
@@ -45,10 +59,9 @@ public class Inventory {
 
     private ArrayList<Ingredient> findIngredientsFromString(String ingredientString) {
         ArrayList<Ingredient> ingredientsFound = new ArrayList<>();
-        Set<Ingredient> ingredientSet = ingredients.keySet();
-        for (Ingredient ingredientInSet : ingredientSet) {
-            if (ingredientInSet.getName().equals(ingredientString)) {
-                ingredientsFound.add(ingredientInSet);
+        for (Ingredient uniqueIngredient : uniqueSortedIngredients) {
+            if (uniqueIngredient.getName().equals(ingredientString)) {
+                ingredientsFound.add(uniqueIngredient);
             }
         }
         return ingredientsFound;
@@ -67,12 +80,9 @@ public class Inventory {
     }
 
     public String toString() {
-        ArrayList<Ingredient> ingredientsArrayList = new ArrayList<>(ingredients.keySet());
-        ingredientsArrayList.sort(Comparator.comparing(Ingredient::getName,
-                String.CASE_INSENSITIVE_ORDER).thenComparing(Ingredient::getPrice));
         int count = 0;
         StringBuilder outputString = new StringBuilder();
-        for (Ingredient ingredient : ingredientsArrayList) {
+        for (Ingredient ingredient : uniqueSortedIngredients) {
             count++;
             outputString.append("    ");
             outputString.append(count);
@@ -86,10 +96,8 @@ public class Inventory {
     }
 
     public ArrayList<String> toDataArray() {
-        ArrayList<Ingredient> ingredientsArrayList = new ArrayList<>(ingredients.keySet());
-        ingredientsArrayList.sort(Comparator.comparing(Ingredient::getName)); //TODO: might have issues with this
         ArrayList<String> outputDataArray = new ArrayList<>();
-        for (Ingredient ingredient : ingredientsArrayList) {
+        for (Ingredient ingredient : uniqueSortedIngredients) {
             outputDataArray.add(ingredient + " | " + getIngredientAmount(ingredient));
         }
         return outputDataArray;
@@ -100,14 +108,13 @@ public class Inventory {
         return new ArrayList<>(ingredients.keySet());
     }
 
-    //    public HashMap<Ingredient, Integer> getIngredientsAsHashMap() {
-    //        return ingredients;
-    //    }
+    public HashMap<Ingredient, Integer> getIngredientsAsHashMap() {
+        return ingredients;
+    }
 
-    //    //The following functions are only used in testing
-    //    public int numberOfUniqueIngredients() {
-    //        return ingredients.size();
-    //    }
+    public int numberOfUniqueIngredients() {
+        return ingredients.size();
+    }
 
     public boolean hasIngredient(String ingredientName) {
         ArrayList<Ingredient> foundIngredients = findIngredientsFromString(ingredientName);
