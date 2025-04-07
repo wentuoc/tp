@@ -67,10 +67,15 @@ public class RecommendCommandTest {
         RecommendCommand command = new RecommendCommand("recommend /ing salmon");
         command.execute(mealManager, ui);
 
-        assertEquals("Recommended Meal: Salmon Rice (Salmon Rice ($2.50))\n" +
-                "Ingredients:\n" +
-                "   1. salmon ($2.50)\n" +
-                "Missing Ingredients: salmon", ui.capturedMessage);
+        StringBuilder sb = new StringBuilder();
+        sb.append("Recommended Meal: ").append("Salmon Rice")
+                .append(" (").append("Salmon Rice ($2.50)").append(")")
+                .append(System.lineSeparator());
+        sb.append("Ingredients:").append(System.lineSeparator());
+        sb.append("   ").append(1).append(". ").append("salmon ($2.50)")
+                .append(System.lineSeparator());
+        sb.append("Missing Ingredients: salmon");
+        assertEquals(sb.toString(), ui.capturedMessage);
         logger.info("recommendCommand_matchingIngredientInWishlist_success passed");
     }
 
@@ -89,10 +94,15 @@ public class RecommendCommandTest {
         RecommendCommand command = new RecommendCommand("recommend /ing tofu");
         command.execute(mealManager, ui);
 
-        assertEquals("Recommended Meal: Tofu Soup (Tofu Soup ($1.20))\n" +
-                "Ingredients:\n" +
-                "   1. tofu ($1.20)\n" +
-                "Missing Ingredients: tofu", ui.capturedMessage);
+        StringBuilder sb = new StringBuilder();
+        sb.append("Recommended Meal: ").append("Tofu Soup")
+                .append(" (").append("Tofu Soup ($1.20)").append(")")
+                .append(System.lineSeparator());
+        sb.append("Ingredients:").append(System.lineSeparator());
+        sb.append("   ").append(1).append(". ").append("tofu ($1.20)")
+                .append(System.lineSeparator());
+        sb.append("Missing Ingredients: tofu");
+        assertEquals(sb.toString(), ui.capturedMessage);
         logger.info("recommendCommand_matchingIngredientInRecipes_success passed");
     }
 
@@ -127,10 +137,15 @@ public class RecommendCommandTest {
         RecommendCommand command = new RecommendCommand("recommend /ing MiSo");
         command.execute(mealManager, ui);
 
-        assertEquals("Recommended Meal: Miso Soup (Miso Soup ($1.00))\n" +
-                "Ingredients:\n" +
-                "   1. miso ($1.00)\n" +
-                "Missing Ingredients: miso", ui.capturedMessage);
+        StringBuilder sb = new StringBuilder();
+        sb.append("Recommended Meal: ").append("Miso Soup")
+                .append(" (").append("Miso Soup ($1.00)").append(")")
+                .append(System.lineSeparator());
+        sb.append("Ingredients:").append(System.lineSeparator());
+        sb.append("   ").append(1).append(". ").append("miso ($1.00)")
+                .append(System.lineSeparator());
+        sb.append("Missing Ingredients: miso");
+        assertEquals(sb.toString(), ui.capturedMessage);
         logger.info("recommendCommand_nonMatchingCase_successfulMatch passed");
     }
 
