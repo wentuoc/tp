@@ -97,7 +97,7 @@ public abstract class FilterSelectCommand extends Command {
         }
     }
     private void checkTwoDecimalPlace(String ingredientPrice) throws NumberFormatException {
-        String twoDecimalPlaceRegex = "^\\d+\\.\\d{2}$";
+        String twoDecimalPlaceRegex = "^-?\\d+\\.\\d{2}$";
         if (!ingredientPrice.matches(twoDecimalPlaceRegex)) {
             throw new NumberFormatException();
         }
