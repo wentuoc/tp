@@ -6,7 +6,6 @@ import seedu.food.Inventory;
 import seedu.food.Meal;
 import seedu.logic.MealManager;
 import seedu.presetmeals.PresetMeals;
-import seedu.ui.UserInterface;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -172,10 +171,10 @@ public class Storage {
         }
     }
 
-    public static void clearFile(String filePath, UserInterface ui) {
+    public static void clearFile(String filePath) throws IOException {
         try (FileWriter fileWriter = new FileWriter(filePath)) {
         } catch (IOException ioException) {
-            ui.printMessage(ioException.getMessage());
+            throw ioException; //for the calling function to handle
         }
     }
 
