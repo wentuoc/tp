@@ -111,7 +111,7 @@ public class CreateCheckerTest {
                 , "create ing(1) /mname"};
         String testName = "checkMissingIng()";
         logger.fine("running " + testName);
-        checkMatchingException(missingIng, new MissingIngKeywordException().getMessage(), testName);
+        checkMatchingException(missingIng, new MissingIngKeywordException("CREATE").getMessage(), testName);
     }
 
     private static void checkMissingMname() {

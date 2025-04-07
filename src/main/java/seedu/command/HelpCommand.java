@@ -4,6 +4,9 @@ package seedu.command;
 import seedu.logic.MealManager;
 import seedu.ui.UserInterface;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class HelpCommand extends Command {
     private static final String BYE = "bye";
     private static final String CREATE = "create";
@@ -24,7 +27,15 @@ public class HelpCommand extends Command {
 
 
     public HelpCommand(String userInput) {
-        this.commandDescription = userInput.toLowerCase().replace("help", "").trim();
+        String pattern = "(?i)^help\\s+(\\S+)";
+        Pattern regex = Pattern.compile(pattern);
+        Matcher matcher = regex.matcher(userInput.trim());
+
+        if (matcher.find()) {
+            this.commandDescription = matcher.group(1).toLowerCase();
+        } else {
+            this.commandDescription = "";
+        }
     }
 
     @Override
@@ -66,6 +77,18 @@ public class HelpCommand extends Command {
             break;
         case HELP:
             ui.printHelpCommandHelp();
+            break;
+        case RECOMMEND:
+            ui.printRecommendCommandHelp();
+            break;
+        case CONSUME:
+            ui.printConsumeCommandHelp();
+            break;
+        case BUY:
+            ui.printBuyCommandHelp();
+            break;
+        case INVENTORY:
+            ui.printInventoryCommandHelp();
             break;
         default:
             ui.printUnknownCommand(commandDescription);

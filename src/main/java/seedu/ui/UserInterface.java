@@ -233,4 +233,45 @@ public class UserInterface {
         System.out.println("Here are the ingredients that you own:");
         System.out.print(inventoryString);
     }
+
+    public void printRecommendCommandHelp() {
+        System.out.println("Entering the recommend command with an ingredient keyword will suggest a meal");
+        System.out.println("based on that ingredient from your wishlist or the recipe list.");
+        System.out.println("Sample input: recommend /ing chicken");
+        System.out.println("Sample output:");
+        System.out.println("                Recommended Meal: Kung Pao Chicken (Kung Pao Chicken ($3.60))");
+        System.out.println("                Ingredients:");
+        System.out.println("                   1. Chicken ($2.00)");
+        System.out.println("                   2. Chilli ($0.50)");
+        System.out.println("                   3. Peanuts ($0.70)");
+        System.out.println("                   4. Sichuan Pepper ($0.40)");
+        System.out.println("                Missing Ingredients: Chicken, Chilli, Peanuts, Sichuan Pepper");
+    }
+
+    public void printConsumeCommandHelp() {
+        System.out.println("Entering the consume command will consume an ingredient from your inventory.");
+        System.out.println("You must specify the ingredient name using the /ing prefix.");
+        System.out.println("Sample input: consume /ing egg");
+        System.out.println("Sample output:");
+        System.out.println("                egg consumed");
+    }
+
+    public void printBuyCommandHelp() {
+        System.out.println("Entering the buy command will add an ingredient to your inventory.");
+        System.out.println("You must specify the ingredient names using the /ing prefix " +
+                "followed by their prices ");
+        System.out.println("Sample input: buy /ing egg (1.00)");
+        System.out.println("Sample output:");
+        System.out.println("                egg ($1.00) bought");
+    }
+
+    public void printInventoryCommandHelp() {
+        System.out.println("Entering the inventory command will show all ingredients currently in your inventory.");
+        System.out.println("Sample input: inventory");
+        System.out.println("Sample output:");
+        System.out.println("                Inventory List:");
+        System.out.println("                   1. egg ($1.00)");
+        System.out.println("                   2. chicken breast ($3.25)");
+        System.out.println("                   3. rice ($1.00)");
+    }
 }
