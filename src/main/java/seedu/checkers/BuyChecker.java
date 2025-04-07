@@ -38,7 +38,7 @@ public class BuyChecker extends Checker {
         if (!isIngPresent) {
             String message = "Triggers MissingIngKeywordException()!";
             logger.warning(message);
-            throw new MissingIngKeywordException();
+            throw new MissingIngKeywordException("BUY");
         }
     }
 
