@@ -91,7 +91,8 @@ public abstract class FilterSelectCommand extends Command {
 
     private static void checkMcostOutOfRange(double mcostDouble) {
         double zero = 0.00;
-        if (mcostDouble < zero || mcostDouble > Double.MAX_VALUE) {
+        double maxPrice = 9999999999999.99;
+        if (mcostDouble < zero || mcostDouble > maxPrice) {
             throw new NumberFormatException();
         }
     }

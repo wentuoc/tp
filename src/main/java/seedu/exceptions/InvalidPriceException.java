@@ -8,7 +8,7 @@ public class InvalidPriceException extends EZMealPlanException {
     }
 
     public String getMessage() {
-        return "The price of " + this.productName + " must be between 0 and Double.MAX_VALUE: " + Double.MAX_VALUE
+        return "The price of " + this.productName + " must be between 0.00 and 9999999999999.99"
                +" (both sides inclusive).\n";
     }
 }
