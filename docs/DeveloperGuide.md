@@ -892,14 +892,14 @@ ClearCommand clears the wishlist.
     }
 ```
 ##### 9.3 Sequence Diagram
-Here are Sequence Diagrams depicting the interactions between ClearCommand and other system component classes:
+Here is the sequence diagram depicting the interactions between ClearCommand and other system component classes:
 
 ![ClearCommand.png](diagrams/ClearCommand.png)
 
 ##### 9.4 Unit Testing
 
 ###### Testing Approach
-- Uses a test-specific ClearCommandTest to ensure that the ClearCommand account for different types of user inputs and proceed as normal.
+- Uses a test-specific ClearCommandTest to ensure that the ClearCommand account for different types of user inputs, handles exceptions for erroneous inputs and proceed as normal.
 - Test by adding the wishlist with some meals.
 - Executes ClearCommand.
 - Checks that the wishlist is empty after running the ClearCommand and the expected message about the wishlist being cleared is being printed normally.
@@ -933,6 +933,127 @@ Here is a snippet of the unit test code:
         logger.info("execute_clearsWishList_printsMessage() passed");
     }
 ```
+
+### 10. ViewCommand and ViewChecker
+
+##### 10.1 Design Overview
+
+###### Function
+ViewChecker checks for the validity of the user input before passing to the ViewCommand for processing and retrieving the ingredient list of the selected meal from the recipes list or wishlist according to the meal index and the list stated in the user input.
+
+###### Design Goals
+**Single Responsibility:**
+- ClearCommand solely handles the clearing of the wishlist according to the user input.
+
+**Decoupling:**
+- By segregating responsibilities, it makes the code easier to maintain and extend.
+
+**Testability:**
+- The design supports unit testing by allowing test-specific ViewCommandTest and ViewCheckerTest to capture and verify the output.
+
+##### 10.2 Implementation Details
+
+###### Component Level: ViewChecker Class
+- Inherits from the abstract ViewChecker Class, which in turn inherits from the abstract Checker Class.
+- Implements the `check()` method.
+- Uses logging to indicate execution.
+- `isPassed` is set to `true` once the user input passes all the required checks.
+- Passes the valid user input back into the ViewCommand class for extracting the ingredient list of the meal with the corresponding index from either the recipes list or the wishlist.
+
+###### Component Level: ViewCommand Class
+
+- Inherits from the abstract Command Class.
+- Implements the `execute(MealManager mealManager, UserInterface ui)` method.
+- Uses logging to indicate execution.
+- Extracts the ingredient list of the meal with the corresponding index from either the recipes list or the wishlist (if the list is not empty) according to the user input.
+
+###### Code Example
+
+```java
+@Override
+public void check() throws EZMealPlanException {
+checkValidKeywordIndex();
+checkMissingMealIndex();
+checkParseMealIndex();
+setPassed(true);
+}
+```
+```java
+@Override
+    public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
+        setRecipesOrWishlist();
+        boolean isValidUserInput = checkValidUserInput();
+        if (!isValidUserInput) {
+            logger.severe("Huge issue detected! The user input format remains invalid despite " +
+                    "passing all the checks for input formatting error.");
+        }
+        assert isValidUserInput;
+        viewMeal(recipesOrWishlist, mealManager, ui);
+    }
+```
+##### 10.3 Sequence Diagram
+Here are the sequence diagrams depicting the interactions between ViewCommand, ViewChecker and other system component classes:
+![ViewCommand.png](diagrams/ViewCommand.png)
+![ViewChecker.png](diagrams/ViewChecker.png)
+
+##### 10.4 Unit Testing
+
+###### Testing Approach
+- Uses a test-specific ViewCheckerTest and ViewCommandTest to ensure that the ViewChecker and ViewCommand account for different types of user inputs and proceed as normal.
+- Test with different types of user inputs that gives no error and some exceptions.
+- Executes ViewChecker and ViewCommand.
+- Verifies that the exceptions are thrown according to the user inputs.
+
+###### Unit Test Code
+Here are some snippets of the unit test code:
+
+```java
+@Test
+    public void viewChecker_validWishlistIndex_success() throws EZMealPlanException {
+        logger.fine("Running viewChecker_validWishlistIndex_success()");
+        ViewChecker checker = new ViewChecker("view /w 1", "/w");
+        checker.check();
+        logger.info("viewChecker_validWishlistIndex_success passed");
+    }
+
+    @Test
+    public void viewChecker_keywordBeforeView_throwsInvalidKeywordIndexException() {
+        logger.fine("Running viewChecker_keywordBeforeView_throwsInvalidKeywordIndexException()");
+        ViewChecker checker = new ViewChecker("/r view 1", "/r");
+        assertThrows(InvalidKeywordIndexException.class, checker::check);
+        logger.info("viewChecker_keywordBeforeView_throwsInvalidKeywordIndexException passed");
+    }
+```
+```java
+@Test
+public void testExecute_viewRecipeMeal_success() throws EZMealPlanException {
+  logger.fine("Running testExecute_viewRecipeMeal_success()");
+
+  MealManager mealManager = new MealManager();
+  Meal meal1 = new Meal("Recipes Meal 1");
+  Ingredient firstIngredient = new Ingredient("egg", "0.50");
+  Ingredient secondIngredient = new Ingredient("rice", "1.00");
+  meal1.addIngredient(firstIngredient);
+  meal1.addIngredient(secondIngredient);
+
+  mealManager.getRecipesList().getList().add(meal1);
+
+  ViewCommandTest.TestUserInterface testUI = new ViewCommandTest.TestUserInterface();
+  ViewCommand viewCommand = new ViewCommand("view /r 1");
+  viewCommand.execute(mealManager, testUI);
+
+  assertEquals("Recipes Meal 1 ($1.50)", testUI.capturedMeal.toString());
+  List<Ingredient> expectedIngredients = new ArrayList<>();
+  expectedIngredients.add(firstIngredient);
+  expectedIngredients.add(secondIngredient);
+  expectedIngredients.sort(Comparator.comparing(Ingredient::getName,
+          String.CASE_INSENSITIVE_ORDER).thenComparing(Ingredient::getPrice));
+  assertIterableEquals(expectedIngredients, testUI.capturedIngredients);
+
+  logger.info("testExecute_viewRecipeMeal_success passed");
+}
+```
+
 ## Implementation
 
 
