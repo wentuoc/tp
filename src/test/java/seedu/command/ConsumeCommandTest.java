@@ -2,8 +2,13 @@ package seedu.command;
 
 import seedu.exceptions.EZMealPlanException;
 import seedu.exceptions.IngredientPriceFormatException;
+import seedu.exceptions.InvalidIngredientFormatException;
 import seedu.exceptions.InvalidPriceException;
+import seedu.exceptions.InventoryIngredientNotFound;
 import seedu.exceptions.InventoryMultipleIngredientsException;
+import seedu.exceptions.MissingIngKeywordException;
+import seedu.exceptions.MissingIngredientException;
+
 import seedu.food.Ingredient;
 import seedu.food.Inventory;
 import seedu.logic.MealManager;
@@ -79,6 +84,56 @@ class ConsumeCommandTest {
     }
 
     @Test
+    public void testExecute_ingredientNotFound_exceptionThrown() {
+        logger.fine("testExecute_ingredientNotFound_exceptionThrown()");
+        MealManager mealManager = new MealManager();
+        Inventory inventory = mealManager.getInventory();
+        inventory.addIngredient(ingredient1);
+        inventory.addIngredient(ingredient3);
+        inventory.addIngredient(ingredient4);
+        String userInput = "consume /ing duck";
+        Command command = new ConsumeCommand(userInput);
+
+        assertThrows(InventoryIngredientNotFound.class, () -> command.execute(mealManager, ui));
+        logger.info("Correct exception thrown");
+    }
+
+    @Test
+    public void testExecute_validInputWithPriceInput_success() throws EZMealPlanException {
+        logger.fine("Running testExecute_validInput_success()");
+        MealManager mealManager = new MealManager();
+        Inventory inventory = mealManager.getInventory();
+        inventory.addIngredient(ingredient1);
+        inventory.addIngredient(ingredient3);
+        inventory.addIngredient(ingredient4);
+        String userInput = "consume /ing apple (1.00)";
+        Command command = new ConsumeCommand(userInput);
+        command.execute(mealManager, ui);
+
+        String expectedOutput = """
+                    1. Banana ($3.00): 1
+                    2. Chocolate ($4.00): 1
+                """;
+        assertEquals(expectedOutput, inventory.toString());
+        logger.info("Correct ingredient consumed");
+    }
+
+    @Test
+    public void testExecute_ingredientNotFoundWithPriceInput_exceptionThrown() throws EZMealPlanException {
+        logger.fine("Running testExecute_ingredientNotFoundWithPriceInput_exceptionThrown()");
+        MealManager mealManager = new MealManager();
+        Inventory inventory = mealManager.getInventory();
+        inventory.addIngredient(ingredient1);
+        inventory.addIngredient(ingredient3);
+        inventory.addIngredient(ingredient4);
+        String userInput = "consume /ing apple (3.00)";
+        Command command = new ConsumeCommand(userInput);
+
+        assertThrows(InventoryIngredientNotFound.class, () -> command.execute(mealManager, ui));
+        logger.info("Correct exception thrown");
+    }
+
+    @Test
     public void testExecute_validInputMultipleConsumed_success() throws EZMealPlanException {
         logger.fine("Running testExecute_validInputMultipleConsumed_success()");
         MealManager mealManager = new MealManager();
@@ -98,7 +153,7 @@ class ConsumeCommandTest {
     }
 
     @Test
-    public void testExecute_duplicateIngredientSamePrice_success() throws EZMealPlanException {
+    public void testExecute_duplicateIngredientsSamePrice_success() throws EZMealPlanException {
         logger.fine("Running testExecute_duplicateIngredientSamePrice_success()");
         MealManager mealManager = new MealManager();
         Inventory inventory = mealManager.getInventory();
@@ -121,7 +176,7 @@ class ConsumeCommandTest {
     }
 
     @Test
-    public void testExecute_duplicateIngredientDifferentPrice_exceptionThrown() throws EZMealPlanException {
+    public void testExecute_duplicateIngredientsDifferentPrice_exceptionThrown() throws EZMealPlanException {
         logger.fine("Running testExecute_duplicateIngredientDifferentPrice_exceptionThrown()");
         MealManager mealManager = new MealManager();
         Inventory inventory = mealManager.getInventory();
@@ -150,8 +205,32 @@ class ConsumeCommandTest {
     }
 
     @Test
-    public void testExecute_duplicateIngredientDifferentPriceMultipleConsumed_exceptionThrown() {
-        logger.fine("Running testExecute_duplicateIngredientDifferentPriceMultipleConsumed_exceptionThrown()");
+    public void testExecute_duplicateIngredientsDifferentPriceWithPriceInput_success() throws EZMealPlanException {
+        logger.fine("Running testExecute_duplicateIngredientDifferentPriceWithPriceInput_exceptionThrown()");
+        MealManager mealManager = new MealManager();
+        Inventory inventory = mealManager.getInventory();
+        inventory.addIngredient(ingredient1);
+        inventory.addIngredient(ingredient1);
+        inventory.addIngredient(ingredient2);
+        inventory.addIngredient(ingredient3);
+        inventory.addIngredient(ingredient4);
+        String userInput = "consume /ing apple (1.00)";
+        Command command = new ConsumeCommand(userInput);
+        command.execute(mealManager, ui);
+
+        String expectedOutput = """
+                    1. Apple ($1.00): 1
+                    2. Apple ($2.00): 1
+                    3. Banana ($3.00): 1
+                    4. Chocolate ($4.00): 1
+                """;
+        assertEquals(expectedOutput, inventory.toString());
+        logger.info("Correct ingredient consumed");
+    }
+
+    @Test
+    public void testExecute_duplicateIngredientsDifferentPriceMultipleConsumed_exceptionThrown() {
+        logger.fine("Running testExecute_duplicateIngredientsDifferentPriceMultipleConsumed_exceptionThrown()");
         MealManager mealManager = new MealManager();
         Inventory inventory = mealManager.getInventory();
         inventory.addIngredient(ingredient1);
@@ -170,5 +249,70 @@ class ConsumeCommandTest {
 
         assertThrows(InventoryMultipleIngredientsException.class, () -> command2.execute(mealManager, ui));
         logger.info("Correct exception thrown");
+    }
+
+    @Test
+    public void testExecute_duplicateIngredientsDifferentPriceMultipleConsumedWithPriceInput_exceptionThrown()
+            throws EZMealPlanException {
+        logger.fine("Running testExecute_duplicateIngredientsDifferentPriceMultipleConsumedWithPriceInput" +
+                "_exceptionThrown()");
+        MealManager mealManager = new MealManager();
+        Inventory inventory = mealManager.getInventory();
+        inventory.addIngredient(ingredient1);
+        inventory.addIngredient(ingredient1);
+        inventory.addIngredient(ingredient2);
+        inventory.addIngredient(ingredient3);
+        inventory.addIngredient(ingredient4);
+        String userInput = "consume /ing apple (1.00), apple (2.00)";
+        Command command = new ConsumeCommand(userInput);
+        command.execute(mealManager, ui);
+
+        String expectedOutput = """
+                    1. Apple ($1.00): 1
+                    2. Banana ($3.00): 1
+                    3. Chocolate ($4.00): 1
+                """;
+        assertEquals(expectedOutput, inventory.toString());
+        logger.info("Correct ingredient consumed");
+    }
+
+    @Test
+    public void testExecute_missingIng_exceptionThrown() {
+        logger.fine("Running testExecute_missingIng_exceptionThrown()");
+        MealManager mealManager = new MealManager();
+        Inventory inventory = mealManager.getInventory();
+        inventory.addIngredient(ingredient1);
+        inventory.addIngredient(ingredient3);
+        String[] userInputs = {"consume", "consume Apple", "consume Apple, Banana"};
+        for (String userInput : userInputs) {
+            Command command = new BuyCommand(userInput);
+            assertThrows(MissingIngKeywordException.class, () -> command.execute(mealManager, ui));
+        }
+        logger.info("Correct exception thrown");
+    }
+
+    @Test
+    public void testExecute_missingIngredient_exceptionThrown() {
+        logger.fine("Running testExecute_missingIngredient_exceptionThrown()");
+        MealManager mealManager = new MealManager();
+        String userInput = "consume /ing";
+        Command command = new ConsumeCommand(userInput);
+        assertThrows(MissingIngredientException.class, () -> command.execute(mealManager, ui));
+        logger.info("Correct exception thrown");
+    }
+
+    @Test
+    public void testExecute_invalidPriceInput_exceptionThrown() {
+        logger.fine("Running testExecute_invalidPriceInput_exceptionThrown()");
+        MealManager mealManager = new MealManager();
+        Inventory inventory = mealManager.getInventory();
+        inventory.addIngredient(ingredient1);
+        inventory.addIngredient(ingredient3);
+        String[] userInputs = {"consume /ing apple ()", "consume /ing apple (1.00) banana",
+            "consume /ing apple (, banana (3.00)", "consume /ing apple (abc)"};
+        for (String userInput : userInputs) {
+            Command command = new ConsumeCommand(userInput);
+            assertThrows(InvalidIngredientFormatException.class, () -> command.execute(mealManager, ui));
+        }
     }
 }
