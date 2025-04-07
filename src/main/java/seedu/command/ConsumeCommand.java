@@ -43,11 +43,8 @@ public class ConsumeCommand extends Command {
         Inventory inventory = mealManager.getInventory();
         // Process each ingredient name provided in the command.
         for (String ingredientName : ingredients) {
-            if (inventory.removeIngredient(ingredientName)) {
-                ui.printConsumed(ingredientName);
-            } else {
-                ui.printIngredientNotFound(ingredientName);
-            }
+            inventory.removeIngredient(ingredientName);
+            ui.printConsumed(ingredientName);
         }
         ingredients.clear();
     }
