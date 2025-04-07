@@ -136,7 +136,7 @@ public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlan
 
 ##### 1.3 Sequence Diagram
 
-![.\diagrams\RecipesCommand.png](.\diagrams\RecipesCommand.png)
+![RecipesCommand.png](diagrams/RecipesCommand.png)
 
 ##### 1.4 Unit Testing
 
@@ -245,27 +245,35 @@ public void testExecute_wishlistCommand_printsUserChosenMeals() throws EZMealPla
 }
 ```
 
-#### 3. SelectCommand
+#### 3. SelectCommand and SelectChecker
 
 ##### 3.1 Design Overview
 
 ###### Function
-SelectCommand allows the user to select a recipe from the filtered list (obtained via the FilterCommand) by providing its index, and then adds the selected recipe into the user's wish list.
+SelectCommand allows the user to select a recipe from the filtered list (obtained via the FilterCommand) by providing its index, and then adds the selected recipe into the user's wish list. The same meal cannot be added more than once into the wishlist.
 
 ###### Design Goals
 - **Single Responsibility:**
     - SelectCommand is solely responsible for validating the user-provided index, retrieving the corresponding recipe from the filtered list, and adding that recipe to the wish list.
+    - SelectChecker solely handles checking of the Select command input by the user.
 
 - **Decoupling:**
     - By isolating the selection logic from other commands, it becomes easier to maintain and extend without affecting other parts of the system.
 
 - **Testability:**
-    - The design supports unit testing by using a test-specific ByeCommandTest to check for the matching
+    - The design supports unit testing by using a test-specific SelectCommandTest and SelectCheckerTest to check for the matching
 
 ##### 3.2 Implementation Details
 
-###### Component Level: SelectCommand Class
-- Inherits from the abstract FilterSelectCommand class.
+###### Component Level: SelectChecker Class
+- Inherits from the abstract FilterSelectChecker Class, which in turn inherits from the abstract Checker Class.
+- Implements the `check()` method.
+- Uses logging to indicate execution.
+- `isPassed` is set to `true` once the user input passes all the required checks.
+- Passes the valid user input back into the SelectCommand class for processing into a new meal.
+
+###### Component Level: SelectCommand Class 
+- Inherits from the abstract FilterSelectCommand class, which in turn inherits from the abstract Command class.
 - Implements the `execute(MealManager mealManager, UserInterface ui)` method.
 - Uses logging to indicate execution and to record any input validation issues.
 - Validates the user input index using helper methods (getIndexSubstring, checkValidParse, and checkValidInputIndex).
@@ -274,6 +282,27 @@ SelectCommand allows the user to select a recipe from the filtered list (obtaine
 - Adds the selected recipe to the wish list and calls ui.printAddMealMessage to display a confirmation message.
 
 ###### Code Example
+
+FilterSelectChecker Class check():
+```java
+@Override
+public void check() throws EZMealPlanException {
+logger.fine("Checking '" + userInput + "' for errors.");
+checkFilterMethodFormat();
+setPassed(true);
+}
+```
+
+SelectChecker Class check():
+```java
+ @Override
+    public void check() throws EZMealPlanException {
+        super.check();
+        indexStringCheck();
+        setPassed(true);
+    }
+```
+
 ```java
     public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
         boolean isValidUserInput = checkValidUserInput(filterOrSelect);
@@ -296,10 +325,10 @@ SelectCommand allows the user to select a recipe from the filtered list (obtaine
     }
 ```
 ##### 3.3 Sequence Diagram
-Below is the UML sequence diagram for the SelectCommand, illustrating its interactions with the system components:
+Below is the UML sequence diagram for the SelectCommand and SelectChecker, illustrating their interactions with the system components:
 
-![.\diagrams\SelectCommand.png](.\diagrams\SelectCommand.png)
-
+![SelectCommand.png](diagrams/SelectCommand.png)
+![SelectChecker.png](diagrams/SelectChecker.png)
 ##### 3.4 Unit Testing
 
 ###### Testing Approach
@@ -540,6 +569,7 @@ public void createCommand_fail() {
     logger.info("createCommand_fail() test passed");
 }
 ```
+
 ```java
 @Test
     public void createChecker_fail() {
@@ -609,7 +639,132 @@ DeleteCommand is responsible for removing a specific meal from the recipes list 
 ```
 
 ##### 6.3 Sequence Diagram
+Here is the sequence diagram for illustrating the interactions between different classes while processing the user input:
 ![.\diagrams\DeleteCommand.png](./diagrams/DeleteCommand.png)
+
+### 7. Filter Command and FilterChecker
+
+##### 7.1 Design Overview
+
+###### Function
+FilterChecker checks if the user input is valid before passing to the FilterCommand to filter recipes list into the wishlist based on the user input. 
+
+###### Design Goals
+
+**Single Responsibility:**
+- FilterCommand solely handles the filtering of the recipes list according to the user input while FilterChecker solely handles the checking of the Filter command input by the user.
+
+**Decoupling:**
+- By segregating responsibilities, it makes the code easier to maintain and extend.
+
+**Testability:**
+- The design supports unit testing by allowing test-specific FilterCommandTest and FilterCheckerTest to capture and verify the output.
+
+##### 7.2 Implementation Details
+
+###### Component Level: FilterChecker Class
+
+- Inherits from the abstract FilterSelectChecker Class, which in turn inherits from the abstract Checker Class.
+- Implements the `check()` method.
+- Uses logging to indicate execution.
+- `isPassed` is set to `true` once the user input passes all the required checks.
+- Passes the valid user input back into the FilterCommand class for filtering the recipes list.
+
+###### Component Level: FilterCommand Class
+
+- Inherits from the abstract FilterSelectCommand Class, which in turn inherits from the abstract Command class.
+- Implements the `execute(MealManager mealManager, UserInterface ui)` method.
+- Uses logging to indicate execution.
+- Filters the recipes list according to the user input.
+
+###### Code Example
+
+FilterSelectChecker check() method:
+```java
+ @Override
+public void check() throws EZMealPlanException {
+  logger.fine("Checking '" + userInput + "' for errors.");
+  checkFilterMethodFormat();
+  setPassed(true);
+}
+```
+FilterChecker check() method:
+```java
+@Override
+    public void check() throws EZMealPlanException {
+        super.check();
+    }
+```
+
+```java
+@Override
+public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
+  boolean isValidUserInput = checkValidUserInput(filterOrSelect);
+  if (!isValidUserInput) {
+    logger.severe("Huge issue detected! The user input format remains invalid despite " +
+                  "passing all the checks for input formatting error.");
+  }
+  assert isValidUserInput;
+  List<Meal> filteredMealList = getFilteredMealList(mealManager);
+  printFilteredMealList(filteredMealList, ui);
+}
+```
+##### 7.3 Sequence Diagrams
+Here are Sequence Diagrams depicting the interactions between the classes:
+![FilterCommand.png](diagrams/FilterCommand.png)
+![FilterChecker.png](diagrams/FilterChecker.png)
+
+For the `/mcost` and `/mname` filtering methods, their flow will be different from the one shown in the FilterCommand sequence diagram above.
+
+For the `/mname` filtering method, simply replace:
+* `filterByIngList` method &rarr; `filterByMnameList` method
+* `mealManager.filteringByIng` method &rarr; `mealManager.filteringByMname` method
+
+For the `/mcost` filtering method, simply replace:
+* `filterByIngList` method &rarr; `filterByMcostList` method
+* `mealManager.filteringByIng` method &rarr; `mealManager.filteringByMcost` method
+* And include: `checkValidMcostPrice` method to check the user input for `/mcost`.
+
+##### 7.4 Unit Testing
+
+###### Testing Approach
+- Uses a test-specific FilterCheckerTest and FilterCommandTest to ensure that the FilterChecker and FilterCommand account for different types of user inputs and proceed as normal.
+- Test with different types of user inputs that gives no error and some exceptions.
+- Executes FilterChecker and FilterCommand.
+- Verifies that the exceptions are thrown according to the user inputs.
+
+###### Unit Test Code
+```java
+ @Test
+public void filterChecker_success() throws EZMealPlanException {
+  logger.info("running filterchecker_success()");
+  String[] validFilterStrings = {"filter /mname a", "filter /mname a,b", "filter /ing c", "filter /ing c,d"
+          , "filter /mcost 1"};
+  for (String filterString : validFilterStrings) {
+    String filterMethod = getFilterMethod(filterString);
+    FilterChecker checker = new FilterChecker(filterString, filterMethod);
+    checker.check();
+    assertTrue(checker.isPassed());
+    logger.info("Valid filter command input.");
+  }
+  logger.info("filterChecker_success() passed");
+}
+```
+
+```java
+ @Test
+public void filterCommand_success() {
+  mealManager.getRecipesList().getList().clear();
+  logger.fine("running filterCommand_success()");
+  String[] validFilterCommands = {"filter /mname a", "filter /ing b,c", "filter /mcost 2.00", "filter /mname " +
+                                                                                              "Mname"
+          , "filter /ing Ing", "filter /mcost 5.00"};
+  runValidFilterCommands(validFilterCommands);
+  addMeals();
+  runValidFilterCommands(validFilterCommands);
+  logger.info("filterCommand_success() passed");
+}
+```
 
 
 ## Implementation
