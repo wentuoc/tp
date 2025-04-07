@@ -8,5 +8,5 @@ into their personal wishlist. Users can also create their own meals which will b
 ### Summary of Contributions
 * Code contributed: [RepoSense link](https://nus-cs2113-ay2425s2.github.io/tp-dashboard/?search=&sort=groupTitle&sortWithin=title&timeframe=commit&mergegroup=&groupSelect=groupByRepos&breakdown=true&checkedFileTypes=docs~functional-code~test-code~other&since=2025-02-21&tabOpen=true&tabType=authorship&tabAuthor=RyanLing169&tabRepo=AY2425S2-CS2113-F14-4%2Ftp%5Bmaster%5D&authorshipIsMergeGroup=false&authorshipFileTypes=docs~functional-code~test-code&authorshipIsBinaryFileTypeChecked=false&authorshipIsIgnoredFilesChecked=false)
 * Documentation:
-  * User Guide:
-  * Developer Guide:
+  * User Guide: Added in the types of lists that the users manage when using our app.
+  * Developer Guide: Added the Delete command portion.
