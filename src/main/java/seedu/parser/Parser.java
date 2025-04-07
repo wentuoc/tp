@@ -64,11 +64,13 @@ public class Parser {
 
     private static String getFirstWord(String userInput) {
         int firstSpaceIndex = userInput.indexOf(' ');
-        if (firstSpaceIndex == -1) {
+        int invalidIndex  = -1;
+        if (firstSpaceIndex == invalidIndex) {
             //userInput does not contain a space
             return userInput;
         }
-        return userInput.substring(0, firstSpaceIndex);
+        int startIndex = 0;
+        return userInput.substring(startIndex, firstSpaceIndex);
     }
 
     private static Command parseUnknownInput(String firstWordLowerCase) {
