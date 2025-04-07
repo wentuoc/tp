@@ -1,7 +1,7 @@
 package seedu.exceptions;
 
 public class MissingIngKeywordException extends EZMealPlanException {
-    private String command;
+    private final String command;
     public MissingIngKeywordException(String message) {
         command = message;
     }
@@ -9,7 +9,7 @@ public class MissingIngKeywordException extends EZMealPlanException {
     @Override
     public String getMessage() {
         return String.format("""
-            "/ing" keyword cannot be missing from the %s command.
-            """, command);
+        "/ing" keyword cannot be missing from the "%s" command.
+        """, command.toLowerCase());
     }
 }
