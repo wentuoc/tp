@@ -116,6 +116,7 @@ public class Parser {
     private static Command parseRecipes(String[] tokens) throws ParserException {
         assertExactTokenCount(tokens, 1, "The recipes command does not take any arguments.");
         return new RecipesCommand();
+
     }
 
     private static Command parseWishlist(String[] tokens) throws ParserException {

@@ -147,6 +147,7 @@ public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlan
 - Asserts that the UI received the expected label and list of meals
 
 ###### Unit Test Code
+Here is a snippet of the unit test code:
 ```java
 @Test
 public void testExecute_recipesCommand_printsRecipesList() throws EZMealPlanException {
@@ -222,6 +223,7 @@ public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlan
 - Verifies that the UI output matches the expected label and meal list
 
 ###### Unit Test Code
+Here is a snippet of the unit test code:
 ```java
 @Test
 public void testExecute_wishlistCommand_printsUserChosenMeals() throws EZMealPlanException {
@@ -325,7 +327,7 @@ SelectChecker Class check():
     }
 ```
 ##### 3.3 Sequence Diagram
-Below is the UML sequence diagram for the SelectCommand and SelectChecker, illustrating their interactions with the system components:
+Below are the UML sequence diagrams for the SelectCommand and SelectChecker, illustrating their interactions with the system components:
 
 ![SelectCommand.png](diagrams/SelectCommand.png)
 ![SelectChecker.png](diagrams/SelectChecker.png)
@@ -346,6 +348,7 @@ Below is the UML sequence diagram for the SelectCommand and SelectChecker, illus
 - Each test verifies expected exception messages match actual exception messages
 -
 ###### Unit Test Code
+Here is a snippet of the unit test code:
 ```java
 @Test
 public void selectCommand_success() {
@@ -455,6 +458,7 @@ private void updateInventoryListFile(MealManager mealManager, UserInterface ui) 
 - Once both checks are completed, the files contents will be transferred back into the recipesList.txt, wishList.txt and inventoryList.txt from the temporary files.
 
 ###### Unit Test Code
+Here is a snippet of the unit test code:
 ```java
   @Test
 public void byeCommandTest_success() {
@@ -559,6 +563,7 @@ Here are Sequence Diagrams depicting the flow of the processing of user inputs i
 - Verifies that the exceptions are thrown according to the user inputs.
 
 ###### Unit Test Code
+Here are some snippets of the unit test code:
 ```java
  @Test
 public void createCommand_fail() {
@@ -585,7 +590,8 @@ public void createCommand_fail() {
     }
 ```
 
-#### 6. DeleteCommand
+#### 6. DeleteCommand 
+* RemoveDeleteChecker will be explained with RemoveCommand.
 
 ##### 6.1 Design Overview
 
@@ -610,15 +616,15 @@ DeleteCommand is responsible for removing a specific meal from the recipes list 
 
 ###### Component Level: DeleteCommand Class
 
-- Inherits from the abstract `RemoveDeleteCommand` class
-- Implements the `execute(MealManager mealmanager, UserInterface ui)` method
+- Inherits from the abstract `RemoveDeleteCommand` class, which in turn inherits from the abstract `Command` class.
+- Implements the `execute(MealManager mealmanager, UserInterface ui)` method.
 - Uses logging (via `logger.fine(...)` to indicate successful deletion.
-- Retrieves the main meal list using `mealManager.getMainMeals()` (inherited logic)
-- Removes the meal at the specified index (inherited logic)
-- Retrieves the wish list using `mealManager.getWishList()`
-- Checks if the deleted meal exists in the wish list using `wishlist.contains(...)`
-- If it exists, removes it using `wishList.removeMeal(...)`
-- Calls `ui.printRemovedMessage(...)` to notify the user of removal from the wish list
+- Retrieves the main meal list using `mealManager.getMainMeals()` (inherited logic).
+- Removes the meal at the specified index (inherited logic).
+- Retrieves the wish list using `mealManager.getWishList()`.
+- Checks if the deleted meal exists in the wish list using `wishlist.contains(...)`.
+- If it exists, removes it using `wishList.removeMeal(...)`.
+- Calls `ui.printRemovedMessage(...)` to notify the user of removal from the wish list.
 
 ###### Code Example
 ```java
@@ -642,7 +648,7 @@ DeleteCommand is responsible for removing a specific meal from the recipes list 
 Here is the sequence diagram for illustrating the interactions between different classes while processing the user input:
 ![.\diagrams\DeleteCommand.png](./diagrams/DeleteCommand.png)
 
-### 7. Filter Command and FilterChecker
+### 7. FilterCommand and FilterChecker
 
 ##### 7.1 Design Overview
 
@@ -652,7 +658,7 @@ FilterChecker checks if the user input is valid before passing to the FilterComm
 ###### Design Goals
 
 **Single Responsibility:**
-- FilterCommand solely handles the filtering of the recipes list according to the user input while FilterChecker solely handles the checking of the Filter command input by the user.
+- FilterCommand solely handles the filtering of the recipes list according to the user input while FilterChecker solely handles the checking of the Filter command inputted by the user.
 
 **Decoupling:**
 - By segregating responsibilities, it makes the code easier to maintain and extend.
@@ -710,7 +716,8 @@ public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlan
 }
 ```
 ##### 7.3 Sequence Diagrams
-Here are Sequence Diagrams depicting the interactions between the classes:
+Here are Sequence Diagrams depicting the interactions between the FilterCommand, FilterChecker and other system component classes:
+
 ![FilterCommand.png](diagrams/FilterCommand.png)
 ![FilterChecker.png](diagrams/FilterChecker.png)
 
@@ -734,6 +741,7 @@ For the `/mcost` filtering method, simply replace:
 - Verifies that the exceptions are thrown according to the user inputs.
 
 ###### Unit Test Code
+Here are some snippets of the unit test code:
 ```java
  @Test
 public void filterChecker_success() throws EZMealPlanException {
@@ -765,7 +773,374 @@ public void filterCommand_success() {
   logger.info("filterCommand_success() passed");
 }
 ```
+### 8. RemoveCommand and RemoveDeleteChecker
 
+##### 8.1 Design Overview
+
+###### Function
+RemoveDeleteChecker checks if the user input is valid before passing to the RemoveCommand to remove a meal from the wishlist (when it is not empty) based on the user input.
+
+###### Design Goals
+
+**Single Responsibility:**
+- RemoveCommand solely handles the removing of meal from the wishlist according to the user input while RemoveDeleteChecker solely handles the checking of the Remove command inputted by the user.
+
+**Decoupling:**
+- By segregating responsibilities, it makes the code easier to maintain and extend.
+
+##### 8.2 Implementation Details
+
+###### Component Level: RemoveDeleteChecker Class
+- Inherits from the abstract Checker Class.
+- Implements the `check()` method.
+- Uses logging to indicate execution.
+- `isPassed` is set to `true` once the user input passes all the required checks.
+- Passes the valid user input back into the RemoveCommand class for removing a meal from the wishlist.
+- 
+###### Component Level: RemoveCommand Class
+- Inherits from the abstract RemoveDeleteCommand Class, which in turn inherits from the abstract Command class.
+- Implements the `execute(MealManager mealManager, UserInterface ui)` method.
+- Uses logging to indicate execution.
+- Removes a meal from the wishlist according to the user input.
+
+###### Code Example
+
+```java 
+@Override
+    public void check() throws EZMealPlanException {
+        logger.fine("Checking '" + userInput + "' for errors.");
+        String indexString = extractIndex(userInput);
+        parseIndex(indexString);
+        setPassed(true);
+    }
+```
+RemoveDeleteCommand execute() method:
+```java
+@Override
+    public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
+        MealList wishList = mealManager.getWishList();
+        MealList recipesList = mealManager.getRecipesList();
+        int indexOfIndex = 1;
+
+        boolean isValidUserInput = checkValidUserInput();
+        if (!isValidUserInput) {
+            logger.severe("Huge issue detected! The user input format remains invalid despite " +
+                    "passing all the checks for input formatting error.");
+        }
+        assert isValidUserInput;
+        String regexPattern = "\\s+";
+        int indexAdjustment = 1;
+        int index = Integer.parseInt(validUserInput.split(regexPattern)[indexOfIndex]) - indexAdjustment;
+        if (removeOrDelete.equals(remove)) {
+            removedOrDeletedMeal = mealManager.removeMeal(index, wishList);
+            ui.printRemovedMessage(removedOrDeletedMeal, wishList.size());
+        } else if (removeOrDelete.equals(delete)) {
+            removedOrDeletedMeal = mealManager.removeMeal(index, recipesList);
+            ui.printDeletedMessage(removedOrDeletedMeal, recipesList.size());
+        }
+    }
+```
+
+RemoveCommand execute() method:
+```java
+ @Override
+    public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
+        super.execute(mealManager, ui);
+        logger.fine("Command finished executing: Removed \"" + removedOrDeletedMeal.getName() + "\" meal");
+    }
+```
+##### 8.3 Sequence Diagrams
+Here are Sequence Diagrams depicting the interactions between the RemoveCommand, RemoveDeleteChecker and other system component classes:
+
+![RemoveCommand.png](diagrams/RemoveCommand.png)
+![RemoveDeleteChecker.png](diagrams/RemoveDeleteChecker.png)
+
+### 9. ClearCommand 
+
+##### 9.1 Design Overview
+
+###### Function
+ClearCommand clears the wishlist.
+
+###### Design Goals
+
+**Single Responsibility:**
+- ClearCommand solely handles the clearing of the wishlist according to the user input.
+
+**Decoupling:**
+- By segregating responsibilities, it makes the code easier to maintain and extend.
+
+**Testability:**
+- The design supports unit testing by allowing test-specific ClearCommandTest to capture and verify the output.
+
+##### 9.2 Implementation Details
+
+###### Component Level: RemoveCommand Class
+- Inherits from the abstract Command class.
+- Implements the `execute(MealManager mealManager, UserInterface ui)` method.
+- Uses logging to indicate execution.
+- Clears the wishlist according to the user input.
+
+###### Code Example
+
+```java
+  @Override
+    public void execute(MealManager mealManager, UserInterface ui) {
+        List<Meal> wishList = mealManager.getWishList().getList();
+        wishList.clear();
+        ui.printClearedList();
+    }
+```
+##### 9.3 Sequence Diagram
+Here is the sequence diagram depicting the interactions between ClearCommand and other system component classes:
+
+![ClearCommand.png](diagrams/ClearCommand.png)
+
+##### 9.4 Unit Testing
+
+###### Testing Approach
+- Uses a test-specific ClearCommandTest to ensure that the ClearCommand account for different types of user inputs, handles exceptions for erroneous inputs and proceed as normal.
+- Test by adding the wishlist with some meals.
+- Executes ClearCommand.
+- Checks that the wishlist is empty after running the ClearCommand and the expected message about the wishlist being cleared is being printed normally.
+
+###### Unit Test Code
+Here is a snippet of the unit test code:
+```java
+  @Test
+    void clearsWishList_noInputs_printsMessage() throws EZMealPlanException {
+        logger.fine("running execute_clearsWishList_printsMessage()");
+
+        // Prepare wishlist with some meals
+        MealList wishList = mealManager.getWishList();
+        wishList.addMeal(new Meal("Chicken Rice"));
+        wishList.addMeal(new Meal("Pasta"));
+
+        // Ensure wishList is not empty before clearing
+        assertEquals(2, wishList.getList().size(), "Wishlist should contain 2 meals before clearing.");
+
+        // Execute ClearCommand
+        ClearCommand clearCommand = new ClearCommand();
+        clearCommand.execute(mealManager, ui);
+
+        // Verify wishList is now empty
+        assertTrue(wishList.getList().isEmpty(), "Wishlist should be empty after ClearCommand.");
+
+        // Verify output
+        String expectedOutput = "All meals cleared from your wishlist!" + ls;
+        assertEquals(expectedOutput, outContent.toString(), "Command output does not match expected message.");
+
+        logger.info("execute_clearsWishList_printsMessage() passed");
+    }
+```
+
+### 10. ViewCommand and ViewChecker
+
+##### 10.1 Design Overview
+
+###### Function
+ViewChecker checks for the validity of the user input before passing to the ViewCommand for processing and retrieving the ingredient list of the selected meal from the recipes list or wishlist according to the meal index and the list stated in the user input.
+
+###### Design Goals
+**Single Responsibility:**
+- ClearCommand solely handles the clearing of the wishlist according to the user input.
+
+**Decoupling:**
+- By segregating responsibilities, it makes the code easier to maintain and extend.
+
+**Testability:**
+- The design supports unit testing by allowing test-specific ViewCommandTest and ViewCheckerTest to capture and verify the output.
+
+##### 10.2 Implementation Details
+
+###### Component Level: ViewChecker Class
+- Inherits from the abstract ViewChecker Class, which in turn inherits from the abstract Checker Class.
+- Implements the `check()` method.
+- Uses logging to indicate execution.
+- `isPassed` is set to `true` once the user input passes all the required checks.
+- Passes the valid user input back into the ViewCommand class for extracting the ingredient list of the meal with the corresponding index from either the recipes list or the wishlist.
+
+###### Component Level: ViewCommand Class
+
+- Inherits from the abstract Command Class.
+- Implements the `execute(MealManager mealManager, UserInterface ui)` method.
+- Uses logging to indicate execution.
+- Extracts the ingredient list of the meal with the corresponding index from either the recipes list or the wishlist (if the list is not empty) according to the user input.
+
+###### Code Example
+
+```java
+@Override
+public void check() throws EZMealPlanException {
+checkValidKeywordIndex();
+checkMissingMealIndex();
+checkParseMealIndex();
+setPassed(true);
+}
+```
+```java
+@Override
+    public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
+        setRecipesOrWishlist();
+        boolean isValidUserInput = checkValidUserInput();
+        if (!isValidUserInput) {
+            logger.severe("Huge issue detected! The user input format remains invalid despite " +
+                    "passing all the checks for input formatting error.");
+        }
+        assert isValidUserInput;
+        viewMeal(recipesOrWishlist, mealManager, ui);
+    }
+```
+##### 10.3 Sequence Diagram
+Here are the sequence diagrams depicting the interactions between ViewCommand, ViewChecker and other system component classes:
+![ViewCommand.png](diagrams/ViewCommand.png)
+![ViewChecker.png](diagrams/ViewChecker.png)
+
+##### 10.4 Unit Testing
+
+###### Testing Approach
+- Uses a test-specific ViewCheckerTest and ViewCommandTest to ensure that the ViewChecker and ViewCommand account for different types of user inputs and proceed as normal.
+- Test with different types of user inputs that gives no error and some exceptions.
+- Executes ViewChecker and ViewCommand.
+- Verifies that the exceptions are thrown according to the user inputs.
+
+###### Unit Test Code
+Here are some snippets of the unit test code:
+
+```java
+@Test
+    public void viewChecker_validWishlistIndex_success() throws EZMealPlanException {
+        logger.fine("Running viewChecker_validWishlistIndex_success()");
+        ViewChecker checker = new ViewChecker("view /w 1", "/w");
+        checker.check();
+        logger.info("viewChecker_validWishlistIndex_success passed");
+    }
+
+    @Test
+    public void viewChecker_keywordBeforeView_throwsInvalidKeywordIndexException() {
+        logger.fine("Running viewChecker_keywordBeforeView_throwsInvalidKeywordIndexException()");
+        ViewChecker checker = new ViewChecker("/r view 1", "/r");
+        assertThrows(InvalidKeywordIndexException.class, checker::check);
+        logger.info("viewChecker_keywordBeforeView_throwsInvalidKeywordIndexException passed");
+    }
+```
+```java
+@Test
+public void testExecute_viewRecipeMeal_success() throws EZMealPlanException {
+  logger.fine("Running testExecute_viewRecipeMeal_success()");
+
+  MealManager mealManager = new MealManager();
+  Meal meal1 = new Meal("Recipes Meal 1");
+  Ingredient firstIngredient = new Ingredient("egg", "0.50");
+  Ingredient secondIngredient = new Ingredient("rice", "1.00");
+  meal1.addIngredient(firstIngredient);
+  meal1.addIngredient(secondIngredient);
+
+  mealManager.getRecipesList().getList().add(meal1);
+
+  ViewCommandTest.TestUserInterface testUI = new ViewCommandTest.TestUserInterface();
+  ViewCommand viewCommand = new ViewCommand("view /r 1");
+  viewCommand.execute(mealManager, testUI);
+
+  assertEquals("Recipes Meal 1 ($1.50)", testUI.capturedMeal.toString());
+  List<Ingredient> expectedIngredients = new ArrayList<>();
+  expectedIngredients.add(firstIngredient);
+  expectedIngredients.add(secondIngredient);
+  expectedIngredients.sort(Comparator.comparing(Ingredient::getName,
+          String.CASE_INSENSITIVE_ORDER).thenComparing(Ingredient::getPrice));
+  assertIterableEquals(expectedIngredients, testUI.capturedIngredients);
+
+  logger.info("testExecute_viewRecipeMeal_success passed");
+}
+```
+### 11. HelpCommand 
+
+##### 11.1 Design Overview
+
+###### Function
+HelpCommand redirects the UI to print the messages of the command that the user has doubt with. The messages will briefly state what the command does, the respective input and the expected output.
+
+###### Design Goals
+**Single Responsibility:**
+- HelpCommand solely handles the directing of the help messages to be printed by the user interface according to the command that the user has doubt with or is being inputted.
+
+**Decoupling:**
+- By segregating responsibilities, it makes the code easier to maintain and extend.
+
+##### 11.2 Implementation Details
+
+###### Component Level: HelpCommand Class
+- Inherits from the abstract Command Class.
+- Implements the `execute(MealManager mealManager, UserInterface ui)` method.
+- Uses logging to indicate execution.
+- Choose the respective help message to be printed by the user interface based on the command that the user inputted.
+
+###### Code Example
+```java
+@Override
+    public void execute(MealManager mealManager, UserInterface ui) {
+        if (commandDescription.isEmpty()) {
+            ui.printGeneralHelp();
+            return;
+        }
+        switch(commandDescription) {
+        case RECIPES:
+            ui.printRecipesCommandHelp();
+            break;
+        case WISHLIST:
+            ui.printWishlistCommandHelp();
+            break;
+        case FILTER:
+            ui.printFilterCommandHelp();
+            break;
+        case SELECT:
+            ui.printSelectCommandHelp();
+            break;
+        case REMOVE:
+            ui.printRemoveCommandHelp();
+            break;
+        case CREATE:
+            ui.printCreateCommandHelp();
+            break;
+        case DELETE:
+            ui.printDeleteCommandHelp();
+            break;
+        case VIEW:
+            ui.printViewCommandHelp();
+            break;
+        case CLEAR:
+            ui.printClearCommandHelp();
+            break;
+        case BYE:
+            ui.printByeCommandHelp();
+            break;
+        case HELP:
+            ui.printHelpCommandHelp();
+            break;
+        case RECOMMEND:
+            ui.printRecommendCommandHelp();
+            break;
+        case CONSUME:
+            ui.printConsumeCommandHelp();
+            break;
+        case BUY:
+            ui.printBuyCommandHelp();
+            break;
+        case INVENTORY:
+            ui.printInventoryCommandHelp();
+            break;
+        default:
+            ui.printUnknownCommand(commandDescription);
+            break;
+        }
+    }
+```
+
+##### 10.3 Sequence Diagram
+Here is the sequence diagrams depicting the interactions between HelpCommand and other system component classes:
+![HelpCommand.png](diagrams/HelpCommand.png)
+
+For simplicity sake, only the command that matches the one in user input is shown in the sequence diagram. The full `execute(mealManager,ui)` method actually consists of multiple options with each option representing a command keyword and its respective help message to be printed by the user interface.
 
 ## Implementation
 
