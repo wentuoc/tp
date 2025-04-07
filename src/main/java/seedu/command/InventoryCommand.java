@@ -1,12 +1,10 @@
 package seedu.command;
 
 import seedu.exceptions.EZMealPlanException;
-import seedu.food.Ingredient;
 import seedu.food.Inventory;
 import seedu.logic.MealManager;
 import seedu.ui.UserInterface;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 public class InventoryCommand extends Command {
@@ -17,7 +15,6 @@ public class InventoryCommand extends Command {
         assert mealManager != null : "MealManager cannot be null";
         logger.fine("Executing 'inventory' command");
         Inventory inventory = mealManager.getInventory();
-        List<Ingredient> ingredientsList = inventory.getIngredients();
-        ui.printInventory(ingredientsList);
+        ui.printInventory(inventory.toString());
     }
 }
