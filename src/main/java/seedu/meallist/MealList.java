@@ -26,7 +26,7 @@ public abstract class MealList {
     public void addMeal(Meal newMeal) throws EZMealPlanException {
         checkDuplicateMeal(newMeal);
         mealList.add(newMeal);
-        mealList.sort(Comparator.comparing(meal -> meal.getName().toLowerCase()));
+        mealList.sort(Comparator.comparing(Meal::getName,String.CASE_INSENSITIVE_ORDER).thenComparing(Meal::getPrice));
     }
 
     /**
@@ -47,7 +47,8 @@ public abstract class MealList {
         try {
             return mealList.remove(index);
         } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
-            throw new RemoveIndexOutOfRangeException(index, mealList.size());
+            int indexAdjustment = 1;
+            throw new RemoveIndexOutOfRangeException(index + indexAdjustment, mealList.size());
         }
     }
 
@@ -76,3 +77,5 @@ public abstract class MealList {
         return mealList.contains(meal);
     }
 }
+
+

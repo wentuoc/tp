@@ -8,6 +8,7 @@ public class InvalidPriceException extends EZMealPlanException {
     }
 
     public String getMessage() {
-        return "The price of the " + this.productName + " must be greater than or equals to 0.\n";
+        return "The price of " + this.productName + " must be between 0.00 and 9999999999999.99"
+               +" (both sides inclusive).\n";
     }
 }

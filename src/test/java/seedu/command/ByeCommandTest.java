@@ -1,6 +1,8 @@
 package seedu.command;
 
 import seedu.exceptions.EZMealPlanException;
+import seedu.food.Ingredient;
+import seedu.food.Inventory;
 import seedu.food.Meal;
 import seedu.logic.MealManager;
 import seedu.meallist.MealList;
@@ -9,6 +11,7 @@ import seedu.ui.UserInterface;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -81,11 +84,14 @@ public class ByeCommandTest {
         try {
             Storage.createListFiles();
             List<Meal> mealsList = Storage.loadPresetMeals();
+            Storage.loadExistingInventory(mealManager);
             List<Meal> expectedRecipesList = getExpectedRecipesList(mealsList);
             List<Meal> expectedWishList = getExpectedWishList(mealsList);
+            List<Ingredient> expectedInventoryList = getExpectedInventoryList();
             List<File> latestFiles = saveLatestLists();
-            firstHalf_byeCommandTest_success();
-            secondHalf_byeCommandTest_success(expectedRecipesList, expectedWishList, latestFiles);
+            expectedGoodByeMessage_success();
+            compareFileAndExpectedLists_success(expectedRecipesList, expectedWishList,
+                    expectedInventoryList,latestFiles);
             logger.info("byeCommandTest_success() passed");
         } catch (Exception exception) {
             ui.printErrorMessage(exception);
@@ -94,15 +100,27 @@ public class ByeCommandTest {
         }
     }
 
-    private void secondHalf_byeCommandTest_success(List<Meal> expectedRecipesList, List<Meal> expectedWishList,
-                                                   List<File> latestFiles) throws IOException {
+    private List<Ingredient> getExpectedInventoryList() throws EZMealPlanException {
+        Inventory inventory = mealManager.getInventory();
+        Ingredient firstIngredient = new Ingredient("firstIngredient","1.50");
+        Ingredient secondIngredient = new Ingredient("secondIngredient","2.50");
+        inventory.addIngredient(firstIngredient);
+        inventory.addIngredient(secondIngredient);
+        return inventory.getIngredients();
+        
+    }
+
+    private void compareFileAndExpectedLists_success(List<Meal> expectedRecipesList, List<Meal> expectedWishList,
+                                                     List<Ingredient> expectedInventoryList, List<File> latestFiles)
+            throws IOException {
         Storage.createListFiles();
         checkRecipesLists(expectedRecipesList);
         checkWishLists(expectedWishList);
+        checkInventoryLists(expectedInventoryList);
         restoreLatestLists(latestFiles);
     }
 
-    private void firstHalf_byeCommandTest_success() {
+    private void expectedGoodByeMessage_success() {
         ByeCommand byeCommand = new ByeCommand();
         assertTrue(byeCommand.isExit());
         byeCommand.execute(mealManager, ui);
@@ -112,8 +130,23 @@ public class ByeCommandTest {
     private void restoreLatestLists(List<File> latestFiles) throws IOException {
         int recipesFileIndex = 0;
         int wishListFileIndex = 1;
+        int inventoryListIndex = 2;
         restoreLatestRecipes(latestFiles.get(recipesFileIndex));
         restoreLatestWishList(latestFiles.get(wishListFileIndex));
+        restoreLatestInventoryList(latestFiles.get(inventoryListIndex));
+    }
+
+    private void restoreLatestInventoryList(File tempInventoryListFile) throws IOException {
+        File inventoryListFile = Storage.getInventoryListFile();
+        Scanner scanner = new Scanner(tempInventoryListFile);
+        try (FileWriter fileCleaner = new FileWriter(inventoryListFile);
+             FileWriter fileWriter = new FileWriter(inventoryListFile, true)) {
+            while (scanner.hasNextLine()) {
+                fileWriter.append(scanner.nextLine()).append(System.lineSeparator());
+            }
+            scanner.close();
+        }
+        tempInventoryListFile.delete();
     }
 
     private void restoreLatestWishList(File tempWishListFile) throws IOException {
@@ -146,7 +179,22 @@ public class ByeCommandTest {
         List<File> files = new ArrayList<>();
         files.add(saveLatestRecipes());
         files.add(saveLatestWishList());
+        files.add(saveLatestInventoryList());
         return files;
+    }
+
+    private File saveLatestInventoryList() throws IOException {
+        String tempInventoryListPath = "data/tempInventoryList.txt";
+        File tempInventoryListFile = new File(tempInventoryListPath);
+        File inventoryListFile = Storage.getInventoryListFile();
+        Scanner scanner = new Scanner(inventoryListFile);
+        try (FileWriter fileWriter = new FileWriter(tempInventoryListFile, true)) {
+            while (scanner.hasNextLine()) {
+                fileWriter.append(scanner.nextLine()).append(System.lineSeparator());
+            }
+            scanner.close();
+        }
+        return tempInventoryListFile;
     }
 
     private File saveLatestWishList() throws IOException {
@@ -192,6 +240,12 @@ public class ByeCommandTest {
         File recipesFile = Storage.getRecipesListFile();
         List<Meal> recipesFromFile = Storage.loadExistingList(recipesFile);
         assertEquals(expectedRecipesList, recipesFromFile, "Recipes list does not match.");
+    }
+
+    private void checkInventoryLists(List<Ingredient> expectedInventoryList) throws FileNotFoundException {
+        Storage.loadExistingInventory(mealManager);
+        List<Ingredient> ingredientsFromFile = mealManager.getInventory().getIngredients();
+        assertEquals(expectedInventoryList, ingredientsFromFile, "Inventory list does not match.");
     }
 
     private List<Meal> getExpectedWishList(List<Meal> mealsList) throws EZMealPlanException {

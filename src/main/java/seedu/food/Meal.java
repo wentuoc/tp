@@ -4,6 +4,7 @@ import seedu.exceptions.DuplicateIngredientException;
 import seedu.exceptions.InvalidPriceException;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -29,6 +30,8 @@ public class Meal extends Product {
     public void addIngredient(Ingredient ingredient) throws InvalidPriceException, DuplicateIngredientException {
         checkDuplicateIngredients(ingredient);
         ingredientList.add(ingredient);
+        ingredientList.sort(Comparator.comparing(Ingredient::getName,
+                String.CASE_INSENSITIVE_ORDER));
         setPrice(getPrice() + ingredient.getPrice());
     }
 

@@ -15,6 +15,7 @@ public class SelectChecker extends FilterSelectChecker {
     @Override
     public void check() throws EZMealPlanException {
         super.check();
+        setPassed(false);
         indexStringCheck();
         setPassed(true);
     }
@@ -22,7 +23,6 @@ public class SelectChecker extends FilterSelectChecker {
     private void indexStringCheck() throws EZMealPlanException {
         String indexString = getIndexString().trim();
         if (indexString.isEmpty()) {
-            setPassed(false);
             throw new MissingMealIndexException(filterOrSelect);
         }
     }
@@ -31,9 +31,9 @@ public class SelectChecker extends FilterSelectChecker {
         String keyword = "";
         int afterSelectIndex = lowerCaseInput.indexOf(filterOrSelect) + filterOrSelect.length();
         keyword = switch (filterMethod) {
-        case byIng -> ing;
-        case byMcost -> mcost;
-        case byMname -> mname;
+        case BY_ING -> ING;
+        case BY_MCOST -> MCOST;
+        case BY_MNAME -> MNAME;
         default -> keyword;
         };
         if (keyword.isEmpty()) {
