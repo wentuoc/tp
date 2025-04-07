@@ -57,7 +57,7 @@ public class Ingredient extends Product {
 
     // Serializes the ingredient into a string format (e.g., "name|price")
     public String toDataString() {
-        return getName() + " | " + getPrice();
+        return getName() + " | " + String.format("%.2f", getPrice());
     }
 
     // Deserializes the string back into an Ingredient object

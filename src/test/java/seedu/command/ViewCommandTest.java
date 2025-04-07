@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.io.IOException;
 import java.util.logging.ConsoleHandler;
@@ -79,6 +80,8 @@ public class ViewCommandTest {
         List<Ingredient> expectedIngredients = new ArrayList<>();
         expectedIngredients.add(firstIngredient);
         expectedIngredients.add(secondIngredient);
+        expectedIngredients.sort(Comparator.comparing(Ingredient::getName,
+                String.CASE_INSENSITIVE_ORDER).thenComparing(Ingredient::getPrice));
         assertIterableEquals(expectedIngredients, testUI.capturedIngredients);
 
         logger.info("testExecute_viewRecipeMeal_success passed");
@@ -94,6 +97,7 @@ public class ViewCommandTest {
         Ingredient secondIngredient = new Ingredient("noodles", "1.80");
         meal.addIngredient(firstIngredient);
         meal.addIngredient(secondIngredient);
+
         mealManager.getWishList().getList().add(meal);
 
         TestUserInterface testUI = new TestUserInterface();
@@ -101,7 +105,12 @@ public class ViewCommandTest {
         command.execute(mealManager, testUI);
 
         assertEquals("Wishlist Meal 1 ($3.00)", testUI.capturedMeal.toString());
-        assertIterableEquals(List.of(firstIngredient, secondIngredient), testUI.capturedIngredients);
+        List<Ingredient> expectedIngredients = new ArrayList<>();
+        expectedIngredients.add(firstIngredient);
+        expectedIngredients.add(secondIngredient);
+        expectedIngredients.sort(Comparator.comparing(Ingredient::getName,
+                String.CASE_INSENSITIVE_ORDER).thenComparing(Ingredient::getPrice));
+        assertIterableEquals(expectedIngredients, testUI.capturedIngredients);
         logger.info("testExecute_viewWishlistMeal_success passed");
     }
 
