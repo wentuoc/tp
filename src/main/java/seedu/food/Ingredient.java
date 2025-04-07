@@ -30,8 +30,10 @@ public class Ingredient extends Product {
     public boolean equals(Object otherIngredient) {
         if (otherIngredient instanceof Ingredient) {
             String otherName = ((Ingredient) otherIngredient).getName();
+            double otherPrice = ((Ingredient) otherIngredient).getPrice();
             String thisName = this.getName();
-            return thisName.equalsIgnoreCase(otherName);
+            double thsPrice = this.getPrice();
+            return thisName.equalsIgnoreCase(otherName) && thsPrice == otherPrice;
         } else {
             return false;
         }
@@ -55,7 +57,7 @@ public class Ingredient extends Product {
         }
     }
 
-    // Serializes the ingredient into a string format (e.g., "name|price")
+    // Serializes the ingredient into a string format (e.g., "name | price")
     public String toDataString() {
         return getName() + " | " + String.format("%.2f", getPrice());
     }

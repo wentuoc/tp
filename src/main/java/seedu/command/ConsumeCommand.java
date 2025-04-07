@@ -17,7 +17,6 @@ public class ConsumeCommand extends Command {
     private static final String CONSUME = "consume";
     private static final List<String> ingredients = new ArrayList<>();
 
-
     public ConsumeCommand(String userInput) {
         validUserInput = userInput.trim();
     }
@@ -30,6 +29,7 @@ public class ConsumeCommand extends Command {
      */
     @Override
     public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
+        ingredients.clear();
 
         if (!checkValidUserInput()) {
             logger.severe("Invalid consume command input detected.");
@@ -42,14 +42,11 @@ public class ConsumeCommand extends Command {
         // Retrieve the inventory from the MealManager.
         Inventory inventory = mealManager.getInventory();
         // Process each ingredient name provided in the command.
+
         for (String ingredientName : ingredients) {
-            if (inventory.removeIngredient(ingredientName)) {
-                ui.printConsumed(ingredientName);
-            } else {
-                ui.printIngredientNotFound(ingredientName);
-            }
+            inventory.removeIngredient(ingredientName);
+            ui.printConsumed(ingredientName);
         }
-        ingredients.clear();
     }
 
     static void parseIngredients(String args) {

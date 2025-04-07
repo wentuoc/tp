@@ -1,12 +1,12 @@
 package seedu.command;
 
 import seedu.food.Meal;
-import seedu.food.Ingredient;
 import seedu.storage.Storage;
 import seedu.logic.MealManager;
 import seedu.ui.UserInterface;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ByeCommand extends Command {
@@ -37,7 +37,7 @@ public class ByeCommand extends Command {
 
 
     private void clearAndUpdateFile(List<Meal> mealList, String filePath, UserInterface ui) {
-        Storage.clearFile(filePath, ui);
+        clearFile(filePath, ui);
         writeMealsToFile(mealList, filePath, ui);
     }
 
@@ -51,27 +51,30 @@ public class ByeCommand extends Command {
         }
     }
 
-    private static void writeIngredientsToFile(List<Ingredient> ingredientList, String filePath, UserInterface ui) {
-        for (Ingredient ingredient : ingredientList) {
+    private static void clearFile(String filePath, UserInterface ui) {
+        try {
+            Storage.clearFile(filePath);
+        } catch (IOException ioException) {
+            ui.printMessage("Error clearing file: " + ioException.getMessage());
+        }
+    }
+
+    private static void writeIngredientsToFile(ArrayList<String> inventoryDataArray, String filePath,
+                                               UserInterface ui) {
+        for (String data : inventoryDataArray) {
             try {
-                Storage.writeToFile(ingredient.toDataString(), filePath);
+                Storage.writeToFile(data, filePath);
             } catch (IOException ioException) {
                 ui.printMessage("Error writing to file: " + ioException.getMessage());
             }
         }
     }
 
-    private void clearAndUpdateFileForIngredients(List<Ingredient> ingredientList, String filePath, UserInterface ui) {
-        Storage.clearFile(filePath, ui);
-        writeIngredientsToFile(ingredientList, filePath, ui);
-    }
-
     private void updateInventoryListFile(MealManager mealManager, UserInterface ui) {
-        // Retrieve the list of ingredients from the inventory.
-        List<Ingredient> ingredientList = mealManager.getInventory().getIngredients();
-        // Get the file path for the inventory list.
+        ArrayList<String> inventoryDataArray = mealManager.getInventory().toDataArray();
         String inventoryListFilePath = Storage.getInventoryListFilePath();
-        // Clear the existing file and write the new list.
-        clearAndUpdateFileForIngredients(ingredientList, inventoryListFilePath,ui);
+
+        clearFile(inventoryListFilePath, ui);
+        writeIngredientsToFile(inventoryDataArray, inventoryListFilePath, ui);
     }
 }

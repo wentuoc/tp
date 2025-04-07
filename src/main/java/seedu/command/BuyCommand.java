@@ -2,6 +2,8 @@ package seedu.command;
 
 import seedu.checkers.BuyChecker;
 import seedu.exceptions.EZMealPlanException;
+import seedu.exceptions.IngredientPriceFormatException;
+import seedu.exceptions.InvalidPriceException;
 import seedu.food.Inventory;
 import seedu.food.Ingredient;
 import seedu.logic.MealManager;
@@ -62,7 +64,7 @@ public class BuyCommand extends Command {
     /**
      * Parses the ingredients from the user input after the "buy" keyword.
      */
-    private void parseIngredientsForBuy() {
+    private void parseIngredientsForBuy() throws InvalidPriceException, IngredientPriceFormatException {
         int afterBuyIndex = validUserInput.indexOf(BUY) + BUY.length();
         String args = validUserInput.substring(afterBuyIndex).trim();
         if (!args.isEmpty()) {
@@ -75,7 +77,7 @@ public class BuyCommand extends Command {
      *
      * @param args the argument string containing ingredient information.
      */
-    private void parseIngredients(String args) {
+    private void parseIngredients(String args) throws InvalidPriceException, IngredientPriceFormatException {
         final String ingKeyword = "/ing";
         int ingIndex = args.indexOf(ingKeyword);
         int invalidIngIndex = -1;
@@ -95,7 +97,7 @@ public class BuyCommand extends Command {
      *
      * @param token the token to process.
      */
-    private void processIngredientToken(String token) {
+    private void processIngredientToken(String token) throws InvalidPriceException, IngredientPriceFormatException {
         if (!token.isEmpty()) {
             int openParenIndex = token.lastIndexOf('(');
             int closeParenIndex = token.lastIndexOf(')');
@@ -113,14 +115,9 @@ public class BuyCommand extends Command {
      * @param name the ingredient name.
      * @param priceStr the price string.
      */
-    private void addParsedIngredient(String name, String priceStr) {
-        try {
-
-            Ingredient ingredient = new Ingredient(name, priceStr);
-            ingredients.add(ingredient);
-        } catch (NumberFormatException | EZMealPlanException exception) {
-            System.out.println(exception.getMessage());
-            logger.severe("Unexpected error while parsing ingredient: " + name);
-        }
+    private void addParsedIngredient(String name, String priceStr) throws InvalidPriceException,
+            IngredientPriceFormatException {
+        Ingredient ingredient = new Ingredient(name, priceStr);
+        ingredients.add(ingredient);
     }
 }
