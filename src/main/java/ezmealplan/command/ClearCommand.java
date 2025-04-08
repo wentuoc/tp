@@ -1,7 +1,6 @@
 //@@author ryanling169
 package ezmealplan.command;
 
-import ezmealplan.exceptions.EZMealPlanException;
 import ezmealplan.logic.MealManager;
 import ezmealplan.ui.UserInterface;
 import ezmealplan.food.Meal;

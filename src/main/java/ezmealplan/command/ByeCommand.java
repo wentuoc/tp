@@ -1,6 +1,5 @@
 package ezmealplan.command;
 
-import ezmealplan.exceptions.EZMealPlanException;
 import ezmealplan.food.Meal;
 import ezmealplan.storage.Storage;
 import ezmealplan.logic.MealManager;

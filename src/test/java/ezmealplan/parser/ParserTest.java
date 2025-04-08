@@ -27,8 +27,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ParserTest {
 
-    // ---------- Valid Command Tests ----------
-
     /**
      * parseByeCommand_byeWithoutArguments_returnsByeCommand
      * Unit Being Tested: Parser.parse (bye command)
@@ -232,8 +230,6 @@ public class ParserTest {
         assertInstanceOf(InventoryCommand.class, command);
     }
 
-    // ---------- Invalid Command Tests (Error Cases) ----------
-
     @Test
     public void parseByeCommand_byeWithExtraArguments_exceptionThrown() {
         assertThrows(ParserException.class, () -> Parser.parse("bye extra"));
@@ -313,8 +309,6 @@ public class ParserTest {
     public void parseInventoryCommand_inventoryWithExtraArguments_exceptionThrown() {
         assertThrows(ParserException.class, () -> Parser.parse("inventory extra"));
     }
-
-    // ---------- Unknown / Mistyped Command Tests ----------
 
     /**
      * parseMistypedCommand_inputMistyped_returnsMistypedCommand

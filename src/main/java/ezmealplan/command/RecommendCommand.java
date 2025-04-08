@@ -4,7 +4,6 @@ import ezmealplan.command.checkers.RecommendChecker;
 import ezmealplan.exceptions.EZMealPlanException;
 import ezmealplan.logic.MealManager;
 import ezmealplan.ui.UserInterface;
-import ezmealplan.food.list.MealList;
 import ezmealplan.food.Meal;
 import ezmealplan.food.Ingredient;
 import ezmealplan.food.list.Inventory;
@@ -48,7 +47,8 @@ public class RecommendCommand extends Command {
         int afterRecommendIndex = validUserInput.toLowerCase().indexOf(RECOMMEND) + RECOMMEND.length();
         String args = validUserInput.substring(afterRecommendIndex).trim();
         int ingIndex = args.toLowerCase().indexOf(ING);
-        if (ingIndex == -1) {
+        int invalidIndex = -1;
+        if (ingIndex == invalidIndex) {
             logger.severe("Ingredient marker '/ing' not found in input.");
             ui.printMessage("Missing ingredient marker '/ing'.");
             return;
@@ -65,13 +65,13 @@ public class RecommendCommand extends Command {
         Inventory inventory = mealManager.getInventory();
 
         // First, filter the user meal list (wishlist) by the ingredient keyword.
-        MealList userMeals = mealManager.getWishList();
-        List<Meal> candidateMeals = filterMealsByIngredient(userMeals.getList(), extractedKeyword);
+        List<Meal> wishList = mealManager.getWishList().getList();
+        List<Meal> candidateMeals = filterMealsByIngredient(wishList, extractedKeyword);
 
-        // If no matching meals in the user list, try the main meal list.
+        // If no matching meals in the wishlist, try the recipes list.
         if (candidateMeals.isEmpty()) {
-            MealList mainMeals = mealManager.getRecipesList();
-            candidateMeals = filterMealsByIngredient(mainMeals.getList(), extractedKeyword);
+            List<Meal> recipesList = mealManager.getRecipesList().getList();
+            candidateMeals = filterMealsByIngredient(recipesList, extractedKeyword);
         }
 
         if (candidateMeals.isEmpty()) {

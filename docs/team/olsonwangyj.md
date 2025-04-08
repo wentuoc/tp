@@ -7,10 +7,14 @@ Additionally, users have the ability to add their own recipes to the main recipe
 
 ### Summary of Contributions
 * Code contributed: [RepoSense link](https://nus-cs2113-ay2425s2.github.io/tp-dashboard/?search=olsonwangyj&breakdown=true&sort=groupTitle%20dsc&sortWithin=title&since=2025-02-21&timeframe=commit&mergegroup=&groupSelect=groupByRepos&checkedFileTypes=docs~functional-code~test-code~other&tabOpen=true&tabType=authorship&tabAuthor=olsonwangyj&tabRepo=AY2425S2-CS2113-F14-4%2Ftp%5Bmaster%5D&authorshipIsMergeGroup=false&authorshipFileTypes=docs~functional-code&authorshipIsBinaryFileTypeChecked=false&authorshipIsIgnoredFilesChecked=false)
+* Enhancements Implemented
+* Reviewed PRs
 * Documentation:
   * User guide:
     * Add documentation for different commands
+    * Check the typos in the UG
   * Developer Guide:
     * Add description for different Commands
+    * Add code scripts in the DG
     * Add UML for different Commands
     * Add user stories

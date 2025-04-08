@@ -5,7 +5,7 @@
 EZMealPlan is a CLI-based system that helps users to plan their meals. Users can view a list of pre-created meals in the main
 recipes list, filter them by meal name, ingredients and cost according to their personal preferences, and add them 
 into their personal wishlist. Users can also create their own meals which will be added into the recipes list and remove meals from their personal wishlist and the main recipes list.
-users can also manage their own fridge inventory with the inventory list checking what are the missing ingredients for their meals.
+Users can also manage their own fridge inventory with the inventory list checking what are the missing ingredients for their meals.
 
 ## Quick Start
 
@@ -57,7 +57,7 @@ list to `recommend` you certain meals for you to prepare.
 
 The meal(s) will be <ins>sorted alphabetically by their names irrespective of the letter casings followed by their prices if the meal names are identical</ins> in the wishlist. The ingredient(s) in each meal will <ins>**ONLY** be sorted alphabetically</ins> by their names irrespective of the letter casings.
 
-**Take Note:** Any meals in the wishlist that are not found in the recipes list will be deemed **illegal** and be <ins>removed from the wishlist</ins>. Before adding the respective meals into the wishlist, those meals **must be present in the recipes list**. The same meal cannot be added more than once into the wishlist.
+**Note:** Any meals in the wishlist that are not found in the recipes list will be deemed **illegal** and be <ins>removed from the wishlist</ins>. Before adding the respective meals into the wishlist, those meals **must be present in the recipes list**. The same meal cannot be added more than once into the wishlist.
 
 Relevant commands:
 - Add a meal to wishlist: `select`
@@ -117,7 +117,7 @@ Example code:
 ```
 Sample Output
 
-![helpCommandWorkingSample.png](diagrams/helpCommandWorkingSample.png)
+![helpphoto.png](diagrams/helpphoto.png)
 
 * The list of `COMMAND_KEYWORD` includes [bye](https://ay2425s2-cs2113-f14-4.github.io/tp/UserGuide.html#exiting-the-application-bye), [buy](https://ay2425s2-cs2113-f14-4.github.io/tp/UserGuide.html#adding-ingredients-into-the-inventory-buy), [clear](https://ay2425s2-cs2113-f14-4.github.io/tp/UserGuide.html#clearing-all-meals-from-the-wishlist-clear), [consume](https://ay2425s2-cs2113-f14-4.github.io/tp/UserGuide.html#removing-ingredients-from-the-inventory-consume), [create](https://ay2425s2-cs2113-f14-4.github.io/tp/UserGuide.html#creating-a-new-meal-create), [delete](https://ay2425s2-cs2113-f14-4.github.io/tp/UserGuide.html#deleting-a-meal-from-the-recipes-list-delete), [filter](https://ay2425s2-cs2113-f14-4.github.io/tp/UserGuide.html#filtering-the-recipes-list-filter), [help](https://ay2425s2-cs2113-f14-4.github.io/tp/UserGuide.html#viewing-help-help), [inventory](https://ay2425s2-cs2113-f14-4.github.io/tp/UserGuide.html#displaying-the-inventory-inventory), [recipes](https://ay2425s2-cs2113-f14-4.github.io/tp/UserGuide.html#displaying-the-recipes-list-recipes), [recommend](https://ay2425s2-cs2113-f14-4.github.io/tp/UserGuide.html#recommending-a-meal-recommend), [remove](https://ay2425s2-cs2113-f14-4.github.io/tp/UserGuide.html#removing-a-meal-from-the-recipes-list-remove), [select](https://ay2425s2-cs2113-f14-4.github.io/tp/UserGuide.html#adding-a-meal-into-to-the-wishlist-select),
 [view](https://ay2425s2-cs2113-f14-4.github.io/tp/UserGuide.html#viewing-details-about-a-meal-view) and [wishlist](https://ay2425s2-cs2113-f14-4.github.io/tp/UserGuide.html#displaying-the-wishlist-wishlist).
@@ -135,8 +135,7 @@ Example code:
     create /mname A_test_Meal /ing A(1.50), B(1.50)
 ```
 Sample Output
-
-![createCommandWorkingSample.png](diagrams/createCommandWorkingSample.png)
+![createphoto.png](diagrams/createphoto.png)
 
 * The ingredient cost such as `INGREDIENT_1_COST` must be enclosed within `()`, at least 1 digit must be present before the `.` (example: 0.05 instead of .05) and parsable into a `double`.
 * The order of the ingredients does not matter. For example, the following code has the same effect:
@@ -197,11 +196,11 @@ Example code:
 ```
 Sample output:
 
-![recipesCommandWorkingSample.png](diagrams/recipesCommandWorkingSample.png)
+![recipesphoto.png](diagrams/recipesphoto.png)
 
 ### Filtering the Recipes List: `filter`
 
-This command allows the user to filter the Recipes List. The filter conditions can be either the meal's name, ingredients, or total cost. This is chosen via the `/mname`, `/ing` or `/mname` tags. 
+This command allows the user to filter the Recipes List. The filter conditions can be either the meal's name, ingredients, or total cost. This is chosen via the `/mname`, `/ing` or `/mcost` tags. 
 * To filter with more than 1 ingredient using `/ing`, `,` is needed to separate each ingredient. 
 * The input price for the meal cost `/mcost` **MUST BE IN 2 DECIMAL PLACES** and can only **range from `0.00` to `9999999999999.99` (both inclusive) for accuracy purpose**. Example: `0.00`, `1.00`, `0.50`, `10.05`
 
@@ -240,7 +239,7 @@ Example code:
 ```
 Sample output:
 
-![filterCommandWorkingSample.png](diagrams/filterCommandWorkingSample.png)
+![filterphoto.png](diagrams/filterphoto.png)
 
 ### Deleting a meal from the Recipes List: `delete`
 
@@ -256,7 +255,7 @@ Example code:
 ```
 Sample output:
 
-![deleteCommandWorkingSample.png](diagrams/deleteCommandWorkingSample.png)
+![deletephoto.png](diagrams/deletephoto.png)
 
 * If the user deletes a meal from the Recipes List that is also in their Wishlist, then the meal is removed from
   their Wishlist as well.
@@ -276,7 +275,7 @@ Example code:
 ```
 Sample output:
 
-![UpdatedViewCommandWorkingSample.png](diagrams/UpdatedViewCommandWorkingSample.png)
+![viewphoto.png](diagrams/viewphoto.png)
 
 ### Adding a meal into to the Wishlist: `select`
 
@@ -307,7 +306,7 @@ Example code:
 ```
 Sample output:
 
-![selectCommandWorkingSample.png](diagrams/selectCommandWorkingSample.png)
+![selectphoto.png](diagrams/selectphoto.png)
 
 * To view the filter section before selecting, use the `filter` command with the same filtering conditions.
 
@@ -325,9 +324,9 @@ Example code:
 ```
 Sample output:
 
-![wishlistCommandWorkingSample.png](diagrams/wishlistCommandWorkingSample.png)
+![wishlistphoto.png](diagrams/wishlistphoto.png)
 
-### Removing a meal from the Recipes List: `remove`
+### Removing a meal from the Wishlist: `remove`
 
 This command allows user to remove a recipe from their Wishlist.
 
@@ -341,7 +340,7 @@ Example code:
 ```
 Sample output:
 
-![removeCommandWorkingSample.png](diagrams/removeCommandWorkingSample.png)
+![removephoto.png](diagrams/removephoto.png)
 
 ### Clearing all meals from the Wishlist: `clear`
 
@@ -357,7 +356,7 @@ Example code:
 ```
 Sample output:
 
-![clearCommandWorkingSample.png](diagrams/clearCommandWorkingSample.png)
+![clearphoto.png](diagrams/clearphoto.png)
 
 ### Adding ingredients into the Inventory: `buy`
 
@@ -370,7 +369,7 @@ This command allows the user to add ingredients into the inventory.
 
 Syntax:
 ```
-    buy /ing INGRIDIENT_1_NAME(INGRIDIENT_1_PRICE)[, INGRIDIENT_2_NAME(INGREDIENT_2_PRICE), ...]
+    buy /ing INGREDIENT_1_NAME(INGREDIENT_1_PRICE)[, INGREDIENT_2_NAME(INGREDIENT_2_PRICE), ...]
 ```
 Example code:
 ```
@@ -378,7 +377,7 @@ Example code:
 ```
 Sample output:
 
-![updateBuyCommandWorkingSample.png](diagrams/updateBuyCommandWorkingSample.png)
+![buyphoto.png](diagrams/buyphoto.png)
 
 ### Displaying the Inventory: `inventory`
 
@@ -395,7 +394,7 @@ Example code:
 ```
 Sample output:
 
-![inventoryCommandWorkingSample.png](diagrams/inventoryCommandWorkingSample.png)
+![inventoryphoto.png](diagrams/inventoryphoto.png)
 
 ### Removing ingredients from the Inventory: `consume`
 
@@ -404,7 +403,7 @@ This command allows the user to remove ingredients from the inventory.
 
    Syntax:
 ```
-    consume /ing INGREDIENT_NAME
+    consume /ing INGREDIENT_1_NAME[, INGREDIENT_2_NAME, ...]
 ```
 Example code:
 ```
@@ -412,7 +411,7 @@ Example code:
 ```
 Sample output:
 
-![updatedConsumeCommandWorkingSample.png](diagrams/updatedConsumeCommandWorkingSample.png)
+![consumephoto.png](diagrams/consumephoto.png)
 
 ### Recommending a meal: `recommend`
 
@@ -432,7 +431,7 @@ Example code:
 ```
 Sample output:
 
-![recommendCommandWorkingSample.png](diagrams/recommendCommandWorkingSample.png)
+![recommendphoto.png](diagrams/recommendphoto.png)
 
 ### Exiting the application: `bye`
 
@@ -449,7 +448,7 @@ Example code:
 ```
 Sample output:
 
-![byeCommandWorkingSample.png](diagrams/byeCommandWorkingSample.png)
+![byephoto.png](diagrams/byephoto.png)
 
 
 ## Command Summary
@@ -467,6 +466,6 @@ MEAL_NAME`
 * Clear Wishlist: `clear`
 * Buy ingredient: `buy /ing INGREDIENT_1_NAME(INGREDIENT_1_COST)[, INGREDIENT_2_NAME(INGREDIENT_2_COST), ...]`
 * View Inventory: `inventory`
-* Consume ingredient: `consume /ing INGREDIENT_NAME`
+* Consume ingredient: `consume /ing INGREDIENT_1_NAME[, INGREDIENT_2_NAME, ...]`
 * Get recommendation: `recommend /ing INGREDIENT_NAME`
 * Exit program `bye`
