@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 public class CreateCommandTest {
@@ -203,6 +204,7 @@ public class CreateCommandTest {
         logger.fine(fineMsg);
         try {
             command.execute(mealManager, ui);
+            fail();
         } catch (EZMealPlanException ezMealPlanException) {
             String chickenBreast = "chicken breast";
             assertEquals(new DuplicateIngredientException(chickenBreast, chickenBreast).getMessage()

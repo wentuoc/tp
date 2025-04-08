@@ -1,7 +1,5 @@
 package seedu.checkers;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.io.IOException;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
@@ -15,7 +13,10 @@ import org.junit.jupiter.api.Test;
 import seedu.exceptions.EZMealPlanException;
 import seedu.exceptions.InvalidKeywordIndexException;
 import seedu.exceptions.MissingMealIndexException;
-import seedu.exceptions.InvalidViewIndexException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ViewCheckerTest {
 
@@ -59,7 +60,12 @@ public class ViewCheckerTest {
     public void viewChecker_keywordBeforeView_throwsInvalidKeywordIndexException() {
         logger.fine("Running viewChecker_keywordBeforeView_throwsInvalidKeywordIndexException()");
         ViewChecker checker = new ViewChecker("/r view 1", "/r");
-        assertThrows(InvalidKeywordIndexException.class, checker::check);
+        try {
+            checker.check();
+        } catch (EZMealPlanException ezMealPlanException) {
+            String expectedMessage = "'/r' must be present after the 'view' keyword in the 'view' command.\n";
+            assertEquals(expectedMessage, ezMealPlanException.getMessage());
+        }
         logger.info("viewChecker_keywordBeforeView_throwsInvalidKeywordIndexException passed");
     }
 
@@ -75,7 +81,13 @@ public class ViewCheckerTest {
     public void viewChecker_nonIntegerIndex_throwsInvalidViewIndexException() {
         logger.fine("Running viewChecker_nonIntegerIndex_throwsInvalidViewIndexException()");
         ViewChecker checker = new ViewChecker("view /r abc", "/r");
-        assertThrows(InvalidViewIndexException.class, checker::check);
+        try {
+            checker.check();
+            fail();
+        } catch (EZMealPlanException ezMealPlanException) {
+            String expectedMessage = "The meal list index in the 'view' command must be parsable into an integer.\n";
+            assertEquals(expectedMessage, ezMealPlanException.getMessage());
+        }
         logger.info("viewChecker_nonIntegerIndex_throwsInvalidViewIndexException passed");
     }
 
