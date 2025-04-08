@@ -216,10 +216,6 @@ public class UserInterface {
         System.out.println(ingredientName + " consumed");
     }
 
-    public void printIngredientNotFound(String ingredientName) {
-        System.out.println(ingredientName + " not found");
-    }
-
     public void printBought(Ingredient ingredient) {
         System.out.println(ingredient + " bought");
     }

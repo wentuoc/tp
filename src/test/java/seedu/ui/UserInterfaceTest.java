@@ -362,4 +362,64 @@ public class UserInterfaceTest {
         assertEquals(expected, outContent.toString(), "Help command help output does not match.");
         logger.info("printHelpCommandHelp_noInput_success() passed");
     }
+
+    @Test
+    void printRecommendCommandHelp_noInput_success() {
+        logger.fine("running printRecommendCommandHelp_noInput_success()");
+        ui.printRecommendCommandHelp();
+        String expected = "Entering the recommend command with an ingredient keyword will suggest a meal" + ls +
+                "based on that ingredient from your wishlist or the recipe list." + ls +
+                "Sample input: recommend /ing chicken" + ls +
+                "Sample output:" + ls +
+                "                Recommended Meal: Kung Pao Chicken (Kung Pao Chicken ($3.60))" + ls +
+                "                Ingredients:" + ls +
+                "                   1. Chicken ($2.00)" + ls +
+                "                   2. Chilli ($0.50)" + ls +
+                "                   3. Peanuts ($0.70)" + ls +
+                "                   4. Sichuan Pepper ($0.40)" + ls +
+                "                Missing Ingredients: Chicken, Chilli, Peanuts, Sichuan Pepper" + ls;
+        assertEquals(expected, outContent.toString(), "Recommend command help output does not match.");
+        logger.info("printRecommendCommandHelp_noInput_success() passed");
+    }
+
+    @Test
+    void printConsumeCommandHelp_noInput_success() {
+        logger.fine("running printConsumeCommandHelp_noInput_success()");
+        ui.printConsumeCommandHelp();
+        String expected = "Entering the consume command will consume an ingredient from your inventory." + ls +
+                "You must specify the ingredient name using the /ing prefix." + ls +
+                "Sample input: consume /ing egg" + ls +
+                "Sample output:" + ls +
+                "                egg consumed" + ls;
+        assertEquals(expected, outContent.toString(), "Consume command help output does not match.");
+        logger.info("printConsumeCommandHelp_noInput_success() passed");
+    }
+
+    @Test
+    void printBuyCommandHelp_noInput_success() {
+        logger.fine("running printBuyCommandHelp_noInput_success()");
+        ui.printBuyCommandHelp();
+        String expected = "Entering the buy command will add an ingredient to your inventory." + ls +
+                "You must specify the ingredient names using the /ing prefix followed by their prices " + ls +
+                "Sample input: buy /ing egg (1.00)" + ls +
+                "Sample output:" + ls +
+                "                egg ($1.00) bought" + ls;
+        assertEquals(expected, outContent.toString(), "Buy command help output does not match.");
+        logger.info("printBuyCommandHelp_noInput_success() passed");
+    }
+
+    @Test
+    void printInventoryCommandHelp_noInput_success() {
+        logger.fine("running printInventoryCommandHelp_noInput_success()");
+        ui.printInventoryCommandHelp();
+        String expected = "Entering the inventory command will show all ingredients currently in your inventory." + ls +
+                "Sample input: inventory" + ls +
+                "Sample output:" + ls +
+                "                Inventory List:" + ls +
+                "                   1. egg ($1.00)" + ls +
+                "                   2. chicken breast ($3.25)" + ls +
+                "                   3. rice ($1.00)" + ls;
+        assertEquals(expected, outContent.toString(), "Inventory command help output does not match.");
+        logger.info("printInventoryCommandHelp_noInput_success() passed");
+    }
 }

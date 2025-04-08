@@ -61,18 +61,4 @@ public class Ingredient extends Product {
     public String toDataString() {
         return getName() + " | " + String.format("%.2f", getPrice());
     }
-
-    // Deserializes the string back into an Ingredient object
-    public static Ingredient fromData(String data) throws InvalidPriceException, IngredientPriceFormatException {
-        String[] parts = data.split("\\s*\\|\\s*");
-        int validLength = 2;
-        if (parts.length < validLength) {
-            throw new IllegalArgumentException("Invalid ingredient data: " + data);
-        }
-        int nameIndex = 0;
-        int costIndex = 1;
-        String name = parts[nameIndex];
-        String price = parts[costIndex];
-        return new Ingredient(name, price);
-    }
 }
