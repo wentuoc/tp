@@ -2,17 +2,18 @@
 package seedu.command;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.PrintStream;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import seedu.exceptions.EZMealPlanException;
@@ -22,6 +23,9 @@ import seedu.ui.UserInterface;
 
 public class RecipesCommandTest {
     private static final Logger logger = Logger.getLogger(RecipesCommandTest.class.getName());
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private final PrintStream originalOut = System.out;
+    UserInterface ui = new UserInterface();
 
     public RecipesCommandTest() {
         String fileName = "RecipesCommandTest.log";
@@ -47,19 +51,15 @@ public class RecipesCommandTest {
         }
     }
 
-    /**
-     * Define a UserInterface class for testing, to capture the params of printMealList.
-     */
-    public static class TestUserInterface extends UserInterface {
-        List<Meal> capturedMeals;
-        String capturedListName;
+    @BeforeEach
+    void setUp() {
+        System.setOut(new PrintStream(outContent)); // Redirect System.out to capture output
+    }
 
-        @Override
-        public void printMealList(List<Meal> meals, String mealListName) {
-
-            this.capturedMeals = new ArrayList<>(meals);
-            this.capturedListName = mealListName;
-        }
+    @AfterEach
+    void tearDown() {
+        System.setOut(originalOut); // Restore original System.out
+        outContent.reset();         // Reset captured output
     }
 
     @Test
@@ -71,15 +71,30 @@ public class RecipesCommandTest {
         mealManager.getRecipesList().getList().add(meal1);
         mealManager.getRecipesList().getList().add(meal2);
 
-        TestUserInterface testUI = new TestUserInterface();
         RecipesCommand recipesCommand = new RecipesCommand();
-        recipesCommand.execute(mealManager, testUI);
+        recipesCommand.execute(mealManager, ui);
 
-        assertEquals(mealManager.getRecipesList().getMealListName(), testUI.capturedListName);
-        List<Meal> expectedMeals = new ArrayList<>();
-        expectedMeals.add(meal1);
-        expectedMeals.add(meal2);
-        assertIterableEquals(expectedMeals, testUI.capturedMeals);
+        String expectedOutput = """
+                Here are the meals in recipes list:\r
+                    1. Main Meal 1 ($0.00)\r
+                    2. Main Meal 2 ($0.00)\r
+                \r
+                """;
+        assertEquals(expectedOutput, outContent.toString());
         logger.info("testExecute_recipesCommand_printsRecipesList() passed");
+    }
+
+    @Test
+    public void testExecute_emptyRecipesList_printsEmptyRecipesList() throws EZMealPlanException {
+        logger.fine("Running testExecute_emptyRecipesList_printsEmptyRecipesList()");
+        MealManager mealManager = new MealManager();
+
+        RecipesCommand recipesCommand = new RecipesCommand();
+        recipesCommand.execute(mealManager, ui);
+
+        String expectedOutput = "No meals found in recipes list.";
+        //Trim the actual output as some bug is occurring with differing non-printable characters between the two
+        assertEquals(expectedOutput, outContent.toString().trim());
+        logger.info("testExecute_emptyRecipesList_printsEmptyRecipesList() passed");
     }
 }
