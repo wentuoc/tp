@@ -758,53 +758,59 @@ input:
 ##### 6.4 Unit Testing
 
 ###### Testing Approach
-- Uses a test-specific DeleteCommandTest to ensure that the DeleteCommand account for different types of user inputs and proceed as normal.
+
+- Uses a test-specific DeleteCommandTest to ensure that the DeleteCommand account for different types of user inputs and
+  proceed as normal.
 - Test with different types of user inputs that gives no error and some exceptions.
 - Executes DeleteCommand.
 - Verifies that the exceptions are thrown according to the user inputs.
 
 ###### Unit Test Code
+
 Here is a snippet of the unit test code:
+
 ```java
- @Test
-    public void deleteCommand_validRecipeIndex_success() throws EZMealPlanException {
-        logger.fine("Running deleteCommand_validRecipeIndex_success()");
-        MealManager mealManager = new MealManager();
-        mealManager.getRecipesList().getList().clear();
 
-        Meal testMeal = new Meal("Egg Fried Rice");
-        mealManager.getRecipesList().getList().add(testMeal);
+@Test
+public void deleteCommand_validRecipeIndex_success() throws EZMealPlanException {
+    logger.fine("Running deleteCommand_validRecipeIndex_success()");
+    MealManager mealManager = new MealManager();
+    mealManager.getRecipesList().getList().clear();
 
-        List<Meal> recipes = mealManager.getRecipesList().getList();
-        assertEquals(1, recipes.size());
-        assertEquals("Egg Fried Rice", recipes.get(0).getName());
+    Meal testMeal = new Meal("Egg Fried Rice");
+    mealManager.getRecipesList().getList().add(testMeal);
 
-        DeleteCommand deleteCommand = new DeleteCommand("delete 1");
-        deleteCommand.execute(mealManager, new TestUI());
+    List<Meal> recipes = mealManager.getRecipesList().getList();
+    assertEquals(1, recipes.size());
+    assertEquals("Egg Fried Rice", recipes.get(0).getName());
 
-        assertEquals(0, recipes.size());
-        logger.info("deleteCommand_validRecipeIndex_success passed");
-    }
+    DeleteCommand deleteCommand = new DeleteCommand("delete 1");
+    deleteCommand.execute(mealManager, new TestUI());
 
-    @Test
-    public void deleteCommand_extraSpacingInput_success() throws EZMealPlanException {
-        logger.fine("Running deleteCommand_extraSpacingInput_success()");
-        MealManager mealManager = new MealManager();
-        mealManager.getRecipesList().getList().clear();
+    assertEquals(0, recipes.size());
+    logger.info("deleteCommand_validRecipeIndex_success passed");
+}
 
-        Meal testMeal = new Meal("Soup");
-        mealManager.getRecipesList().getList().add(testMeal);
+@Test
+public void deleteCommand_extraSpacingInput_success() throws EZMealPlanException {
+    logger.fine("Running deleteCommand_extraSpacingInput_success()");
+    MealManager mealManager = new MealManager();
+    mealManager.getRecipesList().getList().clear();
 
-        List<Meal> recipes = mealManager.getRecipesList().getList();
-        assertEquals(1, recipes.size());
+    Meal testMeal = new Meal("Soup");
+    mealManager.getRecipesList().getList().add(testMeal);
 
-        DeleteCommand deleteCommand = new DeleteCommand("   delete     1   ");
-        deleteCommand.execute(mealManager, new TestUI());
+    List<Meal> recipes = mealManager.getRecipesList().getList();
+    assertEquals(1, recipes.size());
 
-        assertEquals(0, recipes.size());
-        logger.info("deleteCommand_extraSpacingInput_success passed");
-    }
+    DeleteCommand deleteCommand = new DeleteCommand("   delete     1   ");
+    deleteCommand.execute(mealManager, new TestUI());
+
+    assertEquals(0, recipes.size());
+    logger.info("deleteCommand_extraSpacingInput_success passed");
+}
 ```
+
 ### 7. FilterCommand and FilterChecker
 
 ##### 7.1 Design Overview
@@ -1055,71 +1061,78 @@ component classes:
 ##### 8.4 Unit Testing
 
 ###### Testing Approach
-- Uses a test-specific RemoveDeleteCheckerTest and RemoveCommandTest to ensure that the RemoveDeleteChecker and RemoveCommand account for different types of user inputs and proceed as normal.
+
+- Uses a test-specific RemoveDeleteCheckerTest and RemoveCommandTest to ensure that the RemoveDeleteChecker and
+  RemoveCommand account for different types of user inputs and proceed as normal.
 - Test with different types of user inputs that gives no error and some exceptions.
 - Executes RemoveDeleteChecker and RemoveCommand.
 - Verifies that the exceptions are thrown according to the user inputs.
 
 ###### Unit Test Code
+
 Here are some snippets of the unit test code:
 
 ```java
- @Test
-    public void removeDeleteChecker_expectedInputs_success() throws EZMealPlanException {
-        logger.fine("Running removeDeleteChecker_expectedInputs_success()");
-        String validUserInput = "remove 1";
-        RemoveDeleteChecker checker = new RemoveDeleteChecker(validUserInput);
+
+@Test
+public void removeDeleteChecker_expectedInputs_success() throws EZMealPlanException {
+    logger.fine("Running removeDeleteChecker_expectedInputs_success()");
+    String validUserInput = "remove 1";
+    RemoveDeleteChecker checker = new RemoveDeleteChecker(validUserInput);
+    checker.check();
+    assertTrue(checker.isPassed());
+    logger.info("removeDeleteChecker_expectedInputs_success() passed");
+}
+
+@Test
+public void parseIndex_nonIntegerIndex_exceptionThrown() {
+    logger.fine("Running parseIndex_nonIntegerIndex_exceptionThrown()");
+    String validUserInput = "remove t";
+    RemoveDeleteChecker checker = new RemoveDeleteChecker(validUserInput);
+    try {
         checker.check();
-        assertTrue(checker.isPassed());
-        logger.info("removeDeleteChecker_expectedInputs_success() passed");
+        fail();
+    } catch (EZMealPlanException ezMealPlanException) {
+        assertEquals(new RemoveFormatException(validUserInput).getMessage(), ezMealPlanException.getMessage());
+        logger.info("parseIndex_nonIntegerIndex_exceptionThrown() passed");
     }
-
-    @Test
-    public void parseIndex_nonIntegerIndex_exceptionThrown() {
-        logger.fine("Running parseIndex_nonIntegerIndex_exceptionThrown()");
-        String validUserInput = "remove t";
-        RemoveDeleteChecker checker = new RemoveDeleteChecker(validUserInput);
-        try {
-            checker.check();
-            fail();
-        } catch (EZMealPlanException ezMealPlanException) {
-            assertEquals(new RemoveFormatException(validUserInput).getMessage(), ezMealPlanException.getMessage());
-            logger.info("parseIndex_nonIntegerIndex_exceptionThrown() passed");
-        }
-    }
+}
 ```
+
 ```java
-    @Test
-    public void removeCommand_extraSpacingInput_success() throws EZMealPlanException {
-        logger.fine("Running removeCommand_extraSpacingInput_success()");
-        MealManager mealManager = new MealManager();
-        Meal testMeal = new Meal("Soup");
-        MealList wishList = mealManager.getWishList();
-        wishList.addMeal(testMeal);
-        assertEquals(1, wishList.size());
 
-        Command command = new RemoveCommand("   remove     1   ");
-        command.execute(mealManager, testUI);
+@Test
+public void removeCommand_extraSpacingInput_success() throws EZMealPlanException {
+    logger.fine("Running removeCommand_extraSpacingInput_success()");
+    MealManager mealManager = new MealManager();
+    Meal testMeal = new Meal("Soup");
+    MealList wishList = mealManager.getWishList();
+    wishList.addMeal(testMeal);
+    assertEquals(1, wishList.size());
 
-        assertEquals(0, wishList.size());
-        logger.info("Meal successfully removed from wish list");
+    Command command = new RemoveCommand("   remove     1   ");
+    command.execute(mealManager, testUI);
+
+    assertEquals(0, wishList.size());
+    logger.info("Meal successfully removed from wish list");
+}
+
+@Test
+public void removeCommand_emptyList_throwsEmptyListException() throws EZMealPlanException {
+    logger.fine("Running removeCommand_emptyList_throwsRemoveFormatException()");
+    MealManager mealManager = new MealManager();
+
+    String[] userInputs = {"remove 1", "remove 0", "remove -1"};
+    for (String userInput : userInputs) {
+        Command command = new RemoveCommand(userInput);
+        assertThrows(EmptyListException.class, () -> command.execute(mealManager, testUI));
+        logger.info("Correct exception thrown");
     }
-
-    @Test
-    public void removeCommand_emptyList_throwsEmptyListException() throws EZMealPlanException {
-        logger.fine("Running removeCommand_emptyList_throwsRemoveFormatException()");
-        MealManager mealManager = new MealManager();
-
-        String[] userInputs = {"remove 1", "remove 0", "remove -1"};
-        for (String userInput : userInputs) {
-            Command command = new RemoveCommand(userInput);
-            assertThrows(EmptyListException.class, () -> command.execute(mealManager, testUI));
-            logger.info("Correct exception thrown");
-        }
-    }
+}
 
 ```
-### 9. ClearCommand 
+
+### 9. ClearCommand
 
 ##### 9.1 Design Overview
 
@@ -1376,6 +1389,7 @@ briefly state what the command does, the respective input and the expected outpu
 - By segregating responsibilities, it makes the code easier to maintain and extend.
 
 **Testability:**
+
 - The design supports unit testing by allowing test-specific HelpCommandTest to capture and verify the output.
 
 ##### 11.2 Implementation Details
@@ -1451,197 +1465,237 @@ public void execute(MealManager mealManager, UserInterface ui) {
 ```
 
 ##### 11.3 Sequence Diagram
+
 Here is the sequence diagrams depicting the interactions between HelpCommand and other system component classes:
 ![HelpCommand.png](diagrams/HelpCommand.png)
 
-For simplicity purpose, only the command that matches the one in user input is shown in the sequence diagram. The full `execute(mealManager,ui)` method actually consists of multiple options with each option representing a command keyword and its respective help message to be printed by the user interface.
+For simplicity purpose, only the command that matches the one in user input is shown in the sequence diagram. The full
+`execute(mealManager,ui)` method actually consists of multiple options with each option representing a command keyword
+and its respective help message to be printed by the user interface.
 
 ##### 11.4 Unit Testing
 
 ###### Testing Approach
-- Uses a test-specific HelpCommandTest to ensure that the HelpCommand account for different types of user inputs and proceed as normal.
+
+- Uses a test-specific HelpCommandTest to ensure that the HelpCommand account for different types of user inputs and
+  proceed as normal.
 - Test with different types of user inputs.
 - Executes HelpCommand.
 
 ###### Unit Test Code
+
 Here is a snippet of the unit test code:
+
 ```java
 // helpCommand_recipesInput_printsRecipesHelp
-    @Test
-    public void helpCommand_recipesInput_printsRecipesHelp() {
-        logger.fine("running helpCommand_recipesInput_printsRecipesHelp");
-        HelpCommand command = new HelpCommand("help recipes");
-        command.execute(mealManager, ui);
-        assertEquals("Recipes Help", outContent.toString());
-        logger.fine("helpCommand_recipesInput_printsRecipesHelp() passed");
-    }
+@Test
+public void helpCommand_recipesInput_printsRecipesHelp() {
+    logger.fine("running helpCommand_recipesInput_printsRecipesHelp");
+    HelpCommand command = new HelpCommand("help recipes");
+    command.execute(mealManager, ui);
+    assertEquals("Recipes Help", outContent.toString());
+    logger.fine("helpCommand_recipesInput_printsRecipesHelp() passed");
+}
 
-    // helpCommand_wishlistInput_printsWishlistHelp
-    @Test
-    public void helpCommand_wishlistInput_printsWishlistHelp() {
-        logger.fine("running helpCommand_wishlistInput_printsWishlistHelp");
-        HelpCommand command = new HelpCommand("help wishlist");
-        command.execute(mealManager, ui);
-        assertEquals("Wishlist Help", outContent.toString());
-        logger.fine("helpCommand_wishlistInput_printsWishlistHelp() passed");
-    }
+// helpCommand_wishlistInput_printsWishlistHelp
+@Test
+public void helpCommand_wishlistInput_printsWishlistHelp() {
+    logger.fine("running helpCommand_wishlistInput_printsWishlistHelp");
+    HelpCommand command = new HelpCommand("help wishlist");
+    command.execute(mealManager, ui);
+    assertEquals("Wishlist Help", outContent.toString());
+    logger.fine("helpCommand_wishlistInput_printsWishlistHelp() passed");
+}
 ```
+
 ### 12. BuyCommand and BuyChecker
 
 ##### 12.1 Design Overview
 
 ###### Function
-BuyChecker checks for the validity of the user input before passing to the BuyCommand to add to-buy ingredient(s) as stated in the user input. 
+
+BuyChecker checks for the validity of the user input before passing to the BuyCommand to add to-buy ingredient(s) as
+stated in the user input.
 
 ###### Design Goals
+
 **Single Responsibility:**
-- BuyChecker solely handles the checks of the user input while BuyCommand solely handles the processing of the user input into ingredients and adding them into the inventory list.
+
+- BuyChecker solely handles the checks of the user input while BuyCommand solely handles the processing of the user
+  input into ingredients and adding them into the inventory list.
 
 **Decoupling:**
+
 - By segregating responsibilities, it makes the code easier to maintain and extend.
 
 **Testability:**
-- The design supports unit testing by allowing test-specific BuyCommandTest and BuyCheckerTest to capture and verify the output.
+
+- The design supports unit testing by allowing test-specific BuyCommandTest and BuyCheckerTest to capture and verify the
+  output.
 
 ##### 12.2 Implementation Details
 
 ###### Component Level: BuyChecker Class
+
 - Inherits from the abstract Checker Class.
 - Implements the `check()` method.
 - Uses logging to indicate execution.
 - `isPassed` is set to `true` once the user input passes all the required checks.
-- Passes the valid user input back into the BuyCommand class for processing into ingredients and adding them into the inventory list.
+- Passes the valid user input back into the BuyCommand class for processing into ingredients and adding them into the
+  inventory list.
 
 ###### Component Level: BuyCommand Class
+
 - Inherits from the abstract Command class.
 - Implements the `execute(MealManager mealManager, UserInterface ui)` method.
 - Uses logging to indicate execution.
 - Creates ingredients and add them into the inventory list.
 
 ###### Code Example
-```java
- @Override
-    public void check() throws EZMealPlanException {
-        logger.fine("Checking '" + userInput + "' for buy command errors.");
-        checkIngExists();
-        checkIngredientExists();
-        checkIngredientFormat();
-        setPassed(true);
-    }
-```
-```java
- @Override
-    public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
-        if (!checkValidUserInput()) {
-            logger.severe("Invalid buy command input detected.");
-            return;
-        }
 
-        parseIngredientsForBuy();
+```java
 
-        Inventory inventory = mealManager.getInventory();
-        for (Ingredient ingredient : ingredients) {
-            // Add the ingredient (with name and price) into the inventory list.
-            inventory.addIngredient(ingredient);
-            ui.printBought(ingredient);
-        }
-        ingredients.clear();
-    }
+@Override
+public void check() throws EZMealPlanException {
+    logger.fine("Checking '" + userInput + "' for buy command errors.");
+    checkIngExists();
+    checkIngredientExists();
+    checkIngredientFormat();
+    setPassed(true);
+}
 ```
+
+```java
+
+@Override
+public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
+    if (!checkValidUserInput()) {
+        logger.severe("Invalid buy command input detected.");
+        return;
+    }
+
+    parseIngredientsForBuy();
+
+    Inventory inventory = mealManager.getInventory();
+    for (Ingredient ingredient : ingredients) {
+        // Add the ingredient (with name and price) into the inventory list.
+        inventory.addIngredient(ingredient);
+        ui.printBought(ingredient);
+    }
+    ingredients.clear();
+}
+```
+
 ##### 12.3 Sequence Diagram
-Here is the sequence diagram for illustrating the interactions between BuyCommand, BuyChecker and other system component classes while processing the user input:
+
+Here is the sequence diagram for illustrating the interactions between BuyCommand, BuyChecker and other system component
+classes while processing the user input:
 ![BuyCommand.png](diagrams/BuyCommand.png)
 ![BuyChecker.png](diagrams/BuyChecker.png)
 
 ##### 12.4 Unit Testing
 
 ###### Testing Approach
-- Uses a test-specific BuyCheckerTest and BuyCommandTest to ensure that the BuyChecker and BuyCommand account for different types of user inputs and proceed as normal.
+
+- Uses a test-specific BuyCheckerTest and BuyCommandTest to ensure that the BuyChecker and BuyCommand account for
+  different types of user inputs and proceed as normal.
 - Test with different types of user inputs that gives no error and some exceptions.
 - Executes BuyChecker and BuyCommand.
 - Verifies that the exceptions are thrown according to the user inputs.
 
 ###### Unit Test Code
+
 Here are some snippets of the unit test code:
+
 ```java
-  @Test
-    public void testExecute_validInputs_success() throws EZMealPlanException {
-        logger.fine("Running testExecute_validInputs_success()");
-        MealManager mealManager = new MealManager();
-        String userInput = "buy /ing Apple (1.00), Banana(3.00)";
-        Command command = new BuyCommand(userInput);
-        command.execute(mealManager, ui);
 
-        Inventory inventory = mealManager.getInventory();
-        String expectedOutput = """
-                    1. Apple ($1.00): 1
-                    2. Banana ($3.00): 1
-                """;
-        assertEquals(expectedOutput, inventory.toString());
-        logger.info("Correct ingredients added");
-    }
+@Test
+public void testExecute_validInputs_success() throws EZMealPlanException {
+    logger.fine("Running testExecute_validInputs_success()");
+    MealManager mealManager = new MealManager();
+    String userInput = "buy /ing Apple (1.00), Banana(3.00)";
+    Command command = new BuyCommand(userInput);
+    command.execute(mealManager, ui);
 
-    @Test
-    public void testExecute_repeatedIngredientsSamePrice_success() throws EZMealPlanException {
-        logger.fine("Running testExecute_repeatedIngredientsSamePrice_success()");
-        MealManager mealManager = new MealManager();
-        String userInput = "buy /ing Apple (1.00), Banana (3.00), Apple (1.00)";
-        Command command = new BuyCommand(userInput);
-        command.execute(mealManager, ui);
+    Inventory inventory = mealManager.getInventory();
+    String expectedOutput = """
+                1. Apple ($1.00): 1
+                2. Banana ($3.00): 1
+            """;
+    assertEquals(expectedOutput, inventory.toString());
+    logger.info("Correct ingredients added");
+}
 
-        Inventory inventory = mealManager.getInventory();
-        String expectedOutput = """
-                    1. Apple ($1.00): 2
-                    2. Banana ($3.00): 1
-                """;
-        assertEquals(expectedOutput, inventory.toString());
-        logger.info("Correct ingredients added");
-    }
+@Test
+public void testExecute_repeatedIngredientsSamePrice_success() throws EZMealPlanException {
+    logger.fine("Running testExecute_repeatedIngredientsSamePrice_success()");
+    MealManager mealManager = new MealManager();
+    String userInput = "buy /ing Apple (1.00), Banana (3.00), Apple (1.00)";
+    Command command = new BuyCommand(userInput);
+    command.execute(mealManager, ui);
+
+    Inventory inventory = mealManager.getInventory();
+    String expectedOutput = """
+                1. Apple ($1.00): 2
+                2. Banana ($3.00): 1
+            """;
+    assertEquals(expectedOutput, inventory.toString());
+    logger.info("Correct ingredients added");
+}
 ```
 
 ```java
- @Test
-    public void buyChecker_singleIngredientInput_success() throws EZMealPlanException {
-        logger.fine("Running buyChecker_singleIngredientInput_success()");
-        BuyChecker checker = new BuyChecker("buy /ing Egg (1.00)");
-        checker.check();
-        logger.info("buyChecker_singleIngredientInput_success passed");
-    }
 
-    @Test
-    public void buyChecker_multipleIngredientInput_success() throws EZMealPlanException {
-        logger.fine("Running buyChecker_multipleIngredientInput_success()");
-        BuyChecker checker = new BuyChecker("buy /ing Egg (1.00), Milk (2.50)");
-        checker.check();
-        logger.info("buyChecker_multipleIngredientInput_success passed");
-    }
+@Test
+public void buyChecker_singleIngredientInput_success() throws EZMealPlanException {
+    logger.fine("Running buyChecker_singleIngredientInput_success()");
+    BuyChecker checker = new BuyChecker("buy /ing Egg (1.00)");
+    checker.check();
+    logger.info("buyChecker_singleIngredientInput_success passed");
+}
 
-    @Test
-    public void buyChecker_missingIngKeyword_throwsMissingIngKeywordException() {
-        logger.fine("Running buyChecker_missingIngKeyword_throwsMissingIngKeywordException()");
-        BuyChecker checker = new BuyChecker("buy Egg (1.00)");
-        assertThrows(MissingIngKeywordException.class, checker::check);
-        logger.info("buyChecker_missingIngKeyword_throwsMissingIngKeywordException passed");
-    }
+@Test
+public void buyChecker_multipleIngredientInput_success() throws EZMealPlanException {
+    logger.fine("Running buyChecker_multipleIngredientInput_success()");
+    BuyChecker checker = new BuyChecker("buy /ing Egg (1.00), Milk (2.50)");
+    checker.check();
+    logger.info("buyChecker_multipleIngredientInput_success passed");
+}
+
+@Test
+public void buyChecker_missingIngKeyword_throwsMissingIngKeywordException() {
+    logger.fine("Running buyChecker_missingIngKeyword_throwsMissingIngKeywordException()");
+    BuyChecker checker = new BuyChecker("buy Egg (1.00)");
+    assertThrows(MissingIngKeywordException.class, checker::check);
+    logger.info("buyChecker_missingIngKeyword_throwsMissingIngKeywordException passed");
+}
 ```
+
 ### 13. ConsumeCommand and ConsumeChecker
 
 ##### 13.1 Design Overview
 
 ###### Function
-- ConsumeChecker validates the correctness of the user input before it is processed by ConsumeCommand, which then removes (or consumes) the specified ingredient(s) from the inventory.
+
+- ConsumeChecker validates the correctness of the user input before it is processed by ConsumeCommand, which then
+  removes (or consumes) the specified ingredient(s) from the inventory.
 
 ###### Design Goals
+
 **Single Responsibility**
 
 - ConsumeChecker focuses solely on validating user input (formatting, missing keywords, etc.).
 - ConsumeCommand handles the logic of processing valid input and updating the inventory accordingly.
-**Decoupling**
+  **Decoupling**
 - Separating validation (ConsumeChecker) from logic (ConsumeCommand) keeps the code clean and maintainable.
-**Testability**
-- This design allows for targeted unit tests on both ConsumeChecker (for validation) and ConsumeCommand (for inventory consumption logic).
+  **Testability**
+- This design allows for targeted unit tests on both ConsumeChecker (for validation) and ConsumeCommand (for inventory
+  consumption logic).
+
 ##### 13.2 Implementation Details
+
 ###### Component Level: ConsumeChecker Class
+
 - Extends the abstract Checker class.
 - Implements the check() method to verify if the user’s consume input is valid.
 - Uses logging to record execution steps and validation outcomes.
@@ -1651,25 +1705,34 @@ Here are some snippets of the unit test code:
 - /ing Keyword Check – Ensures that /ing is present to indicate ingredients.
 - Ingredient Format Check – Checks each ingredient’s format (e.g., ingredient name (quantity)).
 - Missing Ingredient Check – Ensures at least one ingredient is specified.
+
 ###### Component Level: ConsumeCommand Class
+
 - Extends the abstract Command class.
 - Implements the execute(MealManager mealManager, UserInterface ui) method.
 - Uses logging to record the command’s execution.
-- Parses the user input into ingredient objects, locates them in the Inventory, and decreases their quantities by the specified amount.
-- If the ingredient’s quantity drops to zero or below, it can be removed from the inventory (depending on your design choice).
+- Parses the user input into ingredient objects, locates them in the Inventory, and decreases their quantities by the
+  specified amount.
+- If the ingredient’s quantity drops to zero or below, it can be removed from the inventory (depending on your design
+  choice).
+
 ###### Code Example
+
 ```java
+
 @Override
 public void check() throws EZMealPlanException {
-  logger.fine("Checking '" + userInput + "' for consume command errors.");
-  checkIngKeyword();            // e.g., verify "/ing" is present
-  checkIngredientFormat();      // e.g., verify "Egg (2)"
-  checkQuantityValid();         // e.g., parse quantity to ensure it's a valid number
-  setPassed(true);
-  logger.info("ConsumeChecker: user input validated successfully.");
+    logger.fine("Checking '" + userInput + "' for consume command errors.");
+    checkIngKeyword();            // e.g., verify "/ing" is present
+    checkIngredientFormat();      // e.g., verify "Egg (2)"
+    checkQuantityValid();         // e.g., parse quantity to ensure it's a valid number
+    setPassed(true);
+    logger.info("ConsumeChecker: user input validated successfully.");
 }
 ```
+
 ```java
+
 @Override
 public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
     if (!checkValidUserInput()) {
@@ -1690,75 +1753,87 @@ public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlan
 }
 
 ```
+
 ##### 13.3 Sequence Diagram
-Here is the sequence diagram for illustrating the interactions between ConsumeCommand, ConsumeChecker and other system component classes while processing the user input:
+
+Here is the sequence diagram for illustrating the interactions between ConsumeCommand, ConsumeChecker and other system
+component classes while processing the user input:
 ![ConsumeCommand.png](diagrams/ConsumeCommand.png)
 ![ConsumeChecker.png](diagrams/ConsumeChecker.png)
+
 ##### 13.4 Unit Testing
 
 ###### Testing Approach
-- ConsumeCheckerTest and ConsumeCommandTest verify the correctness of user input validation and actual consumption logic, respectively.
+
+- ConsumeCheckerTest and ConsumeCommandTest verify the correctness of user input validation and actual consumption
+  logic, respectively.
 - Test with correct inputs (e.g., consume /ing Egg (2)) and erroneous inputs (missing /ing, malformed quantity, etc.).
 - Validate that the right exceptions are thrown for invalid inputs.
+
 ###### Unit Test Code
+
 ```java 
+
 @Test
-    public void testExecute_validInput_success() throws EZMealPlanException {
-        logger.fine("Running testExecute_validInput_success()");
-        MealManager mealManager = new MealManager();
-        Inventory inventory = mealManager.getInventory();
-        inventory.addIngredient(ingredient1);
-        inventory.addIngredient(ingredient3);
-        inventory.addIngredient(ingredient4);
-        String userInput = "consume /ing apple";
-        Command command = new ConsumeCommand(userInput);
-        command.execute(mealManager, ui);
+public void testExecute_validInput_success() throws EZMealPlanException {
+    logger.fine("Running testExecute_validInput_success()");
+    MealManager mealManager = new MealManager();
+    Inventory inventory = mealManager.getInventory();
+    inventory.addIngredient(ingredient1);
+    inventory.addIngredient(ingredient3);
+    inventory.addIngredient(ingredient4);
+    String userInput = "consume /ing apple";
+    Command command = new ConsumeCommand(userInput);
+    command.execute(mealManager, ui);
 
-        String expectedOutput = "    1. Banana ($3.00): 1" + ls + "    2. Chocolate ($4.00): 1" + ls;
-        assertEquals(expectedOutput, inventory.toString());
-        logger.info("Correct ingredient consumed");
-    }
+    String expectedOutput = "    1. Banana ($3.00): 1" + ls + "    2. Chocolate ($4.00): 1" + ls;
+    assertEquals(expectedOutput, inventory.toString());
+    logger.info("Correct ingredient consumed");
+}
 
-    @Test
-    public void testExecute_ingredientNotFound_exceptionThrown() {
-        logger.fine("testExecute_ingredientNotFound_exceptionThrown()");
-        MealManager mealManager = new MealManager();
-        Inventory inventory = mealManager.getInventory();
-        inventory.addIngredient(ingredient1);
-        inventory.addIngredient(ingredient3);
-        inventory.addIngredient(ingredient4);
-        String userInput = "consume /ing duck";
-        Command command = new ConsumeCommand(userInput);
+@Test
+public void testExecute_ingredientNotFound_exceptionThrown() {
+    logger.fine("testExecute_ingredientNotFound_exceptionThrown()");
+    MealManager mealManager = new MealManager();
+    Inventory inventory = mealManager.getInventory();
+    inventory.addIngredient(ingredient1);
+    inventory.addIngredient(ingredient3);
+    inventory.addIngredient(ingredient4);
+    String userInput = "consume /ing duck";
+    Command command = new ConsumeCommand(userInput);
 
-        assertThrows(InventoryIngredientNotFound.class, () -> command.execute(mealManager, ui));
-        logger.info("Correct exception thrown");
-    }
+    assertThrows(InventoryIngredientNotFound.class, () -> command.execute(mealManager, ui));
+    logger.info("Correct exception thrown");
+}
 ```
+
 ```java
+
 @Test
-    public void consumeChecker_validInput_success() throws EZMealPlanException {
-        logger.fine("Running consumeChecker_validInput_success()");
-        ConsumeChecker checker = new ConsumeChecker("consume /ing Bread, Milk");
-        checker.check();
-        logger.info("consumeChecker_validInput_success passed");
-    }
+public void consumeChecker_validInput_success() throws EZMealPlanException {
+    logger.fine("Running consumeChecker_validInput_success()");
+    ConsumeChecker checker = new ConsumeChecker("consume /ing Bread, Milk");
+    checker.check();
+    logger.info("consumeChecker_validInput_success passed");
+}
 
-    @Test
-    public void consumeChecker_missingIngKeyword_throwsMissingIngKeywordException() {
-        logger.fine("Running consumeChecker_missingIngKeyword_throwsMissingIngKeywordException()");
-        ConsumeChecker checker = new ConsumeChecker("consume Milk, Bread");
-        assertThrows(MissingIngKeywordException.class, checker::check);
-        logger.info("consumeChecker_missingIngKeyword_throwsMissingIngKeywordException passed");
-    }
+@Test
+public void consumeChecker_missingIngKeyword_throwsMissingIngKeywordException() {
+    logger.fine("Running consumeChecker_missingIngKeyword_throwsMissingIngKeywordException()");
+    ConsumeChecker checker = new ConsumeChecker("consume Milk, Bread");
+    assertThrows(MissingIngKeywordException.class, checker::check);
+    logger.info("consumeChecker_missingIngKeyword_throwsMissingIngKeywordException passed");
+}
 
-    @Test
-    public void consumeChecker_noIngredients_throwsMissingIngredientException() {
-        logger.fine("Running consumeChecker_noIngredients_throwsMissingIngredientException()");
-        ConsumeChecker checker = new ConsumeChecker("consume /ing");
-        assertThrows(MissingIngredientException.class, checker::check);
-        logger.info("consumeChecker_noIngredients_throwsMissingIngredientException passed");
-    }
+@Test
+public void consumeChecker_noIngredients_throwsMissingIngredientException() {
+    logger.fine("Running consumeChecker_noIngredients_throwsMissingIngredientException()");
+    ConsumeChecker checker = new ConsumeChecker("consume /ing");
+    assertThrows(MissingIngredientException.class, checker::check);
+    logger.info("consumeChecker_noIngredients_throwsMissingIngredientException passed");
+}
 ```
+
 ### 14. RecommendCommand and RecommendChecker
 
 ##### 14.1 Design Overview
@@ -1776,6 +1851,7 @@ Here is the sequence diagram for illustrating the interactions between ConsumeCo
 ###### Code Example
 
 ##### 14.3 Sequence Diagram
+
 ![RecommendCommand.png](diagrams/RecommendCommand.png)
 ![RecommendChecker.png](diagrams/RecommendChecker.png)
 
@@ -1800,6 +1876,7 @@ Here is the sequence diagram for illustrating the interactions between ConsumeCo
 ###### Code Example
 
 ##### 15.3 Sequence Diagram
+
 ![InventoryCommand.png](diagrams/InventoryCommand.png)
 
 ##### 15.4 Unit Testing
