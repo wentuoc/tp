@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import ezmealplan.exceptions.EZMealPlanException;
 import ezmealplan.exceptions.MissingIngKeywordException;
 import ezmealplan.exceptions.MissingIngredientException;
 import ezmealplan.food.Ingredient;
@@ -150,7 +149,7 @@ public class RecommendCommandTest {
     }
 
     @Test
-    public void recommendCommand_missingKeyword_throwsRecommendFormatException() throws EZMealPlanException {
+    public void recommendCommand_missingKeyword_throwsRecommendFormatException() {
         logger.fine("Running recommendCommand_missingKeyword_throwsRecommendFormatException()");
         RecommendCommand command = new RecommendCommand("recommend salmon");
         assertThrows(MissingIngKeywordException.class,
@@ -159,7 +158,7 @@ public class RecommendCommandTest {
     }
 
     @Test
-    public void recommendCommand_missingIngAfterKeyword_throwsRecommendFormatException() throws EZMealPlanException {
+    public void recommendCommand_missingIngAfterKeyword_throwsRecommendFormatException() {
         logger.fine("Running recommendCommand_missingIngredientAfterKeyword_throwsRecommendFormatException()");
         RecommendCommand command = new RecommendCommand("recommend /ing");
         assertThrows(MissingIngredientException.class,
