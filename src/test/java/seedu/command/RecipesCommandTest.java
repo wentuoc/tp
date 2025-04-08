@@ -25,7 +25,7 @@ public class RecipesCommandTest {
     private static final Logger logger = Logger.getLogger(RecipesCommandTest.class.getName());
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
-    UserInterface ui = new UserInterface();
+    private final UserInterface ui = new UserInterface();
 
     public RecipesCommandTest() {
         String fileName = "RecipesCommandTest.log";
