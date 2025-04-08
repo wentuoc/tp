@@ -1629,26 +1629,136 @@ Here are some snippets of the unit test code:
 ##### 13.1 Design Overview
 
 ###### Function
+- ConsumeChecker validates the correctness of the user input before it is processed by ConsumeCommand, which then removes (or consumes) the specified ingredient(s) from the inventory.
 
 ###### Design Goals
+**Single Responsibility**
 
+- ConsumeChecker focuses solely on validating user input (formatting, missing keywords, etc.).
+- ConsumeCommand handles the logic of processing valid input and updating the inventory accordingly.
+**Decoupling**
+- Separating validation (ConsumeChecker) from logic (ConsumeCommand) keeps the code clean and maintainable.
+**Testability**
+- This design allows for targeted unit tests on both ConsumeChecker (for validation) and ConsumeCommand (for inventory consumption logic).
 ##### 13.2 Implementation Details
-
 ###### Component Level: ConsumeChecker Class
-
+- Extends the abstract Checker class.
+- Implements the check() method to verify if the user’s consume input is valid.
+- Uses logging to record execution steps and validation outcomes.
+- Once all checks pass, sets isPassed to true.
+- If any validation fails (e.g., missing parameters, incorrect format), throws the relevant exception.
+  A simplified overview of checks might include:
+- /ing Keyword Check – Ensures that /ing is present to indicate ingredients.
+- Ingredient Format Check – Checks each ingredient’s format (e.g., ingredient name (quantity)).
+- Missing Ingredient Check – Ensures at least one ingredient is specified.
 ###### Component Level: ConsumeCommand Class
-
+- Extends the abstract Command class.
+- Implements the execute(MealManager mealManager, UserInterface ui) method.
+- Uses logging to record the command’s execution.
+- Parses the user input into ingredient objects, locates them in the Inventory, and decreases their quantities by the specified amount.
+- If the ingredient’s quantity drops to zero or below, it can be removed from the inventory (depending on your design choice).
 ###### Code Example
+```java
+@Override
+public void check() throws EZMealPlanException {
+  logger.fine("Checking '" + userInput + "' for consume command errors.");
+  checkIngKeyword();            // e.g., verify "/ing" is present
+  checkIngredientFormat();      // e.g., verify "Egg (2)"
+  checkQuantityValid();         // e.g., parse quantity to ensure it's a valid number
+  setPassed(true);
+  logger.info("ConsumeChecker: user input validated successfully.");
+}
+```
+```java
+@Override
+public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
+    if (!checkValidUserInput()) {
+        logger.severe("Invalid consume command input detected.");
+        return;
+    }
 
+    // Parse the user input for ingredients to consume
+    parseIngredientsForConsume();
+
+    Inventory inventory = mealManager.getInventory();
+    for (Ingredient ingredient : ingredientsToConsume) {
+        inventory.consumeIngredient(ingredient);
+        ui.printConsumed(ingredient);
+        logger.fine("Consumed " + ingredient.getName() + ": " + ingredient.getQuantity());
+    }
+    ingredientsToConsume.clear();
+}
+
+```
 ##### 13.3 Sequence Diagram
+Here is the sequence diagram for illustrating the interactions between ConsumeCommand, ConsumeChecker and other system component classes while processing the user input:
 ![ConsumeCommand.png](diagrams/ConsumeCommand.png)
 ![ConsumeChecker.png](diagrams/ConsumeChecker.png)
 ##### 13.4 Unit Testing
 
 ###### Testing Approach
-
+- ConsumeCheckerTest and ConsumeCommandTest verify the correctness of user input validation and actual consumption logic, respectively.
+- Test with correct inputs (e.g., consume /ing Egg (2)) and erroneous inputs (missing /ing, malformed quantity, etc.).
+- Validate that the right exceptions are thrown for invalid inputs.
 ###### Unit Test Code
+```java 
+@Test
+    public void testExecute_validInput_success() throws EZMealPlanException {
+        logger.fine("Running testExecute_validInput_success()");
+        MealManager mealManager = new MealManager();
+        Inventory inventory = mealManager.getInventory();
+        inventory.addIngredient(ingredient1);
+        inventory.addIngredient(ingredient3);
+        inventory.addIngredient(ingredient4);
+        String userInput = "consume /ing apple";
+        Command command = new ConsumeCommand(userInput);
+        command.execute(mealManager, ui);
 
+        String expectedOutput = "    1. Banana ($3.00): 1" + ls + "    2. Chocolate ($4.00): 1" + ls;
+        assertEquals(expectedOutput, inventory.toString());
+        logger.info("Correct ingredient consumed");
+    }
+
+    @Test
+    public void testExecute_ingredientNotFound_exceptionThrown() {
+        logger.fine("testExecute_ingredientNotFound_exceptionThrown()");
+        MealManager mealManager = new MealManager();
+        Inventory inventory = mealManager.getInventory();
+        inventory.addIngredient(ingredient1);
+        inventory.addIngredient(ingredient3);
+        inventory.addIngredient(ingredient4);
+        String userInput = "consume /ing duck";
+        Command command = new ConsumeCommand(userInput);
+
+        assertThrows(InventoryIngredientNotFound.class, () -> command.execute(mealManager, ui));
+        logger.info("Correct exception thrown");
+    }
+```
+```java
+@Test
+    public void consumeChecker_validInput_success() throws EZMealPlanException {
+        logger.fine("Running consumeChecker_validInput_success()");
+        ConsumeChecker checker = new ConsumeChecker("consume /ing Bread, Milk");
+        checker.check();
+        logger.info("consumeChecker_validInput_success passed");
+    }
+
+    @Test
+    public void consumeChecker_missingIngKeyword_throwsMissingIngKeywordException() {
+        logger.fine("Running consumeChecker_missingIngKeyword_throwsMissingIngKeywordException()");
+        ConsumeChecker checker = new ConsumeChecker("consume Milk, Bread");
+        assertThrows(MissingIngKeywordException.class, checker::check);
+        logger.info("consumeChecker_missingIngKeyword_throwsMissingIngKeywordException passed");
+    }
+
+    @Test
+    public void consumeChecker_noIngredients_throwsMissingIngredientException() {
+        logger.fine("Running consumeChecker_noIngredients_throwsMissingIngredientException()");
+        ConsumeChecker checker = new ConsumeChecker("consume /ing");
+        assertThrows(MissingIngredientException.class, checker::check);
+        logger.info("consumeChecker_noIngredients_throwsMissingIngredientException passed");
+    }
+```
 ### 14. RecommendCommand and RecommendChecker
 
 ##### 14.1 Design Overview
