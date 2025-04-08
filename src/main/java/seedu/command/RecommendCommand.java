@@ -22,7 +22,7 @@ public class RecommendCommand extends Command {
      * Constructs a RecommendCommand.
      * Expected user input format: "recommend /ing Chicken"
      */
-    public RecommendCommand(String userInput) throws EZMealPlanException {
+    public RecommendCommand(String userInput) {
         validUserInput = userInput.trim();
     }
 
