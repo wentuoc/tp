@@ -4,7 +4,7 @@ import seedu.logic.MealManager;
 import seedu.ui.UserInterface;
 
 public class MistypedCommand extends Command {
-    private String actualCommand;
+    private final String actualCommand;
 
     public MistypedCommand(String userInputText, String actualCommand) {
         validUserInput = userInputText;

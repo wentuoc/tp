@@ -2,6 +2,7 @@ package seedu.ezmealplan;
 
 import seedu.command.Command;
 import seedu.exceptions.EZMealPlanException;
+import seedu.exceptions.ParserException;
 import seedu.food.Meal;
 import seedu.logic.MealManager;
 import seedu.meallist.MealList;
@@ -53,8 +54,8 @@ public class EZMealPlan {
     private static Command checkParsedCommand(String userInput) {
         try {
             return Parser.parse(userInput);
-        } catch (EZMealPlanException ezMealPlanException) {
-            ui.printErrorMessage(ezMealPlanException);
+        } catch (ParserException | EZMealPlanException ezmealPlanException) {
+            ui.printErrorMessage(ezmealPlanException);
             return null;
         }
     }

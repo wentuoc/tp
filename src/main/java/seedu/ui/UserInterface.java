@@ -216,27 +216,18 @@ public class UserInterface {
         System.out.println(ingredientName + " consumed");
     }
 
-    public void printIngredientNotFound(String ingredientName) {
-        System.out.println(ingredientName + " not found");
-    }
-
     public void printBought(Ingredient ingredient) {
         System.out.println(ingredient + " bought");
     }
 
-    public void printInventory(List<Ingredient> ingredientsList) {
-        if (ingredientsList.isEmpty()) {
+    public void printInventory(String inventoryString) {
+        if (inventoryString.isEmpty()) {
             System.out.println("No ingredients found in your inventory.\n");
             return;
         }
 
         System.out.println("Here are the ingredients that you own:");
-        int count = 0;
-        for (Ingredient ingredient : ingredientsList) {
-            count++;
-            System.out.println("    " + count + ". " + ingredient);
-        }
-        System.out.println();
+        System.out.print(inventoryString);
     }
 
     public void printRecommendCommandHelp() {

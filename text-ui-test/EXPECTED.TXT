@@ -4,8 +4,7 @@ How may I help you?
 Invalid command: excusemeee
 me no understand what you talking.
 How may I help you?
-"/mname" keyword cannot be missing from the "create" command.
-
+Missing arguments for create command.
 How may I help you?
 "/ing" keyword cannot be missing from the "create" command.
 

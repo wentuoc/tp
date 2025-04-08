@@ -19,6 +19,7 @@ import seedu.command.UnknownCommand;
 import seedu.command.ViewCommand;
 import seedu.command.WishlistCommand;
 import seedu.exceptions.EZMealPlanException;
+import seedu.exceptions.ParserException;
 
 public class Parser {
     private static final String BYE = "bye";
@@ -39,45 +40,136 @@ public class Parser {
     private static final String[] allCommandStrings = {BYE, CREATE, FILTER, SELECT, WISHLIST, RECIPES, CLEAR, HELP,
         REMOVE, VIEW, DELETE, RECOMMEND, CONSUME, BUY, INVENTORY};
 
-    public static Command parse(String userInput) throws EZMealPlanException {
-        String firstWordLowerCase = getFirstWord(userInput).toLowerCase();
-        userInput = userInput.trim();
-        return switch (firstWordLowerCase) {
-        case BYE -> new ByeCommand();
-        case CREATE -> new CreateCommand(userInput);
-        case FILTER -> new FilterCommand(userInput);
-        case SELECT -> new SelectCommand(userInput);
-        case RECIPES -> new RecipesCommand();
-        case WISHLIST -> new WishlistCommand();
-        case CLEAR -> new ClearCommand();
-        case HELP -> new HelpCommand(userInput);
-        case REMOVE -> new RemoveCommand(userInput);
-        case VIEW -> new ViewCommand(userInput);
-        case DELETE -> new DeleteCommand(userInput);
-        case RECOMMEND -> new RecommendCommand(userInput);
-        case CONSUME -> new ConsumeCommand(userInput);
-        case BUY -> new BuyCommand(userInput);
-        case INVENTORY -> new InventoryCommand();
-        default -> parseUnknownInput(firstWordLowerCase);
+
+    public static Command parse(String userInput) throws ParserException, EZMealPlanException {
+        String trimmedInput = userInput.trim();
+        String[] tokens = tokenize(trimmedInput);
+        String commandWord = tokens[0].toLowerCase();
+
+        return switch(commandWord) {
+        case BYE -> parseBye(tokens, trimmedInput);
+        case CREATE -> parseCreate(tokens, trimmedInput);
+        case HELP -> parseHelp(tokens, trimmedInput);
+        case FILTER -> parseFilter(tokens, trimmedInput);
+        case SELECT -> parseSelect(tokens, trimmedInput);
+        case RECIPES -> parseRecipes(tokens);
+        case WISHLIST -> parseWishlist(tokens);
+        case CLEAR -> parseClear(tokens);
+        case REMOVE -> parseRemove(tokens, trimmedInput);
+        case VIEW -> parseView(tokens, trimmedInput);
+        case DELETE -> parseDelete(tokens, trimmedInput);
+        case RECOMMEND -> parseRecommend(tokens, trimmedInput);
+        case CONSUME -> parseConsume(tokens, trimmedInput);
+        case BUY -> parseBuy(tokens, trimmedInput);
+        case INVENTORY -> parseInventory(tokens);
+        default -> parseUnknownInput(commandWord);
         };
     }
 
-    private static String getFirstWord(String userInput) {
-        int firstSpaceIndex = userInput.indexOf(' ');
-        if (firstSpaceIndex == -1) {
-            //userInput does not contain a space
-            return userInput;
-        }
-        return userInput.substring(0, firstSpaceIndex);
+    // Splits the input string by one or more whitespace characters.
+    private static String[] tokenize(String input) {
+        return input.split("\\s+");
     }
 
-    private static Command parseUnknownInput(String firstWordLowerCase) {
+    // Helper method to enforce exact token count.
+    private static void assertExactTokenCount(String[] tokens, int expected, String errorMessage)
+            throws ParserException {
+        if (tokens.length != expected) {
+            throw new ParserException(errorMessage);
+        }
+    }
+
+    // Helper method to enforce a minimum token count.
+    private static void assertMinTokenCount(String[] tokens, int min, String errorMessage) throws ParserException {
+        if (tokens.length < min) {
+            throw new ParserException(errorMessage);
+        }
+    }
+
+    private static Command parseBye(String[] tokens, String input) throws ParserException {
+        assertExactTokenCount(tokens, 1, "The bye command does not accept any arguments.");
+        return new ByeCommand();
+    }
+
+    private static Command parseCreate(String[] tokens, String input) throws ParserException {
+        assertMinTokenCount(tokens, 2, "Missing arguments for create command.");
+        return new CreateCommand(input);
+    }
+
+    private static Command parseHelp(String[] tokens, String input) throws ParserException {
+        if (tokens.length > 2) {
+            throw new ParserException("Invalid syntax for help command: too many arguments.");
+        }
+        return new HelpCommand(input);
+    }
+
+    private static Command parseFilter(String[] tokens, String input) throws ParserException {
+        assertMinTokenCount(tokens, 2, "Missing arguments for filter command.");
+        return new FilterCommand(input);
+    }
+
+    private static Command parseSelect(String[] tokens, String input) throws ParserException {
+        assertExactTokenCount(tokens, 2, "Select command should have exactly one argument.");
+        return new SelectCommand(input);
+    }
+
+    private static Command parseRecipes(String[] tokens) throws ParserException {
+        assertExactTokenCount(tokens, 1, "The recipes command does not take any arguments.");
+        return new RecipesCommand();
+
+    }
+
+    private static Command parseWishlist(String[] tokens) throws ParserException {
+        assertExactTokenCount(tokens, 1, "The wishlist command does not take any arguments.");
+        return new WishlistCommand();
+    }
+
+    private static Command parseClear(String[] tokens) throws ParserException {
+        assertExactTokenCount(tokens, 1, "The clear command does not take any arguments.");
+        return new ClearCommand();
+    }
+
+    private static Command parseRemove(String[] tokens, String input) throws ParserException {
+        assertMinTokenCount(tokens, 2, "Missing arguments for remove command.");
+        return new RemoveCommand(input);
+    }
+
+    private static Command parseView(String[] tokens, String input) throws ParserException {
+        assertMinTokenCount(tokens, 2, "Missing arguments for view command.");
+        return new ViewCommand(input);
+    }
+
+    private static Command parseDelete(String[] tokens, String input) throws ParserException {
+        assertMinTokenCount(tokens, 2, "Missing arguments for delete command.");
+        return new DeleteCommand(input);
+    }
+
+    private static Command parseRecommend(String[] tokens, String input) throws ParserException, EZMealPlanException {
+        assertMinTokenCount(tokens, 2, "Missing arguments for recommend command.");
+        return new RecommendCommand(input);
+    }
+
+    private static Command parseConsume(String[] tokens, String input) throws ParserException {
+        assertMinTokenCount(tokens, 2, "Missing arguments for consume command.");
+        return new ConsumeCommand(input);
+    }
+
+    private static Command parseBuy(String[] tokens, String input) throws ParserException {
+        assertMinTokenCount(tokens, 2, "Missing arguments for buy command.");
+        return new BuyCommand(input);
+    }
+
+    private static Command parseInventory(String[] tokens) throws ParserException {
+        assertExactTokenCount(tokens, 1, "The inventory command does not take any arguments.");
+        return new InventoryCommand();
+    }
+
+    private static Command parseUnknownInput(String commandWord) {
         for (String actualCommandString : allCommandStrings) {
-            if (firstWordLowerCase.startsWith(actualCommandString)) {
-                return new MistypedCommand(firstWordLowerCase, actualCommandString);
+            if (commandWord.startsWith(actualCommandString)) {
+                return new MistypedCommand(commandWord, actualCommandString);
             }
         }
-        return new UnknownCommand(firstWordLowerCase);
+        return new UnknownCommand(commandWord);
     }
 }
-

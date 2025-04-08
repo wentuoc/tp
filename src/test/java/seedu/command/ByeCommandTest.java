@@ -91,7 +91,7 @@ public class ByeCommandTest {
             List<File> latestFiles = saveLatestLists();
             expectedGoodByeMessage_success();
             compareFileAndExpectedLists_success(expectedRecipesList, expectedWishList,
-                    expectedInventoryList,latestFiles);
+                    expectedInventoryList, latestFiles);
             logger.info("byeCommandTest_success() passed");
         } catch (Exception exception) {
             ui.printErrorMessage(exception);
