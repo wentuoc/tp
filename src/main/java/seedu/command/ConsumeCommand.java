@@ -2,6 +2,9 @@ package seedu.command;
 
 import seedu.checkers.ConsumeChecker;
 import seedu.exceptions.EZMealPlanException;
+import seedu.exceptions.IngredientPriceFormatException;
+import seedu.exceptions.InvalidPriceException;
+import seedu.food.Ingredient;
 import seedu.logic.MealManager;
 import seedu.ui.UserInterface;
 import seedu.food.Inventory;
@@ -15,7 +18,8 @@ import java.util.logging.Logger;
 public class ConsumeCommand extends Command {
     private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private static final String CONSUME = "consume";
-    private static final List<String> ingredients = new ArrayList<>();
+    private static final List<String> ingredientNames = new ArrayList<>();
+    private static final List<Ingredient> ingredients = new ArrayList<>();
 
     public ConsumeCommand(String userInput) {
         validUserInput = userInput.trim();
@@ -29,6 +33,7 @@ public class ConsumeCommand extends Command {
      */
     @Override
     public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
+        ingredientNames.clear();
         ingredients.clear();
 
         if (!checkValidUserInput()) {
@@ -43,13 +48,18 @@ public class ConsumeCommand extends Command {
         Inventory inventory = mealManager.getInventory();
         // Process each ingredient name provided in the command.
 
-        for (String ingredientName : ingredients) {
-            inventory.removeIngredient(ingredientName);
-            ui.printConsumed(ingredientName);
+        for (String ingredientName : ingredientNames) {
+            Ingredient removedIngredient = inventory.removeIngredient(ingredientName);
+            ui.printConsumed(removedIngredient.toString());
+        }
+
+        for (Ingredient ingredient : ingredients) {
+            inventory.removeIngredient(ingredient);
+            ui.printConsumed(ingredient.toString());
         }
     }
 
-    static void parseIngredients(String args) {
+    private void parseIngredients(String args) throws InvalidPriceException, IngredientPriceFormatException {
         if (args.isEmpty()) {
             return;
         }
@@ -61,9 +71,29 @@ public class ConsumeCommand extends Command {
         for (String token : tokens) {
             token = token.trim();
             if (!token.isEmpty()) {
-                ingredients.add(token);
+                processIngredientToken(token);
             }
         }
+    }
+
+    private void processIngredientToken(String token) throws InvalidPriceException, IngredientPriceFormatException {
+        if (!hasParentheses(token)) {
+            ingredientNames.add(token);
+        } else {
+            int openParenIndex = token.lastIndexOf('(');
+            int closeParenIndex = token.lastIndexOf(')');
+            int startIndex = 0;
+            int indexAdjustment = 1;
+
+            String name = token.substring(startIndex, openParenIndex).trim();
+            String priceStr = token.substring(openParenIndex + indexAdjustment, closeParenIndex).trim();
+            Ingredient ingredientToDelete = new Ingredient(name, priceStr);
+            ingredients.add(ingredientToDelete);
+        }
+    }
+
+    private boolean hasParentheses(String token) {
+        return token.contains("(") && token.contains(")");
     }
 
     private boolean checkValidUserInput() throws EZMealPlanException {
