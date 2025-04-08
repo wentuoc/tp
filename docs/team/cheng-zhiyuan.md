@@ -8,7 +8,15 @@ into their personal wishlist. Users can also create their own meals which will b
 User can also ask the program to recommend meal containing a specific ingredient, viewing what they have in their inventory
 ### Summary of Contributions
 * Code contributed:[Reference Link](https://nus-cs2113-ay2425s2.github.io/tp-dashboard/?search=&sort=groupTitle&sortWithin=title&timeframe=commit&mergegroup=&groupSelect=groupByRepos&breakdown=true&checkedFileTypes=docs~functional-code~test-code~other&since=2025-02-21&tabOpen=true&tabType=authorship&tabAuthor=Cheng-Zhiyuan&tabRepo=AY2425S2-CS2113-F14-4%2Ftp%5Bmaster%5D&authorshipIsMergeGroup=false&authorshipFileTypes=docs~functional-code~test-code&authorshipIsBinaryFileTypeChecked=false&authorshipIsIgnoredFilesChecked=false)
+* **Enhancements Implemented**
+  * Ensure Parser is more robust 
+* **Documentation**:
   * User guide:
-    * Add in the features explanation 
+    * Populate the sample output, syntax of commands
+    * Add in most of the documentation for each feather with sample input/output, syntax etc.
   * Developer Guide:
-    * Add in User stories for V1
+    * Add in User stories for V1 and V2
+    * Help with documentation of ConsumeCommand and ConsumeChecker
+* **Contributions to Team-Based Tasks**
+* **Review/Mentoring Contributions**
+* **Contributions beyond the Project Team**
