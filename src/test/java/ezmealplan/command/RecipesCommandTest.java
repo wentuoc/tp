@@ -76,8 +76,8 @@ public class RecipesCommandTest {
         RecipesCommand recipesCommand = new RecipesCommand();
         recipesCommand.execute(mealManager, ui);
 
-        String expectedOutput = "Here are the meals in recipes list:" + ls + "    1. Main Meal 1 ($0.00)" + ls +
-                "    2. Main Meal 2 ($0.00)" + ls + ls;
+        String expectedOutput = "Here are the meals in recipes list:" + ls + "    1. Main Meal 1 ($0.00)" + ls
+                + "    2. Main Meal 2 ($0.00)" + ls + ls;
         assertEquals(expectedOutput, outContent.toString());
         logger.info("testExecute_recipesCommand_printsRecipesList() passed");
     }

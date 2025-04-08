@@ -18,7 +18,6 @@ import ezmealplan.command.SelectCommand;
 import ezmealplan.command.UnknownCommand;
 import ezmealplan.command.ViewCommand;
 import ezmealplan.command.WishlistCommand;
-import ezmealplan.exceptions.EZMealPlanException;
 import ezmealplan.exceptions.ParserException;
 
 public class Parser {
@@ -41,9 +40,14 @@ public class Parser {
         REMOVE, VIEW, DELETE, RECOMMEND, CONSUME, BUY, INVENTORY};
 
 
-    public static Command parse(String userInput) throws ParserException, EZMealPlanException {
+    /**
+     * Parses a string input and returns the corresponding command as a Command object.
+     *
+     * @throws ParserException If an unexpected number of arguments is detected after the command keyword.
+     */
+    public static Command parse(String userInput) throws ParserException {
         String trimmedInput = userInput.trim();
-        String[] tokens = tokenize(trimmedInput);
+        String[] tokens = tokenise(trimmedInput);
         String commandWord = tokens[0].toLowerCase();
 
         return switch(commandWord) {
@@ -66,8 +70,10 @@ public class Parser {
         };
     }
 
-    // Splits the input string by one or more whitespace characters.
-    private static String[] tokenize(String input) {
+    /**
+     * Splits the input string by one or more whitespace characters.
+     */
+    private static String[] tokenise(String input) {
         return input.split("\\s+");
     }
 
@@ -144,7 +150,7 @@ public class Parser {
         return new DeleteCommand(input);
     }
 
-    private static Command parseRecommend(String[] tokens, String input) throws ParserException, EZMealPlanException {
+    private static Command parseRecommend(String[] tokens, String input) throws ParserException {
         assertMinTokenCount(tokens, 2, "Missing arguments for recommend command.");
         return new RecommendCommand(input);
     }

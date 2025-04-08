@@ -1,4 +1,4 @@
-package ezmealplan.checkers;
+package ezmealplan.command.checkers;
 
 import java.io.IOException;
 import java.util.logging.ConsoleHandler;
@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import ezmealplan.command.checkers.ViewChecker;
 import ezmealplan.exceptions.EZMealPlanException;
 import ezmealplan.exceptions.InvalidKeywordIndexException;
 import ezmealplan.exceptions.MissingMealIndexException;

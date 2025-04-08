@@ -27,6 +27,7 @@ public class RecommendChecker extends Checker {
 
     /**
      * Checks whether the '/ing' keyword exists in the recommend command input.
+     *
      * @throws MissingIngKeywordException if '/ing' is not found.
      */
     private void checkIngExists() throws MissingIngKeywordException {
@@ -39,6 +40,7 @@ public class RecommendChecker extends Checker {
 
     /**
      * Checks that there is non-empty ingredient information provided after the '/ing' keyword.
+     *
      * @throws MissingIngredientException if no ingredient details are found.
      */
     private void checkIngredientExists() throws MissingIngredientException {

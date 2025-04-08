@@ -1,5 +1,6 @@
 package ezmealplan.command;
 
+import ezmealplan.exceptions.EZMealPlanException;
 import ezmealplan.food.Meal;
 import ezmealplan.storage.Storage;
 import ezmealplan.logic.MealManager;
@@ -15,6 +16,13 @@ public class ByeCommand extends Command {
         return true;
     }
 
+    /**
+     * Executes the bye command.
+     * Saves the WishList, RecipesList, and Inventory to their respective locations on disk.
+     *
+     * @param mealManager the MealManager providing access to the lists.
+     * @param ui          the UserInterface for printing messages.
+     */
     @Override
     public void execute(MealManager mealManager, UserInterface ui) {
         updateRecipesListFile(mealManager,ui);
@@ -34,7 +42,6 @@ public class ByeCommand extends Command {
         String recipesListFilePath = Storage.getRecipesListFilePath();
         clearAndUpdateFile(recipesList, recipesListFilePath, ui);
     }
-
 
     private void clearAndUpdateFile(List<Meal> mealList, String filePath, UserInterface ui) {
         clearFile(filePath, ui);

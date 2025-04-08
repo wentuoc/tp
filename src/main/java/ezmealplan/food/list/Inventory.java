@@ -1,6 +1,5 @@
 package ezmealplan.food.list;
 
-
 import ezmealplan.exceptions.InventoryIngredientNotFound;
 import ezmealplan.exceptions.InventoryMultipleIngredientsException;
 import ezmealplan.food.Ingredient;
@@ -19,6 +18,10 @@ public class Inventory {
         uniqueSortedIngredients = new ArrayList<>();
     }
 
+    /**
+     * Adds an Ingredient to the Inventory HashMap.
+     * If an equal Ingredient already exists in the Inventory, then its quantity in the Inventory is increased.
+     */
     public void addIngredient(Ingredient ingredient) {
         if (isIngredientInInventory(ingredient)) {
             Ingredient ingredientInInventory = getIngredientInInventory(ingredient);
@@ -31,12 +34,13 @@ public class Inventory {
         }
     }
 
+    /**
+     * Adds an Ingredient to the Inventory HashMap with a specified quantity.
+     */
     public void addIngredient(Ingredient ingredient, int quantity) {
-        ingredients.put(ingredient, quantity);
-        uniqueSortedIngredients.add(ingredient);
-        uniqueSortedIngredients.sort(Comparator.comparing(Ingredient::getName,String.CASE_INSENSITIVE_ORDER).
-                thenComparing(Ingredient::getPrice));
-
+        for (int i = 0; i < quantity; i++) {
+            addIngredient(ingredient);
+        }
     }
 
     private boolean isIngredientInInventory(Ingredient ingredient) {
@@ -48,6 +52,16 @@ public class Inventory {
         return uniqueSortedIngredients.get(index);
     }
 
+    /**
+     * Removes an Ingredient from the Inventory HashMap. If the quantity of the Ingredient is more than 1, then its
+     * quantity is reduced by 1.
+     *
+     * @param ingredientNameToBeRemoved The name of the Ingredient to be removed, as a String.
+     * @return The Ingredient removed.
+     * @throws InventoryMultipleIngredientsException If multiple unequal Ingredients matching the specified name
+     *     is found.
+     * @throws InventoryIngredientNotFound If an Ingredient with a matching name is not found in the Inventory.
+     */
     public Ingredient removeIngredient(String ingredientNameToBeRemoved) throws InventoryMultipleIngredientsException,
             InventoryIngredientNotFound {
         ArrayList<Ingredient> ingredientsToRemove = findIngredientsFromString(ingredientNameToBeRemoved);
@@ -68,6 +82,13 @@ public class Inventory {
         }
     }
 
+    /**
+     * Removes an Ingredient from the Inventory HashMap. If the quantity of the Ingredient is more than 1, then its
+     * quantity is reduced by 1.
+     *
+     * @param ingredient An Ingredient object to be removed.
+     * @throws InventoryIngredientNotFound If the Ingredient is not found in the Inventory.
+     */
     public void removeIngredient(Ingredient ingredient) throws InventoryIngredientNotFound {
         if (uniqueSortedIngredients.contains(ingredient)) {
             int indexOfIngredient = uniqueSortedIngredients.indexOf(ingredient);
@@ -102,6 +123,9 @@ public class Inventory {
         return ingredients.size() == 1;
     }
 
+    /**
+     * Converts the Inventory and all its Ingredients to a String.
+     */
     public String toString() {
         int count = 0;
         StringBuilder outputString = new StringBuilder();
@@ -118,6 +142,10 @@ public class Inventory {
         return outputString.toString();
     }
 
+    /**
+     * Serialises the Inventory into an ArrayList of Strings for data storage.
+     * The format used for each entry is "name | price | quantity".
+     */
     public ArrayList<String> toDataArray() {
         ArrayList<String> outputDataArray = new ArrayList<>();
         for (Ingredient ingredient : uniqueSortedIngredients) {
@@ -126,13 +154,18 @@ public class Inventory {
         return outputDataArray;
     }
 
-    public List<Ingredient> getIngredients() {
+    /**
+     * Returns a List of unique Ingredient objects in the Inventory.
+     */
+    public List<Ingredient> getUniqueIngredients() {
         return uniqueSortedIngredients;
     }
 
-    public boolean hasIngredient(String ingredientName) {
-        ArrayList<Ingredient> foundIngredients = findIngredientsFromString(ingredientName);
-        return !foundIngredients.isEmpty();
+    /**
+     * Tests whether an Ingredient with the specified ingredientName exists in the Inventory.
+     */
+    public boolean hasIngredient(Ingredient ingredient) {
+        return uniqueSortedIngredients.contains(ingredient);
     }
 
     private int getIngredientAmount(Ingredient ingredient) {

@@ -2,7 +2,6 @@ package ezmealplan.exceptions;
 
 import ezmealplan.food.list.MealList;
 
-
 public class ViewIndexOutOfRangeException extends EZMealPlanException {
     int inputIndex;
     int listSize;

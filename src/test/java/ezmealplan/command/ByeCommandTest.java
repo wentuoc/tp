@@ -106,7 +106,7 @@ public class ByeCommandTest {
         Ingredient secondIngredient = new Ingredient("secondIngredient","2.50");
         inventory.addIngredient(firstIngredient);
         inventory.addIngredient(secondIngredient);
-        return inventory.getIngredients();
+        return inventory.getUniqueIngredients();
         
     }
 
@@ -244,7 +244,7 @@ public class ByeCommandTest {
 
     private void checkInventoryLists(List<Ingredient> expectedInventoryList) throws FileNotFoundException {
         Storage.loadExistingInventory(mealManager);
-        List<Ingredient> ingredientsFromFile = mealManager.getInventory().getIngredients();
+        List<Ingredient> ingredientsFromFile = mealManager.getInventory().getUniqueIngredients();
         assertEquals(expectedInventoryList, ingredientsFromFile, "Inventory list does not match.");
     }
 

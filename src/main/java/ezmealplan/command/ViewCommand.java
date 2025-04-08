@@ -25,6 +25,13 @@ public class ViewCommand extends Command {
         this.lowerCaseInput = validUserInput.toLowerCase();
     }
 
+    /**
+     * Executes the view command.
+     * Displays the details of a requested Meal in a MealList.
+     *
+     * @param mealManager the MealManager providing access to the lists.
+     * @param ui          the UserInterface for printing messages.
+     */
     @Override
     public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
         setRecipesOrWishlist();
@@ -61,7 +68,7 @@ public class ViewCommand extends Command {
         }
     }
 
-    public void setRecipesOrWishlist() throws EZMealPlanException {
+    private void setRecipesOrWishlist() throws EZMealPlanException {
         boolean isContainsRecipesSymbol = this.lowerCaseInput.contains(RECIPES_SYMBOL) &&
                                           !this.lowerCaseInput.contains(WISH_LIST_SYMBOL);
         boolean isContainsWishlistSymbol = this.lowerCaseInput.contains(WISH_LIST_SYMBOL) &&

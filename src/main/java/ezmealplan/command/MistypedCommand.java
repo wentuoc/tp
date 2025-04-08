@@ -10,6 +10,13 @@ public class MistypedCommand extends Command {
         validUserInput = userInputText;
         this.actualCommand = actualCommand;
     }
+
+    /**
+     * Executes the Mistyped command.
+     *
+     * @param mealManager the MealManager.
+     * @param ui          the UserInterface for printing messages.
+     */
     @Override
     public void execute(MealManager mealManager, UserInterface ui) {
         ui.printMistypedCommand(validUserInput, actualCommand);

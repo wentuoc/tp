@@ -77,8 +77,8 @@ class InventoryCommandTest {
         Command command = new InventoryCommand();
         command.execute(mealManager, ui);
 
-        String expectedString = "Here are the ingredients that you own:" + ls + "    1. Apple ($1.00): 2" + ls +
-                "    2. Apple ($2.00): 1" + ls + "    3. Banana ($3.00): 1" + ls;
+        String expectedString = "Here are the ingredients that you own:" + ls + "    1. Apple ($1.00): 2" + ls
+                + "    2. Apple ($2.00): 1" + ls + "    3. Banana ($3.00): 1" + ls;
         assertEquals(expectedString.trim(), outContent.toString().trim());
         logger.info("Correct inventory printed");
     }

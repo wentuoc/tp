@@ -25,14 +25,13 @@ public class ConsumeChecker extends Checker {
         logger.fine("Checking '" + userInput + "' for consume command errors.");
         checkIngExists();
         checkIngredientExists();
-        if (hasParentheses()) {
-            checkIngredientFormat();
-        }
+        checkIngredientFormat();
         setPassed(true);
     }
 
     /**
      * Checks whether the '/ing' keyword exists in the consume command input.
+     *
      * @throws MissingIngKeywordException if '/ing' is not found.
      */
     private void checkIngExists() throws MissingIngKeywordException {
@@ -45,6 +44,7 @@ public class ConsumeChecker extends Checker {
 
     /**
      * Checks that there is non-empty ingredient information provided after the '/ing' keyword.
+     *
      * @throws MissingIngredientException if no ingredient details are found.
      */
     private void checkIngredientExists() throws MissingIngredientException {
@@ -57,10 +57,16 @@ public class ConsumeChecker extends Checker {
         }
     }
 
-    private boolean hasParentheses() {
-        return lowerCaseInput.contains("(") && lowerCaseInput.contains(")");
+    private boolean hasParentheses(String input) {
+        return input.contains("(") && input.contains(")");
     }
 
+    /**
+     * Validates the format of each ingredient token, if it contains parentheses.
+     * Expected format: "IngredientName ($Price)", where Price is in 2d.p.
+     *
+     * @throws InvalidIngredientFormatException if any ingredient does not match the expected format.
+     */
     private void checkIngredientFormat() throws InvalidIngredientFormatException {
         int afterIngIndex = lowerCaseInput.indexOf(ING) + ING.length();
         String ingredients = userInput.substring(afterIngIndex).trim();
@@ -72,7 +78,7 @@ public class ConsumeChecker extends Checker {
         for (String ingredient : ingredientArray) {
             ingredient = ingredient.trim();
             Matcher ingredientMatcher = ingredientPattern.matcher(ingredient);
-            if (!ingredientMatcher.matches()) {
+            if (hasParentheses(ingredient) && !ingredientMatcher.matches()) {
                 String message = "Triggers InvalidIngredientFormatException() for token: " + ingredient;
                 logger.warning(message);
                 throw new InvalidIngredientFormatException();

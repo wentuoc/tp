@@ -26,10 +26,11 @@ public class ConsumeCommand extends Command {
     }
 
     /**
-     * Executes the consume command by removing each specified ingredient from the inventory.
+     * Executes the consume command by removing each specified ingredient from the Inventory.
      *
-     * @param mealManager the MealManager that provides access to the inventory.
+     * @param mealManager the MealManager that provides access to the Inventory.
      * @param ui          the UserInterface for printing messages.
+     * @throws EZMealPlanException if the input format is invalid.
      */
     @Override
     public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
@@ -78,8 +79,10 @@ public class ConsumeCommand extends Command {
 
     private void processIngredientToken(String token) throws InvalidPriceException, IngredientPriceFormatException {
         if (!hasParentheses(token)) {
+            //If the input arguments do not contain parentheses, treat the input as an Ingredient name
             ingredientNames.add(token);
         } else {
+            //If the input arguments contain parentheses, attempt to instantiate an Ingredient object
             int openParenIndex = token.lastIndexOf('(');
             int closeParenIndex = token.lastIndexOf(')');
             int startIndex = 0;

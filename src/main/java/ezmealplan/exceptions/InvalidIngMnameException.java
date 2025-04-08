@@ -1,7 +1,6 @@
 package ezmealplan.exceptions;
 
 public class InvalidIngMnameException extends EZMealPlanException {
-
     @Override
     public String getMessage() {
         return """

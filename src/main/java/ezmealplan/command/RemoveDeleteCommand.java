@@ -20,11 +20,16 @@ public abstract class RemoveDeleteCommand extends Command {
         validUserInput = userInputText.trim();
     }
 
+    /**
+     * Executes the Remove or Delete command, by specifying which MealList to delete from.
+     *
+     * @param mealManager the MealManager providing access to the lists.
+     * @param ui          the UserInterface for printing messages.
+     */
     @Override
     public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
         MealList wishList = mealManager.getWishList();
         MealList recipesList = mealManager.getRecipesList();
-        int indexOfIndex = 1;
 
         boolean isValidUserInput = checkValidUserInput();
         if (!isValidUserInput) {
@@ -32,9 +37,9 @@ public abstract class RemoveDeleteCommand extends Command {
                     "passing all the checks for input formatting error.");
         }
         assert isValidUserInput;
-        String regexPattern = "\\s+";
-        int indexAdjustment = 1;
-        int index = Integer.parseInt(validUserInput.split(regexPattern)[indexOfIndex]) - indexAdjustment;
+
+        int index = parseIndex();
+
         if (removeOrDelete.equals(remove)) {
             removedOrDeletedMeal = mealManager.removeMeal(index, wishList);
             ui.printRemovedMessage(removedOrDeletedMeal, wishList.size());
@@ -48,5 +53,12 @@ public abstract class RemoveDeleteCommand extends Command {
         RemoveDeleteChecker checker = new RemoveDeleteChecker(validUserInput);
         checker.check();
         return checker.isPassed();
+    }
+
+    private int parseIndex() {
+        String regexPattern = "\\s+";
+        int indexAdjustment = 1;
+        int indexOfIndex = 1;
+        return Integer.parseInt(validUserInput.split(regexPattern)[indexOfIndex]) - indexAdjustment;
     }
 }

@@ -12,5 +12,11 @@ public abstract class Command {
         return false;
     }
 
+    /**
+     * Executes the command
+     *
+     * @param mealManager the MealManager providing access to the lists.
+     * @param ui          the UserInterface for printing messages.
+     */
     public abstract void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException;
 }

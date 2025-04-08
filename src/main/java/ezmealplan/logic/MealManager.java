@@ -1,7 +1,8 @@
 package ezmealplan.logic;
 
-import ezmealplan.exceptions.EZMealPlanException;
+import ezmealplan.exceptions.DuplicateMealException;
 import ezmealplan.exceptions.EmptyListException;
+import ezmealplan.exceptions.RemoveIndexOutOfRangeException;
 import ezmealplan.food.Ingredient;
 import ezmealplan.food.list.Inventory;
 import ezmealplan.food.Meal;
@@ -13,11 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MealManager {
-    MealList chosenMealList;
     private final MealList wishList = new WishList();
     private final MealList recipesList = new RecipesList();
     private final Inventory inventory = new Inventory();
 
+    private MealList chosenMealList;
 
     public MealList getWishList() {
         return wishList;
@@ -27,14 +28,23 @@ public class MealManager {
         return recipesList;
     }
 
-
-    // Adds a new meal to the specified list after checking for duplicates
-    public void addMeal(Meal newMeal, MealList mealsInput) throws EZMealPlanException {
+    /**
+     * Adds a new meal to the specified MealList after checking for duplicates.
+     *
+     * @param newMeal The Meal object to be added.
+     * @param mealsInput The MealList object to add the Meal to.
+     * @throws DuplicateMealException If the Meal object already exists in the MealList.
+     */
+    public void addMeal(Meal newMeal, MealList mealsInput) throws DuplicateMealException {
         chosenMealList = mealsInput instanceof RecipesList ? getRecipesList() : getWishList();
         chosenMealList.addMeal(newMeal);
     }
 
-
+    /**
+     * Filters the Recipes List by a specified Meal cost.
+     *
+     * @return The filtered List.
+     */
     public List<Meal> filteringByMcost(double mcostDouble) {
         List<Meal> filteredMealList = new ArrayList<>();
         List<Meal> recipesList = getRecipesList().getList();
@@ -46,6 +56,11 @@ public class MealManager {
         return filteredMealList;
     }
 
+    /**
+     * Filters the Recipes List by an array of Meal names.
+     *
+     * @return The filtered List.
+     */
     public List<Meal> filteringByMname(String[] mealNameArray) {
         List<Meal> filteredMealList = new ArrayList<>();
         List<Meal> recipesList = getRecipesList().getList();
@@ -71,6 +86,11 @@ public class MealManager {
         return isMealNameContains;
     }
 
+    /**
+     * Filters the Recipes List by an array of Ingredients.
+     *
+     * @return The filtered List.
+     */
     public List<Meal> filteringByIng(String[] ingredientsArray) {
         List<Meal> filteredMealList = new ArrayList<>();
         List<Meal> mainMealList = getRecipesList().getList();
@@ -119,14 +139,25 @@ public class MealManager {
         return eachCount;
     }
 
-    public Meal removeMeal(int index, MealList mealListInput) throws EZMealPlanException {
+    /**
+     * Removes a Meal from the specified MealList.
+     *
+     * @param index The index of the Meal to be removed in the MealList.
+     * @param mealListInput The name of the MealList to remove from.
+     * @return The removed Meal.
+     * @throws EmptyListException If the MealList is empty.
+     * @throws RemoveIndexOutOfRangeException If the input index is out of range for the specified MealList.
+     */
+    public Meal removeMeal(int index, MealList mealListInput)
+            throws EmptyListException, RemoveIndexOutOfRangeException {
         chosenMealList = mealListInput instanceof RecipesList ? getRecipesList() : getWishList();
-        if(chosenMealList.getList().isEmpty()){
-            throw new EmptyListException(chosenMealList.getMealListName());
-        }
         return chosenMealList.removeMeal(index);
     }
 
+    /**
+     * Compares between the Recipes List and Wishlist in the application and removes Meals that are in the Wishlist
+     * but not the Recipes List.
+     */
     public void removeIllegalMeals() {
         List<Meal> recipesList = this.recipesList.getList();
         List<Meal> wishList = this.wishList.getList();

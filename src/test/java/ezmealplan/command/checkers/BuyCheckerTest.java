@@ -1,4 +1,4 @@
-package ezmealplan.checkers;
+package ezmealplan.command.checkers;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import ezmealplan.command.checkers.BuyChecker;
 import ezmealplan.exceptions.EZMealPlanException;
 import ezmealplan.exceptions.InvalidIngredientFormatException;
 import ezmealplan.exceptions.MissingIngKeywordException;

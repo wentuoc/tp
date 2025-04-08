@@ -14,11 +14,18 @@ public class CreateCommand extends Command {
     private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private static final String MNAME = "/mname";
     private static final String ING = "/ing";
+
     public CreateCommand(String userInputText) {
         validUserInput = userInputText.trim();
         lowerCaseInput = userInputText.toLowerCase();
     }
 
+    /**
+     * Executes the Create command.
+     *
+     * @param mealManager the MealManager providing access to the RecipeList.
+     * @param ui          the UserInterface for printing messages.
+     */
     @Override
     public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
         boolean isValidUserInput = checkValidUserInput();

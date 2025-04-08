@@ -19,6 +19,12 @@ public class SelectCommand extends FilterSelectCommand {
         this.filterOrSelect = "select";
     }
 
+    /**
+     * Executes the Select command.
+     *
+     * @param mealManager the MealManager providing access to the lists.
+     * @param ui          the UserInterface for printing messages.
+     */
     @Override
     public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
         boolean isValidUserInput = checkValidUserInput(filterOrSelect);
@@ -27,11 +33,13 @@ public class SelectCommand extends FilterSelectCommand {
                     "passing all the checks for input formatting error.");
         }
         assert isValidUserInput;
+
         List<Meal> filteredMealList = getFilteredMealList(mealManager);
         if (filteredMealList.isEmpty()) {
             System.out.println("The filtered meal list is empty.");
             return;
         }
+
         String indexSubstring = getIndexSubstring();
         int inputIndex = checkValidParse(indexSubstring);
         Meal selectedMeal = checkValidInputIndex(inputIndex, filteredMealList);

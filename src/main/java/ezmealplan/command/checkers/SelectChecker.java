@@ -3,7 +3,6 @@ package ezmealplan.command.checkers;
 import ezmealplan.exceptions.EZMealPlanException;
 import ezmealplan.exceptions.MissingMealIndexException;
 
-
 public class SelectChecker extends FilterSelectChecker {
     public SelectChecker(String userInputText, String filterMethod) {
         this.userInput = userInputText.trim();

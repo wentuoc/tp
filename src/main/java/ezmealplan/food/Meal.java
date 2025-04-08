@@ -27,11 +27,17 @@ public class Meal extends Product {
         return super.toString();
     }
 
+    /**
+     * Adds an Ingredient object to the Meal, after checking for duplicates.
+     * The internal ingredientList always remain sorted by the name of the Ingredients.
+     *
+     * @throws InvalidPriceException If the price of the Ingredient is outside the range 0.00 to 9999999999999.99.
+     * @throws DuplicateIngredientException If an equal Ingredient already exists in the Meal.
+     */
     public void addIngredient(Ingredient ingredient) throws InvalidPriceException, DuplicateIngredientException {
         checkDuplicateIngredients(ingredient);
         ingredientList.add(ingredient);
-        ingredientList.sort(Comparator.comparing(Ingredient::getName,
-                String.CASE_INSENSITIVE_ORDER));
+        ingredientList.sort(Comparator.comparing(Ingredient::getName, String.CASE_INSENSITIVE_ORDER));
         setPrice(getPrice() + ingredient.getPrice());
     }
 
@@ -40,8 +46,8 @@ public class Meal extends Product {
     }
 
     /**
-     * Overrides the equals method based on the following criteria: Two Meal objects are equal if and only if they have
-     * the same name (ignoring case) and ingredient names.
+     * Overrides the equals() method based on the following criteria: Two Meal objects are equal if and only if
+     * they have the same name (ignoring case) and Ingredients.
      */
     @Override
     public boolean equals(Object otherMeal) {
@@ -63,6 +69,10 @@ public class Meal extends Product {
         }
     }
 
+    /**
+     * Serialises the Meal into a string format for data storage. The format used is
+     * "mealName | ingredient1Name (price1) | ingredient2Name (price2)...".
+     */
     public String toDataString() {
         StringBuilder stringBuilder = new StringBuilder();
         // Append the meal name.

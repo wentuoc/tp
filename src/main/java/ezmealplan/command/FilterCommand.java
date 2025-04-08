@@ -17,6 +17,12 @@ public class FilterCommand extends FilterSelectCommand {
         this.filterOrSelect = "filter";
     }
 
+    /**
+     * Executes the Filter command.
+     *
+     * @param mealManager the MealManager providing access to the RecipeList.
+     * @param ui          the UserInterface for printing messages.
+     */
     @Override
     public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
         boolean isValidUserInput = checkValidUserInput(filterOrSelect);

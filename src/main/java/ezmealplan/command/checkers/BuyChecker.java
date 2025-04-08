@@ -31,6 +31,7 @@ public class BuyChecker extends Checker {
 
     /**
      * Checks whether the '/ing' keyword exists in the buy command input.
+     *
      * @throws MissingIngKeywordException if '/ing' is not found.
      */
     private void checkIngExists() throws MissingIngKeywordException {
@@ -44,6 +45,7 @@ public class BuyChecker extends Checker {
 
     /**
      * Checks that there is non-empty ingredient information provided after the '/ing' keyword.
+     *
      * @throws MissingIngredientException if no ingredient details are found.
      */
     private void checkIngredientExists() throws MissingIngredientException {
@@ -58,7 +60,8 @@ public class BuyChecker extends Checker {
 
     /**
      * Validates the format of each ingredient token.
-     * Expected format: "IngredientName (Price)"
+     * Expected format: "IngredientName ($Price)", where Price is in 2d.p.
+     *
      * @throws InvalidIngredientFormatException if any ingredient does not match the expected format.
      */
     private void checkIngredientFormat() throws InvalidIngredientFormatException {

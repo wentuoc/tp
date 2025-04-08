@@ -23,8 +23,6 @@ public abstract class FilterSelectCommand extends Command {
     String filterOrSelect;
     String filterMethod = "";
 
-
-
     protected boolean checkValidUserInput(String filterOrSelect) throws EZMealPlanException {
         getFilterMethod();
         FilterSelectChecker checker = getFilterSelectChecker(filterOrSelect, filterMethod);
@@ -96,6 +94,7 @@ public abstract class FilterSelectCommand extends Command {
             throw new NumberFormatException();
         }
     }
+
     private void checkTwoDecimalPlace(String ingredientPrice) throws NumberFormatException {
         String twoDecimalPlaceRegex = "^-?\\d+\\.\\d{2}$";
         if (!ingredientPrice.matches(twoDecimalPlaceRegex)) {
@@ -119,6 +118,12 @@ public abstract class FilterSelectCommand extends Command {
         return mealManager.filteringByIng(ingredientsArray);
     }
 
+    /**
+     * Prints the filtered MealList.
+     *
+     * @param filteredMealList a List of the filtered Meals.
+     * @param ui          the UserInterface for printing messages.
+     */
     public void printFilteredMealList(List<Meal> filteredMealList, UserInterface ui) {
         String mealCost = "meal cost";
         String mealName = "meal name";

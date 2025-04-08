@@ -87,8 +87,8 @@ class BuyCommandTest {
         command.execute(mealManager, ui);
 
         Inventory inventory = mealManager.getInventory();
-        String expectedOutput = "    1. Apple ($1.00): 1" + ls + "    2. Apple ($2.00): 1" + ls +
-                "    3. Banana ($3.00): 1" + ls;
+        String expectedOutput = "    1. Apple ($1.00): 1" + ls + "    2. Apple ($2.00): 1" + ls
+                + "    3. Banana ($3.00): 1" + ls;
         assertEquals(expectedOutput, inventory.toString());
         logger.info("Correct ingredients added");
     }

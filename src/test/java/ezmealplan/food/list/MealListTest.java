@@ -1,8 +1,5 @@
-package ezmealplan.list;
+package ezmealplan.food.list;
 
-import ezmealplan.food.list.MealList;
-import ezmealplan.food.list.RecipesList;
-import ezmealplan.food.list.WishList;
 import org.junit.jupiter.api.Test;
 
 import ezmealplan.exceptions.DuplicateMealException;

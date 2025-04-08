@@ -12,6 +12,9 @@ public class PresetMeals {
         return allPresetMeals;
     }
 
+    /**
+     * Returns a String array of the present meals, in the data string format.
+     */
     public static String[] createPresetMeals() {
         PresetMeals presetMeals = new PresetMeals();
         return presetMeals.getPresetMeals();

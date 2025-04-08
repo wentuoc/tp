@@ -6,6 +6,7 @@ public class EmptyListException extends EZMealPlanException {
     public EmptyListException(String recipeOrWishlistName) {
         this.recipeOrWishlistName = recipeOrWishlistName;
     }
+
     @Override
     public String getMessage() {
         return "The " + recipeOrWishlistName + " is empty.\n";

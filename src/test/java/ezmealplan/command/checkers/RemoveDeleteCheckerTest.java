@@ -1,8 +1,7 @@
-package ezmealplan.checkers;
+package ezmealplan.command.checkers;
 
 import org.junit.jupiter.api.Test;
 
-import ezmealplan.command.checkers.RemoveDeleteChecker;
 import ezmealplan.exceptions.EZMealPlanException;
 import ezmealplan.exceptions.RemoveFormatException;
 

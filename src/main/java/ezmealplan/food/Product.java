@@ -4,12 +4,10 @@ import ezmealplan.exceptions.InvalidPriceException;
 
 import java.util.logging.Logger;
 
-
 public abstract class Product {
     private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     protected String name;
     protected double price;
-
 
     public String getName() {
         return name;
@@ -39,6 +37,9 @@ public abstract class Product {
         this.price = price;
     }
 
+    /**
+     * Overrides the toString() method by formatting the Product as "name ($price)" where price is in 2d.p.
+     */
     public String toString() {
         String price = String.format("%.2f", getPrice());
         return getName() + " ($" + price + ")";

@@ -9,7 +9,6 @@ public class ViewChecker extends Checker {
     private static final String VIEW = "view";
     String recipeOrWishlist;
 
-
     public ViewChecker(String userInputText, String recipeOrWishlist) {
         this.userInput = userInputText.trim();
         this.lowerCaseInput = userInput.toLowerCase();

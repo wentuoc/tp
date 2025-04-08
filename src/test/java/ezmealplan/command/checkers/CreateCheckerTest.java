@@ -1,6 +1,5 @@
-package ezmealplan.checkers;
+package ezmealplan.command.checkers;
 
-import ezmealplan.command.checkers.CreateChecker;
 import ezmealplan.exceptions.EZMealPlanException;
 import ezmealplan.exceptions.InvalidCreateIndexException;
 import ezmealplan.exceptions.InvalidIngMnameException;

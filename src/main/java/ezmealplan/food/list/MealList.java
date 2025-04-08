@@ -1,7 +1,6 @@
 package ezmealplan.food.list;
 
 import ezmealplan.exceptions.DuplicateMealException;
-import ezmealplan.exceptions.EZMealPlanException;
 import ezmealplan.exceptions.EmptyListException;
 import ezmealplan.exceptions.MealNotFoundException;
 import ezmealplan.exceptions.RemoveIndexOutOfRangeException;
@@ -24,7 +23,7 @@ public abstract class MealList {
     }
 
     // Adds a new meal to the specified list after checking for duplicates
-    public void addMeal(Meal newMeal) throws EZMealPlanException {
+    public void addMeal(Meal newMeal) throws DuplicateMealException {
         checkDuplicateMeal(newMeal);
         mealList.add(newMeal);
         mealList.sort(Comparator.comparing(Meal::getName,String.CASE_INSENSITIVE_ORDER).thenComparing(Meal::getPrice));
@@ -33,7 +32,7 @@ public abstract class MealList {
     /**
      * Checks whether newMeal already exists in the mealList.
      */
-    private void checkDuplicateMeal(Meal newMeal) throws EZMealPlanException {
+    private void checkDuplicateMeal(Meal newMeal) throws DuplicateMealException {
         for (Meal meal : mealList) {
             if (meal.equals(newMeal)) {
                 throw new DuplicateMealException(newMeal.getName(), mealListName);
@@ -44,7 +43,7 @@ public abstract class MealList {
     /**
      * Removes the meal at a specified index and returns it.
      */
-    public Meal removeMeal(int index) throws EZMealPlanException {
+    public Meal removeMeal(int index) throws EmptyListException, RemoveIndexOutOfRangeException {
         if (mealList.isEmpty()) {
             throw new EmptyListException(mealListName);
         }

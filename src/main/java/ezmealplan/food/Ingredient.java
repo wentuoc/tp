@@ -23,8 +23,8 @@ public class Ingredient extends Product {
     }
 
     /**
-     * Overrides the equals method based on the following criteria: Two Ingredient objects are equal if and only if
-     * they have the same name (ignoring case).
+     * Overrides the equals() method based on the following criteria: Two Ingredient objects are equal if and only if
+     * they have the same name (ignoring case) and same price.
      */
     @Override
     public boolean equals(Object otherIngredient) {
@@ -39,6 +39,9 @@ public class Ingredient extends Product {
         }
     }
 
+    /**
+     * Returns true if and only if the other Ingredient has the same name (ignoring case).
+     */
     public boolean nameEquals(Object otherIngredient) {
         if (otherIngredient instanceof Ingredient) {
             String otherName = ((Ingredient) otherIngredient).getName();
@@ -67,7 +70,9 @@ public class Ingredient extends Product {
         }
     }
 
-    // Serializes the ingredient into a string format (e.g., "name | price")
+    /**
+     * Serialises the Ingredient into a string format for data storage. The format used is "name | price".
+     */
     public String toDataString() {
         return getName() + " | " + String.format("%.2f", getPrice());
     }

@@ -1,13 +1,11 @@
-package ezmealplan.checkers;
+package ezmealplan.command.checkers;
 
-import ezmealplan.command.checkers.SelectChecker;
 import ezmealplan.exceptions.EZMealPlanException;
 import ezmealplan.exceptions.InvalidIngIndexException;
 import ezmealplan.exceptions.InvalidMcostIndexException;
 import ezmealplan.exceptions.InvalidMnameIndexException;
 import ezmealplan.exceptions.MissingIngredientException;
 import ezmealplan.exceptions.MissingMealCostException;
-import ezmealplan.exceptions.MissingMealIndexException;
 import ezmealplan.exceptions.MissingMealNameException;
 
 import java.io.IOException;
@@ -24,12 +22,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class SelectCheckerTest {
-    private static final Logger logger = Logger.getLogger(SelectCheckerTest.class.getName());
-    final String select = "select";
+public class FilterCheckerTest {
+    private static final Logger logger = Logger.getLogger(FilterCheckerTest.class.getName());
+    final String filter = "filter";
 
-    public SelectCheckerTest() {
-        String fileName = "SelectCheckerTest.log";
+    public FilterCheckerTest() {
+        String fileName = "FilterCheckerTest.log";
         setupLogger(fileName);
     }
 
@@ -53,18 +51,18 @@ public class SelectCheckerTest {
     }
 
     @Test
-    public void selectChecker_success() throws EZMealPlanException {
-        logger.info("running selectChecker_success()");
-        String[] validSelectStrings = {"select 1 /mname a", "select 2 /mname a,b", "select 3 /ing c", "select 4/ing c,d"
-                , "select5/mcost 1"};
-        for (String selectString : validSelectStrings) {
-            String filterMethod = getFilterMethod(selectString);
-            SelectChecker checker = new SelectChecker(selectString, filterMethod);
+    public void filterChecker_success() throws EZMealPlanException {
+        logger.info("running filterchecker_success()");
+        String[] validFilterStrings = {"filter /mname a", "filter /mname a,b", "filter /ing c", "filter /ing c,d"
+                , "filter /mcost 1"};
+        for (String filterString : validFilterStrings) {
+            String filterMethod = getFilterMethod(filterString);
+            FilterChecker checker = new FilterChecker(filterString, filterMethod);
             checker.check();
             assertTrue(checker.isPassed());
-            logger.info("Valid select command input.");
+            logger.info("Valid filter command input.");
         }
-        logger.info("selectChecker_success() passed");
+        logger.info("filterChecker_success() passed");
     }
 
     private static String getFilterMethod(String filterString) {
@@ -80,73 +78,64 @@ public class SelectCheckerTest {
     }
 
     @Test
-    public void selectChecker_fail() {
+    public void filterChecker_fail() {
         checkInvalidMcostIndex();
         checkInvalidMcostFormat();
         checkInvalidMnameIndex();
         checkInvalidMnameFormat();
         checkInvalidIngIndex();
         checkInvalidIngFormat();
-        checkMissingMealIndex();
     }
 
     private void checkInvalidIngFormat() {
         String testName = "checkInvalidIngFormat()";
-        String[] invalidIngFormatStrings = {"select 1 /ing", "select2/ing   "};
-        String expectedMessage = new MissingIngredientException(select).getMessage();
+        String[] invalidIngFormatStrings = {"filter /ing", "filter/ing   "};
+        String expectedMessage = new MissingIngredientException(filter).getMessage();
         checkInvalidFilterInput(testName, invalidIngFormatStrings, expectedMessage);
     }
 
     private void checkInvalidIngIndex() {
         String testName = "checkInvalidIngIndex()";
-        String[] invalidIngIndexStrings = {"/ing select 1", "/ing a,b select 1", "a,b /ing 1 select"
-                , " 1 /ing a,b select"};
-        String expectedMessage = new InvalidIngIndexException(select).getMessage();
+        String[] invalidIngIndexStrings = {"/ing filter", "/ing filter a,b", "a,b /ing filter", "/ing a,b filter"};
+        String expectedMessage = new InvalidIngIndexException(filter).getMessage();
         checkInvalidFilterInput(testName, invalidIngIndexStrings, expectedMessage);
     }
 
     private void checkInvalidMnameFormat() {
         String testName = "checkInvalidMnameFormat()";
-        String[] invalidMnameFormatStrings = {"select 1 /mname", "select2/mname   "};
-        String expectedMessage = new MissingMealNameException(select).getMessage();
+        String[] invalidMnameFormatStrings = {"filter /mname", "filter/mname   "};
+        String expectedMessage = new MissingMealNameException(filter).getMessage();
         checkInvalidFilterInput(testName, invalidMnameFormatStrings, expectedMessage);
     }
 
     private void checkInvalidMnameIndex() {
         String testName = "checkInvalidMnameIndex()";
-        String[] invalidMnameIndexStrings = {"/mname select 2", "/mname a,b  2 select", "a,b 2 /mname select"
-                , "/mname2 select a,b"};
-        String expectedMessage = new InvalidMnameIndexException(select).getMessage();
+        String[] invalidMnameIndexStrings = {"/mname filter", "/mname a,b filter", "a,b /mname filter"
+                , "/mnamefilter a,b"};
+        String expectedMessage = new InvalidMnameIndexException(filter).getMessage();
         checkInvalidFilterInput(testName, invalidMnameIndexStrings, expectedMessage);
     }
 
     private void checkInvalidMcostFormat() {
         String testName = "checkInvalidMcostFormat()";
-        String[] invalidMnameIndexStrings = {"select 1 /mcost", "select1/mcost  "};
-        String expectedMessage = new MissingMealCostException(select).getMessage();
+        String[] invalidMnameIndexStrings = {"filter /mcost", "filter/mcost  "};
+        String expectedMessage = new MissingMealCostException(filter).getMessage();
         checkInvalidFilterInput(testName, invalidMnameIndexStrings, expectedMessage);
     }
 
     private void checkInvalidMcostIndex() {
         String testName = "checkInvalidMcostIndex()";
-        String[] invalidMnameIndexStrings = {"/mcost select2", "/mcost 1 2 select", "2 /mcost 5 select"
-                , "2/mcost 0.5select"};
-        String expectedMessage = new InvalidMcostIndexException(select).getMessage();
+        String[] invalidMnameIndexStrings = {"/mcost filter", "/mcost 1 filter", "1 /mcost filter"
+                , "/mcostfilter 0.5"};
+        String expectedMessage = new InvalidMcostIndexException(filter).getMessage();
         checkInvalidFilterInput(testName, invalidMnameIndexStrings, expectedMessage);
-    }
-
-    private void checkMissingMealIndex() {
-        String testName = "checkMissingMealIndex()";
-        String[] invalidStringIndexStrings = {"select /ing a", "select/mcost 1", "select/mname b,c", "select"};
-        String expectedMessage = new MissingMealIndexException(select).getMessage();
-        checkInvalidFilterInput(testName, invalidStringIndexStrings, expectedMessage);
     }
 
     private static void checkInvalidFilterInput(String testName, String[] testStrings, String expectedMessage) {
         logger.fine("running " + testName);
         for (String invalidIngIndexString : testStrings) {
             String filterMethod = getFilterMethod(invalidIngIndexString);
-            SelectChecker checker = new SelectChecker(invalidIngIndexString, filterMethod);
+            FilterChecker checker = new FilterChecker(invalidIngIndexString, filterMethod);
             try {
                 checker.check();
                 fail();

@@ -23,10 +23,16 @@ public class RecommendCommand extends Command {
      * Constructs a RecommendCommand.
      * Expected user input format: "recommend /ing Chicken"
      */
-    public RecommendCommand(String userInput) throws EZMealPlanException {
+    public RecommendCommand(String userInput) {
         validUserInput = userInput.trim();
     }
 
+    /**
+     * Executes the Recommend command.
+     *
+     * @param mealManager the MealManager providing access to the lists.
+     * @param ui          the UserInterface for printing messages.
+     */
     @Override
     public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
         // Validate input using RecommendChecker.
@@ -93,7 +99,7 @@ public class RecommendCommand extends Command {
 
         // Determine which ingredients are missing from the inventory.
         List<String> missingIngredients = mealIngredients.stream()
-                .filter(ing -> !inventory.hasIngredient(ing.getName().toLowerCase()))
+                .filter(ing -> !inventory.hasIngredient(ing))
                 .map(Ingredient::getName)
                 .collect(Collectors.toList());
         if (missingIngredients.isEmpty()) {

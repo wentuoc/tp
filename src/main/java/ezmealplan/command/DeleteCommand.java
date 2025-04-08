@@ -16,9 +16,16 @@ public class DeleteCommand extends RemoveDeleteCommand {
         logger.fine("Received \"Delete\" command, user input: " + userInputText);
     }
 
+    /**
+     * Executes the Delete command.
+     *
+     * @param mealManager the MealManager providing access to the lists.
+     * @param ui          the UserInterface for printing messages.
+     */
     @Override
     public void execute(MealManager mealManager, UserInterface ui) throws EZMealPlanException {
         super.execute(mealManager, ui);
+
         MealList wishList = mealManager.getWishList();
         if (wishList.contains(removedOrDeletedMeal)) {
             int indexInWishList = wishList.getIndex(removedOrDeletedMeal);

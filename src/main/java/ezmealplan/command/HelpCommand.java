@@ -1,6 +1,5 @@
 package ezmealplan.command;
 
-
 import ezmealplan.logic.MealManager;
 import ezmealplan.ui.UserInterface;
 
@@ -25,7 +24,6 @@ public class HelpCommand extends Command {
     private static final String INVENTORY = "inventory";
     String commandDescription;
 
-
     public HelpCommand(String userInput) {
         String pattern = "(?i)^help\\s+(\\S+)";
         Pattern regex = Pattern.compile(pattern);
@@ -38,6 +36,12 @@ public class HelpCommand extends Command {
         }
     }
 
+    /**
+     * Executes the Help command.
+     *
+     * @param mealManager the MealManager.
+     * @param ui          the UserInterface for printing messages.
+     */
     @Override
     public void execute(MealManager mealManager, UserInterface ui) {
         if (commandDescription.isEmpty()) {

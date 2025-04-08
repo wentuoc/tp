@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Storage {
-    static File wishListFile;
-    static File recipesListFile;
-    static File inventoryListFile;
+    private static File wishListFile;
+    private static File recipesListFile;
+    private static File inventoryListFile;
     private static final String WISH_LIST_FILE_PATH = "data/wishList.txt";
     private static final String RECIPES_LIST_FILE_PATH = "data/recipesList.txt";
     private static final String INVENTORY_LIST_FILE_PATH = "data/inventoryList.txt";
@@ -47,6 +47,9 @@ public class Storage {
         return INVENTORY_LIST_FILE_PATH;
     }
 
+    /**
+     * Creates the files for Recipes List, Wishlist and Inventory in the data directory, if they do not exist already.
+     */
     public static void createListFiles() throws IOException {
         wishListFile = new File(WISH_LIST_FILE_PATH);
         recipesListFile = new File(RECIPES_LIST_FILE_PATH);
@@ -56,7 +59,7 @@ public class Storage {
         createListFile(inventoryListFile);
     }
 
-    public static void createListFile(File listFile) throws IOException {
+    private static void createListFile(File listFile) throws IOException {
         // Ensure the parent directories exist (if there are any)
         if (listFile.getParentFile() != null) {
             listFile.getParentFile().mkdirs();
@@ -67,6 +70,11 @@ public class Storage {
         }
     }
 
+    /**
+     * Opens the Inventory file in the data folder and loads its contents into the application.
+     *
+     * @param mealManager The mealManager handling the application's Inventory.
+     */
     public static void loadExistingInventory(MealManager mealManager) throws FileNotFoundException {
         Inventory inventory = mealManager.getInventory();
         if (inventoryListFile.exists()) {
@@ -82,6 +90,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Opens a MealList file in the data folder and loads its contents.
+     *
+     * @param selectedFile The file to open from.
+     * @return A List of meals that were in the file.
+     */
     public static List<Meal> loadExistingList(File selectedFile) throws IOException {
         List<Meal> meals = new ArrayList<>();
         if (selectedFile.exists()) {
@@ -104,6 +118,12 @@ public class Storage {
         return meals;
     }
 
+    /**
+     * Loads preset meals from the PresetMeals class.
+     * This is used when no files for the Recipes List is found in the data directory.
+     *
+     * @return A List of meals that were in the PresetMeals class.
+     */
     public static List<Meal> loadPresetMeals() {
         String[] allInitialisedMeals = PresetMeals.createPresetMeals();
         List<Meal> meals = new ArrayList<>();
@@ -119,21 +139,19 @@ public class Storage {
     }
 
     private static void checkValidMeal(String[] parts, List<Meal> meals) {
-        //Throw error message if detected an ingredient with invalid price and skips to the next meal.
         try {
             checkMealsBeforeAdd(parts, meals);
         } catch (Exception exception) {
+            //Throw error message if detected an ingredient with invalid price and skips to the next meal.
             System.err.println(exception.getMessage());
         }
     }
 
     private static void checkMealsBeforeAdd(String[] parts, List<Meal> meals)
             throws Exception {
-        // The first part is the meal name.
         int mealNameIndex = 0;
         String mealName = parts[mealNameIndex];
         Meal meal = addIngredientsToMeal(mealName, parts);
-        // Optionally, compute the meal's total price as the sum of ingredient prices.
         meals.add(meal);
     }
 
@@ -158,7 +176,6 @@ public class Storage {
         int closeBracketIndex = ingredientStr.indexOf(")");
         int notFoundIndex = -1;
         if (openBracketIndex == notFoundIndex || closeBracketIndex == notFoundIndex) {
-            // If no valid price is found, you could either skip or use a default value.
             throw new IllegalArgumentException("Invalid ingredient format: " + ingredientStr);
         }
         int startIndex = 0;
@@ -169,12 +186,18 @@ public class Storage {
         return new Ingredient(ingredientName, priceStr);
     }
 
+    /**
+     * Writes a string input to a file at the designated filePath.
+     */
     public static void writeToFile(String input, String filePath) throws IOException {
         try (FileWriter fileWriter = new FileWriter(filePath, true)) {
             fileWriter.append(input).append(System.lineSeparator());
         }
     }
 
+    /**
+     * Clears the contents of the file at the designated filePath.
+     */
     public static void clearFile(String filePath) throws IOException {
         try (FileWriter fileWriter = new FileWriter(filePath)) {
         } catch (IOException ioException) {

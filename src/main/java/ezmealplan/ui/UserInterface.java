@@ -18,6 +18,11 @@ public class UserInterface {
         System.out.println(s);
     }
 
+    /**
+     * Reads the user's input from the command line.
+     *
+     * @return The user's input as a string.
+     */
     public String readInput() {
         String userCmd = "";
         if (scanner.hasNextLine()) {
