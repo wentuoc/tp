@@ -417,7 +417,7 @@ public class UserInterfaceTest {
                 "Sample output:" + ls +
                 "                Inventory List:" + ls +
                 "                   1. egg ($1.00)" + ls +
-            "                   2. chicken breast ($3.25)" + ls +
+                "                   2. chicken breast ($3.25)" + ls +
                 "                   3. rice ($1.00)" + ls;
         assertEquals(expected, outContent.toString(), "Inventory command help output does not match.");
         logger.info("printInventoryCommandHelp_noInput_success() passed");

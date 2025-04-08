@@ -27,6 +27,8 @@ public class RecipesCommandTest {
     private final PrintStream originalOut = System.out;
     private final UserInterface ui = new UserInterface();
 
+    private final String ls = System.lineSeparator();
+
     public RecipesCommandTest() {
         String fileName = "RecipesCommandTest.log";
         setupLogger(fileName);
@@ -74,12 +76,8 @@ public class RecipesCommandTest {
         RecipesCommand recipesCommand = new RecipesCommand();
         recipesCommand.execute(mealManager, ui);
 
-        String expectedOutput = """
-                Here are the meals in recipes list:\r
-                    1. Main Meal 1 ($0.00)\r
-                    2. Main Meal 2 ($0.00)\r
-                \r
-                """;
+        String expectedOutput = "Here are the meals in recipes list:" + ls + "    1. Main Meal 1 ($0.00)" + ls +
+                "    2. Main Meal 2 ($0.00)" + ls + ls;
         assertEquals(expectedOutput, outContent.toString());
         logger.info("testExecute_recipesCommand_printsRecipesList() passed");
     }

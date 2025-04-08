@@ -27,6 +27,8 @@ class UnknownCommandTest {
     private final MealManager mealManager = new MealManager();
     private final UserInterface ui = new UserInterface();
 
+    private final String ls = System.lineSeparator();
+
     public UnknownCommandTest() {
         String fileName = "UnknownCommandTest.log";
         setupLogger(fileName);
@@ -70,10 +72,7 @@ class UnknownCommandTest {
 
         command.execute(mealManager, ui);
 
-        String expectedOutput = """
-                Invalid command: wrong command\r
-                me no understand what you talking.\r
-                """;
+        String expectedOutput = "Invalid command: wrong command" + ls + "me no understand what you talking." + ls;
         assertEquals(expectedOutput, outContent.toString());
         logger.info("Correct unknown command printed");
     }

@@ -25,6 +25,8 @@ class MistypedCommandTest {
     private final MealManager mealManager = new MealManager();
     private final UserInterface ui = new UserInterface();
 
+    private final String ls = System.lineSeparator();
+
     public MistypedCommandTest() {
         String fileName = "MistypedCommandTest.log";
         setupLogger(fileName);
@@ -69,10 +71,7 @@ class MistypedCommandTest {
 
         command.execute(mealManager, ui);
 
-        String expectedOutput = """
-                Invalid command: wishlistssss\r
-                Did you mean: wishlist?\r
-                """;
+        String expectedOutput = "Invalid command: wishlistssss" + ls + "Did you mean: wishlist?" + ls;
         assertEquals(expectedOutput, outContent.toString());
         logger.info("Correct mistyped command printed");
     }
