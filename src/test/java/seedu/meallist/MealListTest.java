@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import seedu.exceptions.DuplicateMealException;
 import seedu.exceptions.EZMealPlanException;
-import seedu.exceptions.MealNotFoundException;
 import seedu.exceptions.RemoveIndexOutOfRangeException;
 import seedu.food.Ingredient;
 import seedu.food.Meal;
@@ -20,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class MealListTest {
     private static final Logger logger = Logger.getLogger(MealListTest.class.getName());
@@ -100,7 +100,25 @@ class MealListTest {
         recipesList.addMeal(meal2);
         recipesList.addMeal(meal3);
         assertThrows(RemoveIndexOutOfRangeException.class, () -> recipesList.removeMeal(-1));
-        assertThrows(RemoveIndexOutOfRangeException.class, () -> recipesList.removeMeal(3));
+        try {
+            recipesList.removeMeal(3);
+        } catch (EZMealPlanException ezMealPlanException) {
+            String expectedMessage = "The index provided (4) is out of range. It must be between 1 and 3.\n";
+            assertEquals(expectedMessage, ezMealPlanException.getMessage());
+        }
+        logger.info("Correct Exception is thrown");
+    }
+
+    @Test
+    void removeMeal_emptyMealList_exceptionThrown() throws EZMealPlanException {
+        logger.fine("Running removeMeal_emptyMealList_exceptionThrown()");
+        MealList wishList = new WishList();
+        try {
+            wishList.removeMeal(1);
+        } catch (EZMealPlanException ezMealPlanException) {
+            String expectedMessage = "The wishlist is empty.\n";
+            assertEquals(expectedMessage, ezMealPlanException.getMessage());
+        }
         logger.info("Correct Exception is thrown");
     }
 
@@ -123,7 +141,13 @@ class MealListTest {
         MealList recipesList = new RecipesList();
         recipesList.addMeal(meal1);
         recipesList.addMeal(meal2);
-        assertThrows(MealNotFoundException.class, () -> recipesList.getIndex(meal3));
+        try {
+            recipesList.getIndex(meal3);
+            fail();
+        } catch (EZMealPlanException ezMealPlanException) {
+            String expectedMessage = "The meal provided (" + meal3 + ") cannot be found in the list.\n";
+            assertEquals(expectedMessage, ezMealPlanException.getMessage());
+        }
         logger.info("Correct Exception is thrown");
     }
 

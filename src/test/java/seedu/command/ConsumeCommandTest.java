@@ -27,8 +27,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ConsumeCommandTest {
     private static final Logger logger = Logger.getLogger(ConsumeCommandTest.class.getName());
+    private final UserInterface ui = new UserInterface();
+    private final String ls = System.lineSeparator();
 
-    UserInterface ui = new UserInterface();
     private final Ingredient ingredient1;
     private final Ingredient ingredient2;
     private final Ingredient ingredient3;
@@ -75,10 +76,7 @@ class ConsumeCommandTest {
         Command command = new ConsumeCommand(userInput);
         command.execute(mealManager, ui);
 
-        String expectedOutput = """
-                    1. Banana ($3.00): 1
-                    2. Chocolate ($4.00): 1
-                """;
+        String expectedOutput = "    1. Banana ($3.00): 1" + ls + "    2. Chocolate ($4.00): 1" + ls;
         assertEquals(expectedOutput, inventory.toString());
         logger.info("Correct ingredient consumed");
     }
@@ -110,16 +108,13 @@ class ConsumeCommandTest {
         Command command = new ConsumeCommand(userInput);
         command.execute(mealManager, ui);
 
-        String expectedOutput = """
-                    1. Banana ($3.00): 1
-                    2. Chocolate ($4.00): 1
-                """;
+        String expectedOutput = "    1. Banana ($3.00): 1" + ls + "    2. Chocolate ($4.00): 1" + ls;
         assertEquals(expectedOutput, inventory.toString());
         logger.info("Correct ingredient consumed");
     }
 
     @Test
-    public void testExecute_ingredientNotFoundWithPriceInput_exceptionThrown() throws EZMealPlanException {
+    public void testExecute_ingredientNotFoundWithPriceInput_exceptionThrown() {
         logger.fine("Running testExecute_ingredientNotFoundWithPriceInput_exceptionThrown()");
         MealManager mealManager = new MealManager();
         Inventory inventory = mealManager.getInventory();
@@ -145,9 +140,7 @@ class ConsumeCommandTest {
         Command command = new ConsumeCommand(userInput);
         command.execute(mealManager, ui);
 
-        String expectedOutput = """
-                    1. Chocolate ($4.00): 1
-                """;
+        String expectedOutput = "    1. Chocolate ($4.00): 1" + ls;
         assertEquals(expectedOutput, inventory.toString());
         logger.info("Correct ingredients consumed");
     }
@@ -166,11 +159,8 @@ class ConsumeCommandTest {
         Command command = new ConsumeCommand(userInput);
         command.execute(mealManager, ui);
 
-        String expectedOutput = """
-                    1. Apple ($1.00): 2
-                    2. Banana ($3.00): 1
-                    3. Chocolate ($4.00): 1
-                """;
+        String expectedOutput = "    1. Apple ($1.00): 2" + ls + "    2. Banana ($3.00): 1" + ls +
+                "    3. Chocolate ($4.00): 1" + ls;
         assertEquals(expectedOutput, inventory.toString());
         logger.info("Correct ingredient consumed");
     }
@@ -189,11 +179,8 @@ class ConsumeCommandTest {
         Command command1 = new ConsumeCommand(userInput1);
         command1.execute(mealManager, ui);
 
-        String expectedOutput = """
-                    1. Apple ($1.00): 2
-                    2. Apple ($2.00): 1
-                    3. Chocolate ($4.00): 1
-                """;
+        String expectedOutput = "    1. Apple ($1.00): 2" + ls + "    2. Apple ($2.00): 1" + ls +
+                "    3. Chocolate ($4.00): 1" + ls;
         assertEquals(expectedOutput, inventory.toString());
         logger.info("Correct ingredient consumed");
 
@@ -218,12 +205,8 @@ class ConsumeCommandTest {
         Command command = new ConsumeCommand(userInput);
         command.execute(mealManager, ui);
 
-        String expectedOutput = """
-                    1. Apple ($1.00): 1
-                    2. Apple ($2.00): 1
-                    3. Banana ($3.00): 1
-                    4. Chocolate ($4.00): 1
-                """;
+        String expectedOutput = "    1. Apple ($1.00): 1" + ls + "    2. Apple ($2.00): 1" + ls +
+                "    3. Banana ($3.00): 1" + ls + "    4. Chocolate ($4.00): 1" + ls;
         assertEquals(expectedOutput, inventory.toString());
         logger.info("Correct ingredient consumed");
     }
@@ -267,11 +250,8 @@ class ConsumeCommandTest {
         Command command = new ConsumeCommand(userInput);
         command.execute(mealManager, ui);
 
-        String expectedOutput = """
-                    1. Apple ($1.00): 1
-                    2. Banana ($3.00): 1
-                    3. Chocolate ($4.00): 1
-                """;
+        String expectedOutput = "    1. Apple ($1.00): 1" + ls + "    2. Banana ($3.00): 1" + ls +
+                "    3. Chocolate ($4.00): 1" + ls;
         assertEquals(expectedOutput, inventory.toString());
         logger.info("Correct ingredient consumed");
     }

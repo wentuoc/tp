@@ -54,7 +54,7 @@ public class Meal extends Product {
 
     private void checkDuplicateIngredients(Ingredient newIngredient) throws DuplicateIngredientException {
         for (Ingredient ingredient : ingredientList) {
-            if (newIngredient.equals(ingredient)) {
+            if (newIngredient.nameEquals(ingredient)) {
                 String ingredientName = newIngredient.getName();
                 String message = "Triggers DuplicateIngredientException()!";
                 logger.warning(message);

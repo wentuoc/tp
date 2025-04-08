@@ -1,6 +1,7 @@
 package seedu.exceptions;
 
 public class InvalidViewIndexException extends EZMealPlanException {
+    public InvalidViewIndexException() {}
 
     @Override
     public String getMessage() {
