@@ -24,6 +24,8 @@ class BuyCommandTest {
     private static final Logger logger = Logger.getLogger(BuyCommandTest.class.getName());
     private final UserInterface ui = new UserInterface();
 
+    private final String ls = System.lineSeparator();
+
     public BuyCommandTest() {
         String fileName = "BuyCommandTest.log";
         setupLogger(fileName);
@@ -57,10 +59,7 @@ class BuyCommandTest {
         command.execute(mealManager, ui);
 
         Inventory inventory = mealManager.getInventory();
-        String expectedOutput = """
-                    1. Apple ($1.00): 1
-                    2. Banana ($3.00): 1
-                """;
+        String expectedOutput = "    1. Apple ($1.00): 1" + ls + "    2. Banana ($3.00): 1" + ls;
         assertEquals(expectedOutput, inventory.toString());
         logger.info("Correct ingredients added");
     }
@@ -74,10 +73,7 @@ class BuyCommandTest {
         command.execute(mealManager, ui);
 
         Inventory inventory = mealManager.getInventory();
-        String expectedOutput = """
-                    1. Apple ($1.00): 2
-                    2. Banana ($3.00): 1
-                """;
+        String expectedOutput = "    1. Apple ($1.00): 2" + ls + "    2. Banana ($3.00): 1" + ls;
         assertEquals(expectedOutput, inventory.toString());
         logger.info("Correct ingredients added");
     }
@@ -91,11 +87,8 @@ class BuyCommandTest {
         command.execute(mealManager, ui);
 
         Inventory inventory = mealManager.getInventory();
-        String expectedOutput = """
-                    1. Apple ($1.00): 1
-                    2. Apple ($2.00): 1
-                    3. Banana ($3.00): 1
-                """;
+        String expectedOutput = "    1. Apple ($1.00): 1" + ls + "    2. Apple ($2.00): 1" + ls +
+                "    3. Banana ($3.00): 1" + ls;
         assertEquals(expectedOutput, inventory.toString());
         logger.info("Correct ingredients added");
     }

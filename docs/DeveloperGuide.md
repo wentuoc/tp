@@ -1088,6 +1088,37 @@ Here are some snippets of the unit test code:
         }
     }
 ```
+```java
+    @Test
+    public void removeCommand_extraSpacingInput_success() throws EZMealPlanException {
+        logger.fine("Running removeCommand_extraSpacingInput_success()");
+        MealManager mealManager = new MealManager();
+        Meal testMeal = new Meal("Soup");
+        MealList wishList = mealManager.getWishList();
+        wishList.addMeal(testMeal);
+        assertEquals(1, wishList.size());
+
+        Command command = new RemoveCommand("   remove     1   ");
+        command.execute(mealManager, testUI);
+
+        assertEquals(0, wishList.size());
+        logger.info("Meal successfully removed from wish list");
+    }
+
+    @Test
+    public void removeCommand_emptyList_throwsEmptyListException() throws EZMealPlanException {
+        logger.fine("Running removeCommand_emptyList_throwsRemoveFormatException()");
+        MealManager mealManager = new MealManager();
+
+        String[] userInputs = {"remove 1", "remove 0", "remove -1"};
+        for (String userInput : userInputs) {
+            Command command = new RemoveCommand(userInput);
+            assertThrows(EmptyListException.class, () -> command.execute(mealManager, testUI));
+            logger.info("Correct exception thrown");
+        }
+    }
+
+```
 ### 9. ClearCommand 
 
 ##### 9.1 Design Overview
@@ -1593,6 +1624,80 @@ Here are some snippets of the unit test code:
         logger.info("buyChecker_missingIngKeyword_throwsMissingIngKeywordException passed");
     }
 ```
+### 13. ConsumeCommand and ConsumeChecker
+
+##### 13.1 Design Overview
+
+###### Function
+
+###### Design Goals
+
+##### 13.2 Implementation Details
+
+###### Component Level: ConsumeChecker Class
+
+###### Component Level: ConsumeCommand Class
+
+###### Code Example
+
+##### 13.3 Sequence Diagram
+![ConsumeCommand.png](diagrams/ConsumeCommand.png)
+![ConsumeChecker.png](diagrams/ConsumeChecker.png)
+##### 13.4 Unit Testing
+
+###### Testing Approach
+
+###### Unit Test Code
+
+### 14. RecommendCommand and RecommendChecker
+
+##### 14.1 Design Overview
+
+###### Function
+
+###### Design Goals
+
+##### 14.2 Implementation Details
+
+###### Component Level: RecommendChecker Class
+
+###### Component Level: RecommendCommand Class
+
+###### Code Example
+
+##### 14.3 Sequence Diagram
+![RecommendCommand.png](diagrams/RecommendCommand.png)
+![RecommendChecker.png](diagrams/RecommendChecker.png)
+
+##### 14.4 Unit Testing
+
+###### Testing Approach
+
+###### Unit Test Code
+
+### 15. InventoryCommand
+
+##### 15.1 Design Overview
+
+###### Function
+
+###### Design Goals
+
+##### 15.2 Implementation Details
+
+###### Component Level: InventoryCommand Class
+
+###### Code Example
+
+##### 15.3 Sequence Diagram
+![InventoryCommand.png](diagrams/InventoryCommand.png)
+
+##### 15.4 Unit Testing
+
+###### Testing Approach
+
+###### Unit Test Code
+
 ## Implementation
 
 ## Appendices

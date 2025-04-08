@@ -25,6 +25,7 @@ class InventoryCommandTest {
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
     private final UserInterface ui = new UserInterface();
+    private final String ls = System.lineSeparator();
 
     public InventoryCommandTest() {
         String fileName = "InventoryCommandTest.log";
@@ -76,13 +77,9 @@ class InventoryCommandTest {
         Command command = new InventoryCommand();
         command.execute(mealManager, ui);
 
-        String expectedString = """
-                Here are the ingredients that you own:\r
-                    1. Apple ($1.00): 2
-                    2. Apple ($2.00): 1
-                    3. Banana ($3.00): 1
-                """;
-        assertEquals(expectedString, outContent.toString());
+        String expectedString = "Here are the ingredients that you own:" + ls + "    1. Apple ($1.00): 2" + ls +
+                "    2. Apple ($2.00): 1" + ls + "    3. Banana ($3.00): 1" + ls;
+        assertEquals(expectedString.trim(), outContent.toString().trim());
         logger.info("Correct inventory printed");
     }
 

@@ -39,6 +39,16 @@ public class Ingredient extends Product {
         }
     }
 
+    public boolean nameEquals(Object otherIngredient) {
+        if (otherIngredient instanceof Ingredient) {
+            String otherName = ((Ingredient) otherIngredient).getName();
+            String thisName = this.getName();
+            return thisName.equalsIgnoreCase(otherName);
+        } else {
+            return false;
+        }
+    }
+
     private double checkValidIngPrice(String ingredientPrice) throws IngredientPriceFormatException {
         checkTwoDecimalPlace(ingredientPrice);
         try {
