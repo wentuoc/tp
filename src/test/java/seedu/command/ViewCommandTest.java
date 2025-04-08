@@ -115,6 +115,30 @@ public class ViewCommandTest {
     }
 
     @Test
+    public void testExecute_wrongKeyword_exceptionThrown() throws EZMealPlanException {
+        logger.fine("Running testExecute_wrongKeyword_exceptionThrown()");
+        MealManager mealManager = new MealManager();
+        Meal meal = new Meal("Wishlist Meal 1");
+        Ingredient firstIngredient = new Ingredient("tofu", "1.20");
+        Ingredient secondIngredient = new Ingredient("noodles", "1.80");
+        meal.addIngredient(firstIngredient);
+        meal.addIngredient(secondIngredient);
+
+        mealManager.getWishList().getList().add(meal);
+
+        TestUserInterface testUI = new TestUserInterface();
+        ViewCommand command = new ViewCommand("view /u 1");
+        try {
+            command.execute(mealManager, testUI);
+        } catch (EZMealPlanException ezMealPlanException) {
+            String expectedMessage = "Only 1 of the keywords '/r' (recipes list) or '/w' (wishlist) is allowed" +
+                    " and must be present in the 'view' command.\n";
+            assertEquals(expectedMessage, ezMealPlanException.getMessage());
+        }
+        logger.info("testExecute_wrongKeyword_exceptionThrown passed");
+    }
+
+    @Test
     public void testExecute_viewRecipesMeal_emptyList(){
         logger.fine("Running testExecute_viewRecipesMeal_emptyList()");
         MealManager mealManager = new MealManager();
@@ -150,8 +174,14 @@ public class ViewCommandTest {
         TestUserInterface testUI = new TestUserInterface();
         ViewCommand command = new ViewCommand("view /r 2");
 
+        try {
+            command.execute(mealManager, testUI);
+        } catch (EZMealPlanException ezMealPlanException) {
+            String expectedMessage = "The index provided for the recipes list (2) is out of range.\n" +
+                    "It must be between 1 and 1.\n";
+            assertEquals(expectedMessage, ezMealPlanException.getMessage());
+        }
         assertThrows(ViewIndexOutOfRangeException.class, () -> command.execute(mealManager,testUI));
-
         logger.info("testExecute_viewRecipesMeal_outOfRange passed");
     }
 

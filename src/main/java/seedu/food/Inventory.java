@@ -112,7 +112,7 @@ public class Inventory {
             outputString.append(ingredient);
             outputString.append(": ");
             outputString.append(ingredients.get(ingredient));
-            outputString.append("\n");
+            outputString.append(System.lineSeparator());
         }
         return outputString.toString();
     }
